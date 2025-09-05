@@ -63,3 +63,10 @@ extend-ignore = ["E203"]
 [tool.coverage.run]
 branch = true
 source = ["pylti1p3"]
+
+[dependency-groups]
+dev = [
+    "coverage>=6.2",
+    "flake8>=4.0.1",
+    "tox>=3.28.0",
+]
