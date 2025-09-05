@@ -1,15 +1,16 @@
 from typing import Any, Optional, Dict, Union
 
 import fastapi  # type: ignore
+import starlette.datastructures  # type: ignore
 
 from pylti1p3.request import Request
 
 
 class FastAPIRequest(Request):
     _request: fastapi.Request
-    _form_data: Dict[str, Any]
+    _form_data: starlette.datastructures.FormData
 
-    def __init__(self, request: fastapi.Request, form_data: Dict[str, Any]) -> None:
+    def __init__(self, request: fastapi.Request, form_data: starlette.datastructures.FormData) -> None:
         """
         Parameters:
             request: FastAPI request
