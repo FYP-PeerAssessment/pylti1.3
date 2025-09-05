@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "PyLTI1p3"
+version = "2.0.0"
+description = "LTI 1.3 Advantage Tool implementation in Python"
+keywords = ["pylti", "pylti1p3", "lti", "lti1.3", "lti1p3", "django", "flask"]
+authors = [
+    {name = "Dmitry Viskov", email = "dmitry.viskov@webenterprise.ru"}
+]
+maintainers = [
+    {name = "Dmitry Viskov", email = "dmitry.viskov@webenterprise.ru"}
+]
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.rst"
+requires-python = ">=3.6"
+dependencies = [
+    "jwcrypto",
+    "pyjwt>=1.5",
+    "requests",
+    "typing_extensions",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Flask",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/dmitry-viskov/pylti1.3"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pylti1p3"]
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", ".idea", ".tox", "build", "venv", "venv3", "env"]
+extend-ignore = ["E203"]
+
+[tool.coverage.run]
+branch = true
+source = ["pylti1p3"]
