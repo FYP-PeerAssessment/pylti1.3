@@ -177,18 +177,18 @@ TJwtData = te.TypedDict(
     total=False,
 )
 
-REQ = t.TypeVar("REQ", bound=Request)
-TCONF = t.TypeVar("TCONF", bound=ToolConfAbstract)
-SES = t.TypeVar("SES", bound=SessionService)
-COOK = t.TypeVar("COOK", bound=CookieService)
+RequestT = t.TypeVar("RequestT", bound=Request)
+ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract[t.Any])
+SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
+CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
-class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
+class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT]):
     __metaclass__ = ABCMeta
-    _request: REQ
-    _tool_config: TCONF
-    _session_service: SES
-    _cookie_service: COOK
+    _request: RequestT
+    _tool_config: ToolConfT
+    _session_service: SessionServiceT
+    _cookie_service: CookieServiceT
     _jwt: TJwtData
     _jwt_verify_options: t.Dict[str, bool]
     _registration: t.Optional[Registration]
@@ -202,10 +202,10 @@ class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
 
     def __init__(
         self,
-        request: REQ,
-        tool_config: TCONF,
-        session_service: t.Optional[SES] = None,
-        cookie_service: t.Optional[COOK] = None,
+        request: RequestT,
+        tool_config: ToolConfT,
+        session_service: t.Optional[SessionServiceT] = None,
+        cookie_service: t.Optional[CookieServiceT] = None,
         launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
         requests_session: t.Optional[requests.Session] = None,
     ):
@@ -259,7 +259,7 @@ class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
         self._restored = True
         return self
 
-    def get_session_service(self) -> SES:
+    def get_session_service(self) -> SessionServiceT:
         return self._session_service
 
     def get_iss(self) -> str:
@@ -277,10 +277,10 @@ class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
     def from_cache(
         cls,
         launch_id: str,
-        request: REQ,
-        tool_config: TCONF,
-        session_service: t.Optional[SES] = None,
-        cookie_service: t.Optional[COOK] = None,
+        request: RequestT,
+        tool_config: ToolConfT,
+        session_service: t.Optional[SessionServiceT] = None,
+        cookie_service: t.Optional[CookieServiceT] = None,
         launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
         requests_session: t.Optional[requests.Session] = None,
     ) -> "MessageLaunch":
@@ -536,7 +536,7 @@ class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
         """
         return self._launch_id
 
-    def get_tool_conf(self) -> TCONF:
+    def get_tool_conf(self) -> ToolConfT:
         return self._tool_config
 
     @staticmethod
@@ -679,8 +679,8 @@ class MessageLaunch(t.Generic[REQ, TCONF, SES, COOK]):
         # Mypy doesn't support higher kinded types yet so it thinks that all
         # generic attrs have type `Any`. See issue:
         # https://github.com/python/mypy/issues/8228
-        config: ToolConfAbstract[REQ] = self._tool_config
-        req: REQ = self._request
+        config: ToolConfAbstract[RequestT] = self._tool_config
+        req: RequestT = self._request
 
         # Find registration
         if config.check_iss_has_one_client(iss):

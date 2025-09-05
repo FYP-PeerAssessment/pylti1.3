@@ -1,21 +1,22 @@
-from typing import Any, Optional
+from typing import Any, Optional, TypeVar, override
 
 from requests import Session
 
 from pylti1p3.contrib.fastapi.request import FastAPIRequest
 from pylti1p3.message_launch import MessageLaunch
-from pylti1p3.tool_config import ToolConfAbstract
 from pylti1p3.launch_data_storage.base import LaunchDataStorage
+from pylti1p3.tool_config.abstract import ToolConfAbstract
 
 from .cookie import FastAPICookieService
 from .session import FastAPISessionService
 
+ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract[Any])
 
-class FastAPIMessageLaunch(MessageLaunch):
+class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService]):
     def __init__(
         self,
         request: FastAPIRequest,
-        tool_config: ToolConfAbstract,
+        tool_config: ToolConfT,
         session_service: Optional[FastAPISessionService] = None,
         cookie_service: Optional[FastAPICookieService] = None,
         launch_data_storage: Optional[LaunchDataStorage[Any]] = None,
@@ -36,5 +37,9 @@ class FastAPIMessageLaunch(MessageLaunch):
             requests_session,
         )
 
+    @override
     def _get_request_param(self, key: str) -> str:
-        return self._request.get_param(key)
+        val = self._request.get_param(key)
+        if val is not None:
+            return val
+        raise ValueError(f"Missing request param: {key}")
