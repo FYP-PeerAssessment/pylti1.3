@@ -15,19 +15,19 @@ from .request import Request
 from .tool_config import ToolConfAbstract
 
 
-RED = t.TypeVar("RED")
-REQ = t.TypeVar("REQ", bound=Request)
-TCONF = t.TypeVar("TCONF", bound=ToolConfAbstract)
-SES = t.TypeVar("SES", bound=SessionService)
-COOK = t.TypeVar("COOK", bound=CookieService)
+RedirectT = t.TypeVar("RedirectT")
+RequestT = t.TypeVar("RequestT", bound=Request)
+ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract)
+SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
+CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
-class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
+class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, RedirectT]):
     __metaclass__ = ABCMeta
-    _request: REQ
-    _tool_config: TCONF
-    _session_service: SES
-    _cookie_service: COOK
+    _request: RequestT
+    _tool_config: ToolConfT
+    _session_service: SessionServiceT
+    _cookie_service: CookieServiceT
     _launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None
     _registration: Registration
 
@@ -43,10 +43,10 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
 
     def __init__(
         self,
-        request: REQ,
-        tool_config: TCONF,
-        session_service: SES,
-        cookie_service: COOK,
+        request: RequestT,
+        tool_config: ToolConfT,
+        session_service: SessionServiceT,
+        cookie_service: CookieServiceT,
         launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
     ):
         self._request = request
@@ -56,10 +56,10 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
         self._launch_data_storage = launch_data_storage
 
     @abstractmethod
-    def get_redirect(self, url: str) -> Redirect[RED]:
+    def get_redirect(self, url: str) -> Redirect[RedirectT]:
         raise NotImplementedError
 
-    def get_response(self, html: str) -> RED:  # pylint: disable=unused-argument
+    def get_response(self, html: str) -> RedirectT:  # pylint: disable=unused-argument
         return ""  # type: ignore
 
     def get_iss(self) -> t.Optional[str]:
@@ -137,11 +137,11 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
         auth_login_return_url = auth_login_url + "?" + urlencode(auth_params)
         return auth_login_return_url
 
-    def _prepare_redirect(self, launch_url: str) -> Redirect[RED]:
+    def _prepare_redirect(self, launch_url: str) -> Redirect[RedirectT]:
         auth_login_return_url = self._prepare_redirect_url(launch_url)
         return self.get_redirect(auth_login_return_url)
 
-    def redirect(self, launch_url: str, js_redirect: bool = False) -> RED:
+    def redirect(self, launch_url: str, js_redirect: bool = False) -> RedirectT:
         """
         Calculate the redirect location to return to based on an OIDC third party initiated login request.
 
@@ -160,7 +160,7 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
             return redirect_obj.do_js_redirect()
         return redirect_obj.do_redirect()
 
-    def get_redirect_object(self, launch_url: str) -> Redirect[RED]:
+    def get_redirect_object(self, launch_url: str) -> Redirect[RedirectT]:
         return self._prepare_redirect(launch_url)
 
     def validate_oidc_login(self) -> Registration:
