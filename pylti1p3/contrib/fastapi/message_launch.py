@@ -1,8 +1,8 @@
 from typing import Any, Optional
 
-import fastapi
 from requests import Session
 
+from pylti1p3.contrib.fastapi.request import FastAPIRequest
 from pylti1p3.message_launch import MessageLaunch
 from pylti1p3.tool_config import ToolConfAbstract
 from pylti1p3.launch_data_storage.base import LaunchDataStorage
@@ -14,7 +14,7 @@ from .session import FastAPISessionService
 class FastAPIMessageLaunch(MessageLaunch):
     def __init__(
         self,
-        request: fastapi.Request,
+        request: FastAPIRequest,
         tool_config: ToolConfAbstract,
         session_service: Optional[FastAPISessionService] = None,
         cookie_service: Optional[FastAPICookieService] = None,
