@@ -192,7 +192,7 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
 
         return registration
 
-    def pass_params_to_launch(self, params: t.Dict[str, object]) -> "OIDCLogin":
+    def pass_params_to_launch(self, params: t.Dict[str, object]) -> t.Self:
         """
         Ability to pass custom params from oidc login to launch.
         """
@@ -205,7 +205,7 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
         click_msg: t.Optional[str] = None,
         loading_msg: t.Optional[str] = None,
         **kwargs
-    ) -> "OIDCLogin":
+    ) -> t.Self:
         # pylint: disable=unused-argument
         self._cookies_check = True
         if main_msg:
@@ -216,7 +216,7 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
             self._cookies_check_loading_text = loading_msg
         return self
 
-    def disable_check_cookies(self) -> "OIDCLogin":
+    def disable_check_cookies(self) -> t.Self:
         self._cookies_check = False
         return self
 
@@ -258,7 +258,7 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
 
     def set_launch_data_storage(
         self, data_storage: LaunchDataStorage[t.Any]
-    ) -> "OIDCLogin":
+    ) -> t.Self:
         data_storage.set_request(self._request)
         session_cookie_name = data_storage.get_session_cookie_name()
         if session_cookie_name:
@@ -270,6 +270,6 @@ class OIDCLogin(t.Generic[REQ, TCONF, SES, COOK, RED]):
         self._session_service.set_data_storage(data_storage)
         return self
 
-    def set_launch_data_lifetime(self, time_sec: int) -> "OIDCLogin":
+    def set_launch_data_lifetime(self, time_sec: int) -> t.Self:
         self._session_service.set_launch_data_lifetime(time_sec)
         return self
