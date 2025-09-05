@@ -1,11 +1,15 @@
+from typing import Any, Optional, Dict, Union
+
+import fastapi  # type: ignore
+
 from pylti1p3.request import Request
 
 
 class FastAPIRequest(Request):
-    _request = None
-    _form_data = None
+    _request: fastapi.Request
+    _form_data: Dict[str, Any]
 
-    def __init__(self, request, form_data):
+    def __init__(self, request: fastapi.Request, form_data: Dict[str, Any]) -> None:
         """
         Parameters:
             request: FastAPI request
@@ -20,16 +24,16 @@ class FastAPIRequest(Request):
         self._form_data = form_data
 
     @property
-    def session(self):
+    def session(self) -> Dict[str, Any]:
         return self._request.session
 
-    def get_param(self, key):
+    def get_param(self, key: str) -> Optional[str]:
         if self._request.method == "GET":
             return self._request.query_params.get(key, None)
         return self._form_data.get(key)
 
-    def get_cookie(self, key):
+    def get_cookie(self, key: str) -> Optional[str]:
         return self._request.cookies.get(key, None)
 
-    def is_secure(self):
+    def is_secure(self) -> bool:
         return self._request.url.is_secure
