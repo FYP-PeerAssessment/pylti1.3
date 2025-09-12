@@ -11,7 +11,7 @@ TAssignmentsGradersData = t.TypedDict(
     "TAssignmentsGradersData",
     {
         "scope": list[
-            te.Literal[
+            t.Literal[
                 "https://purl.imsglobal.org/spec/lti-ags/scope/score",
                 "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
                 "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",

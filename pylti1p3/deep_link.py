@@ -12,13 +12,13 @@ TDeepLinkData = t.TypedDict(
     {
         # Required data:
         "deep_link_return_url": str,
-        "accept_types": list[te.Literal["link", "ltiResourceLink"]],
+        "accept_types": list[t.Literal["link", "ltiResourceLink"]],
         "accept_presentation_document_targets": list[
-            te.Literal["iframe", "window", "embed"]
+            t.Literal["iframe", "window", "embed"]
         ],
         # Optional data
-        "accept_multiple": t.Union[bool, te.Literal["true", "false"]],
-        "auto_create": t.Union[bool, te.Literal["true", "false"]],
+        "accept_multiple": t.Union[bool, t.Literal["true", "false"]],
+        "auto_create": t.Union[bool, t.Literal["true", "false"]],
         "title": str,
         "text": str,
         "data": object,

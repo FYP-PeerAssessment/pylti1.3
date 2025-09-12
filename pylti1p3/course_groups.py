@@ -1,5 +1,4 @@
 import typing as t
-import typing_extensions as te
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
@@ -9,7 +8,7 @@ TGroupsServiceData = t.TypedDict(
         # Required data
         "context_groups_url": str,
         "scope": list[
-            te.Literal[
+            t.Literal[
                 "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
             ]
         ],

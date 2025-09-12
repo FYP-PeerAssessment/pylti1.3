@@ -128,13 +128,13 @@ TLaunchData = t.TypedDict(
         "iss": str,
         "nonce": str,
         "aud": t.Union[list[str], str],
-        "https://purl.imsglobal.org/spec/lti/claim/message_type": te.Literal[
+        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Literal[
             "LtiResourceLinkRequest",
             "LtiDeepLinkingRequest",
             "DataPrivacyLaunchRequest",
             "LtiSubmissionReviewRequest",
         ],
-        "https://purl.imsglobal.org/spec/lti/claim/version": te.Literal["1.3.0"],
+        "https://purl.imsglobal.org/spec/lti/claim/version": t.Literal["1.3.0"],
         "https://purl.imsglobal.org/spec/lti/claim/deployment_id": str,
         "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": str,
         "https://purl.imsglobal.org/spec/lti/claim/resource_link": TResourceLinkClaim,

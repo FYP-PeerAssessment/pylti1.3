@@ -15,7 +15,7 @@ TMember = t.TypedDict(
     "TMember",
     {
         "name": str,
-        "status": te.Literal["Active", "Inactive", "Deleted"],
+        "status": t.Literal["Active", "Inactive", "Deleted"],
         "picture": str,
         "given_name": str,
         "family_name": str,
