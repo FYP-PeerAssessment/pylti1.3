@@ -225,14 +225,15 @@ class ToolConfDict(t.Generic[RequestT], ToolConfAbstract[RequestT]):
             for subitem in config_iss:
                 # pylint: disable=too-many-boolean-expressions
                 if (
-                    (client_id and subitem["client_id"] == client_id)
-                    or (not client_id and subitem.get("default", False))
-                    or (not client_id and items_len == 1)
+                    (client_id and subitem.get("client_id") == client_id)  # Exact match
+                    or (not client_id and subitem.get("default", False))  # Default match
+                    or (not client_id and items_len == 1)  # Only one item
                 ):
                     return subitem
             raise Exception(f"iss {iss} [client_id={client_id}] not found in settings")
         return config_iss
 
+    @t.override
     def get_jwks(
         self, iss: str | None = None, client_id: str | None = None, **kwargs
     ):
