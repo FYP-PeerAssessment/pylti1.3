@@ -1,4 +1,4 @@
-import typing as t
+from collections import abc
 from .lineitem import LineItem
 
 
@@ -7,7 +7,7 @@ class DeepLinkResource:
     _title: str | None = None
     _url: str | None = None
     _lineitem: LineItem | None = None
-    _custom_params: t.Mapping[str, str] = {}
+    _custom_params: abc.Mapping[str, str] = {}
     _target: str = "iframe"
     _icon_url: str | None = None
 
@@ -39,10 +39,10 @@ class DeepLinkResource:
         self._lineitem = value
         return self
 
-    def get_custom_params(self) -> t.Mapping[str, str]:
+    def get_custom_params(self) -> abc.Mapping[str, str]:
         return self._custom_params
 
-    def set_custom_params(self, value: t.Mapping[str, str]) -> "DeepLinkResource":
+    def set_custom_params(self, value: abc.Mapping[str, str]) -> "DeepLinkResource":
         self._custom_params = value
         return self
 

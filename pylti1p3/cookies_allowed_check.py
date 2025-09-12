@@ -1,10 +1,10 @@
 from html import escape  # type: ignore
 import json
-import typing as t
+from collections import abc
 
 
 class CookiesAllowedCheckPage:
-    _params: t.Mapping[str, str] = {}
+    _params: abc.Mapping[str, str] = {}
     _protocol: str = "http"
     _main_text: str = ""
     _click_text: str = ""
@@ -12,7 +12,7 @@ class CookiesAllowedCheckPage:
 
     def __init__(
         self,
-        params: t.Mapping[str, str],
+        params: abc.Mapping[str, str],
         protocol: str,
         main_text: str,
         click_text: str,

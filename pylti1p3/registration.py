@@ -1,6 +1,7 @@
 import json
 import typing as t
 import typing_extensions as te
+from collections import abc
 from jwcrypto.jwk import JWK  # type: ignore
 
 
@@ -83,14 +84,14 @@ class Registration:
         return self
 
     @classmethod
-    def get_jwk(cls, public_key: str) -> t.Mapping[str, t.Any]:
+    def get_jwk(cls, public_key: str) -> abc.Mapping[str, t.Any]:
         jwk_obj = JWK.from_pem(public_key.encode("utf-8"))
         public_jwk = json.loads(jwk_obj.export_public())
         public_jwk["alg"] = "RS256"
         public_jwk["use"] = "sig"
         return public_jwk
 
-    def get_jwks(self) -> list[t.Mapping[str, t.Any]]:
+    def get_jwks(self) -> list[abc.Mapping[str, t.Any]]:
         keys = []
         public_key = self.get_tool_public_key()
         if public_key:

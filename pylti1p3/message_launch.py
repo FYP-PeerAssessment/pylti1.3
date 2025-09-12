@@ -1,4 +1,5 @@
 import base64
+import collections.abc
 import hashlib
 import json
 import typing as t
@@ -146,7 +147,7 @@ TLaunchData = te.TypedDict(
         "email": str,
         "https://purl.imsglobal.org/spec/lti/claim/context": TContextClaim,
         "https://purl.imsglobal.org/spec/lti/claim/lis": TLearningInformationServicesClaim,
-        "https://purl.imsglobal.org/spec/lti/claim/custom": t.Mapping[str, str],
+        "https://purl.imsglobal.org/spec/lti/claim/custom": collections.abc.Mapping[str, str],
         "https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings": TDeepLinkData,
         "https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice": TGroupsServiceData,
         "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice": TNamesAndRolesData,

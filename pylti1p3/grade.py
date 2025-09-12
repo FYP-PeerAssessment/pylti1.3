@@ -1,9 +1,10 @@
 import json
 import typing as t
+from collections import abc
 from .exception import LtiException
 
 
-TExtaClaims = t.Mapping[str, t.Any]
+TExtaClaims = abc.Mapping[str, t.Any]
 
 
 class Grade:
