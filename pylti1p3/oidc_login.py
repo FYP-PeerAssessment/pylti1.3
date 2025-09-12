@@ -220,7 +220,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
         self._cookies_check = False
         return self
 
-    def get_additional_login_params(self) -> t.List[str]:
+    def get_additional_login_params(self) -> list[str]:
         """
         You may add additional custom params in your own OIDCLogin class
         :return: list

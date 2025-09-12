@@ -14,7 +14,7 @@ TServiceConnectorResponse = te.TypedDict(
     "TServiceConnectorResponse",
     {
         "headers": t.Union[t.Dict[str, str], t.MutableMapping[str, str]],
-        "body": t.Union[None, int, float, t.List[object], t.Dict[str, object], str],
+        "body": t.Union[None, int, float, list[object], t.Dict[str, object], str],
         "next_page_url": str | None,
     },
 )

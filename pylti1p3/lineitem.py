@@ -170,7 +170,7 @@ class LineItem:
 
     def set_submission_review(
         self,
-        reviewable_status: t.List,
+        reviewable_status: list,
         label: str | None = None,
         url: str | None = None,
         custom: t.Dict[str, str] | None = None,

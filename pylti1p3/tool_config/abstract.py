@@ -103,7 +103,7 @@ class ToolConfAbstract(t.Generic[REQ]):
     def get_jwks(
         self, iss: str | None = None, client_id: str | None = None, **kwargs
     ):
-        keys: t.List[t.Mapping[str, t.Any]] = []
+        keys: list[t.Mapping[str, t.Any]] = []
         if iss:
             if self.check_iss_has_one_client(iss):
                 reg = self.find_registration(iss)

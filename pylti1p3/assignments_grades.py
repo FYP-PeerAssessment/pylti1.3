@@ -10,7 +10,7 @@ from .service_connector import ServiceConnector, TServiceConnectorResponse
 TAssignmentsGradersData = te.TypedDict(
     "TAssignmentsGradersData",
     {
-        "scope": t.List[
+        "scope": list[
             te.Literal[
                 "https://purl.imsglobal.org/spec/lti-ags/scope/score",
                 "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",

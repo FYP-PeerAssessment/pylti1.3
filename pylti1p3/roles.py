@@ -13,7 +13,7 @@ class AbstractRole:
     __metaclass__ = ABCMeta
     _base_prefix: str = "http://purl.imsglobal.org/vocab/lis/v2"
     _role_types = [RoleType.SYSTEM, RoleType.INSTITUTION, RoleType.CONTEXT]
-    _jwt_roles: t.List[str] = []
+    _jwt_roles: list[str] = []
     _common_roles: t.Tuple | None = None
     _system_roles: t.Tuple | None = None
     _institution_roles: t.Tuple | None = None

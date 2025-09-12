@@ -8,12 +8,12 @@ TGroupsServiceData = te.TypedDict(
     {
         # Required data
         "context_groups_url": str,
-        "scope": t.List[
+        "scope": list[
             te.Literal[
                 "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
             ]
         ],
-        "service_versions": t.List[str],
+        "service_versions": list[str],
         # Optional data
         "context_group_sets_url": str,
     },
@@ -40,7 +40,7 @@ TSet = te.TypedDict(
         "id": t.Union[str, int],
         "name": str,
         # Optional data
-        "groups": t.List[TGroup],
+        "groups": list[TGroup],
     },
     total=False,
 )

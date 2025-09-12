@@ -12,8 +12,8 @@ TDeepLinkData = te.TypedDict(
     {
         # Required data:
         "deep_link_return_url": str,
-        "accept_types": t.List[te.Literal["link", "ltiResourceLink"]],
-        "accept_presentation_document_targets": t.List[
+        "accept_types": list[te.Literal["link", "ltiResourceLink"]],
+        "accept_presentation_document_targets": list[
             te.Literal["iframe", "window", "embed"]
         ],
         # Optional data
@@ -95,6 +95,6 @@ class DeepLink:
         )
         return html
 
-    def output_response_form(self, resources: t.List[DeepLinkResource]) -> str:
+    def output_response_form(self, resources: list[DeepLinkResource]) -> str:
         jwt_val = self.get_response_jwt(resources)
         return self.get_response_form_html(jwt_val)

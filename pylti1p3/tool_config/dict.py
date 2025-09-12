@@ -15,14 +15,14 @@ TIssConf = te.TypedDict(
         "auth_audience": str | None,
         "key_set_url": str | None,
         "key_set": TKeySet | None,
-        "deployment_ids": t.List[str],
+        "deployment_ids": list[str],
         "private_key_file": str | None,
         "public_key_file": str | None,
     },
     total=False,
 )
 
-TJsonData = t.Dict[str, t.Union[t.List[TIssConf], TIssConf]]
+TJsonData = t.Dict[str, t.Union[list[TIssConf], TIssConf]]
 
 
 class ToolConfDict(ToolConfAbstract[Request]):

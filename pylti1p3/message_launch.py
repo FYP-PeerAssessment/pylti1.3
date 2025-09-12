@@ -59,7 +59,7 @@ TContextClaim = te.TypedDict(
         # Optional data
         "label": str,
         "title": str,
-        "type": t.List[str],
+        "type": list[str],
     },
     total=False,
 )
@@ -116,7 +116,7 @@ TForUserClaim = te.TypedDict(
         "family_name": str,
         "name": str,
         "email": str,
-        "roles": t.List[str],
+        "roles": list[str],
     },
 )
 
@@ -126,7 +126,7 @@ TLaunchData = te.TypedDict(
         # Required data
         "iss": str,
         "nonce": str,
-        "aud": t.Union[t.List[str], str],
+        "aud": t.Union[list[str], str],
         "https://purl.imsglobal.org/spec/lti/claim/message_type": te.Literal[
             "LtiResourceLinkRequest",
             "LtiDeepLinkingRequest",
@@ -137,7 +137,7 @@ TLaunchData = te.TypedDict(
         "https://purl.imsglobal.org/spec/lti/claim/deployment_id": str,
         "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": str,
         "https://purl.imsglobal.org/spec/lti/claim/resource_link": TResourceLinkClaim,
-        "https://purl.imsglobal.org/spec/lti/claim/roles": t.List[str],
+        "https://purl.imsglobal.org/spec/lti/claim/roles": list[str],
         "sub": str,
         # Optional data
         "given_name": str,
@@ -152,7 +152,7 @@ TLaunchData = te.TypedDict(
         "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice": TNamesAndRolesData,
         "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint": TAssignmentsGradersData,
         "https://purl.imsglobal.org/spec/lti/claim/tool_platform": TToolPlatformClaim,
-        "https://purl.imsglobal.org/spec/lti/claim/role_scope_mentor": t.List[str],
+        "https://purl.imsglobal.org/spec/lti/claim/role_scope_mentor": list[str],
         "https://purl.imsglobal.org/spec/lti/claim/lti1p1": TMigrationClaim,
         "https://purl.imsglobal.org/spec/lti/claim/for_user": TForUserClaim,
     },

@@ -23,8 +23,8 @@ TMember = te.TypedDict(
         "email": str,
         "user_id": str,
         "lis_person_sourcedid": str,
-        "roles": t.List[str],
-        "message": t.Union[t.List[t.Dict[str, object]], t.Dict[str, object]],
+        "roles": list[str],
+        "message": t.Union[list[t.Dict[str, object]], t.Dict[str, object]],
         "lti11_legacy_user_id": str | None,
     },
     total=False,
@@ -56,7 +56,7 @@ class NamesRolesProvisioningService:
 
     def get_members_page(
         self, members_url: str | None = None
-    ) -> t.Tuple[t.List[TMember], str | None]:
+    ) -> t.Tuple[list[TMember], str | None]:
         """
         Get one page with the users.
 
@@ -67,14 +67,14 @@ class NamesRolesProvisioningService:
         data_body = t.cast(t.Any, data.get("body", {}))
         return data_body.get("members", []), data["next_page_url"]
 
-    def get_members(self, resource_link_id: str | None = None) -> t.List[TMember]:
+    def get_members(self, resource_link_id: str | None = None) -> list[TMember]:
         """
         Get list with all users.
 
         :param resource_link_id: resource link id (optional)
         :return: list
         """
-        members_res_lst: t.List[TMember] = []
+        members_res_lst: list[TMember] = []
         members_url: str | None = self._service_data["context_memberships_url"]
 
         if members_url and resource_link_id:

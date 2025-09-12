@@ -5,7 +5,7 @@ from jwcrypto.jwk import JWK  # type: ignore
 
 
 TKey = te.TypedDict("TKey", {"kid": str, "alg": str}, total=True)
-TKeySet = te.TypedDict("TKeySet", {"keys": t.List[TKey]}, total=True)
+TKeySet = te.TypedDict("TKeySet", {"keys": list[TKey]}, total=True)
 
 
 class Registration:
@@ -90,7 +90,7 @@ class Registration:
         public_jwk["use"] = "sig"
         return public_jwk
 
-    def get_jwks(self) -> t.List[t.Mapping[str, t.Any]]:
+    def get_jwks(self) -> list[t.Mapping[str, t.Any]]:
         keys = []
         public_key = self.get_tool_public_key()
         if public_key:
