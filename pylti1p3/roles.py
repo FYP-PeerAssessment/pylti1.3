@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABC
 from enum import StrEnum
 import typing as t
 
@@ -9,8 +9,7 @@ class RoleType(StrEnum):
     CONTEXT = "membership"
 
 
-class AbstractRole:
-    __metaclass__ = ABCMeta
+class AbstractRole(ABC):
     _base_prefix: str = "http://purl.imsglobal.org/vocab/lis/v2"
     _role_types = [RoleType.SYSTEM, RoleType.INSTITUTION, RoleType.CONTEXT]
     _jwt_roles: list[str] = []

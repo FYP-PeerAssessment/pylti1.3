@@ -1,9 +1,7 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 
-class Request:
-    __metaclass__ = ABCMeta
-
+class Request(ABC):
     @property
     def session(self):
         raise NotImplementedError

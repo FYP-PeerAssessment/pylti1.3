@@ -1,12 +1,11 @@
 import typing as t
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from ..request import Request
 
 T = t.TypeVar("T")
 
 
-class LaunchDataStorage(t.Generic[T]):
-    __metaclass__ = ABCMeta
+class LaunchDataStorage(t.Generic[T], ABC):
     _request: Request | None = None
     _session_id: str | None = None
     _session_cookie_name: str = "session-id"

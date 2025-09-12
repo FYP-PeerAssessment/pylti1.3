@@ -1,12 +1,10 @@
 import typing as t
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 T = t.TypeVar("T")
 
 
-class Redirect(t.Generic[T]):
-    __metaclass__ = ABCMeta
-
+class Redirect(t.Generic[T], ABC):
     @abstractmethod
     def do_redirect(self) -> T:
         raise NotImplementedError

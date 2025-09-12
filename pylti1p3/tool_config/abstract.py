@@ -1,7 +1,7 @@
 from enum import StrEnum
 import typing as t
 import collections.abc
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from ..deployment import Deployment
 from ..registration import Registration
 from ..request import Request
@@ -15,8 +15,7 @@ class IssuerToClientRelation(StrEnum):
     MANY_CLIENTS_IDS_PER_ISSUER = "one-issuer-many-client-ids"
 
 
-class ToolConfAbstract(t.Generic[RequestT]):
-    __metaclass__ = ABCMeta
+class ToolConfAbstract(t.Generic[RequestT], ABC):
     issuers_relation_types: collections.abc.MutableMapping[str, IssuerToClientRelation] = {}
 
     def check_iss_has_one_client(self, iss: str) -> bool:

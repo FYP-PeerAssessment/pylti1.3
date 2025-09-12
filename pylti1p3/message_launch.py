@@ -4,7 +4,7 @@ import hashlib
 import json
 import typing as t
 import uuid
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 import jwt  # type: ignore
 import requests
@@ -183,8 +183,7 @@ SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
 CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
-class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT]):
-    __metaclass__ = ABCMeta
+class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT], ABC):
     _request: RequestT
     _tool_config: ToolConfT
     _session_service: SessionServiceT

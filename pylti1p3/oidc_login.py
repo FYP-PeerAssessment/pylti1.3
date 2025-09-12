@@ -1,6 +1,6 @@
 import typing as t
 import uuid
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from urllib.parse import urlencode
 
 from .actions import Action
@@ -22,8 +22,7 @@ SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
 CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
-class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, RedirectT]):
-    __metaclass__ = ABCMeta
+class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, RedirectT], ABC):
     _request: RequestT
     _tool_config: ToolConfT
     _session_service: SessionServiceT

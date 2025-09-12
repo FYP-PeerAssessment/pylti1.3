@@ -1,8 +1,7 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
 
-class CookieService:
-    __metaclass__ = ABCMeta
+class CookieService(ABC):
     _cookie_prefix: str = "lti1p3"
 
     @abstractmethod
