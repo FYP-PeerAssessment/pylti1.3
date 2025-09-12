@@ -24,7 +24,7 @@ TMember = te.TypedDict(
         "user_id": str,
         "lis_person_sourcedid": str,
         "roles": list[str],
-        "message": t.Union[list[t.Dict[str, object]], t.Dict[str, object]],
+        "message": t.Union[list[dict[str, object]], dict[str, object]],
         "lti11_legacy_user_id": str | None,
     },
     total=False,

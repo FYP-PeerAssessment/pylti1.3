@@ -39,7 +39,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
     _cookies_unavailable_msg_click_text: str = (
         "Click here to open content in the new tab."
     )
-    _state_params: t.Dict[str, object] = {}
+    _state_params: dict[str, object] = {}
 
     def __init__(
         self,
@@ -192,7 +192,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
         return registration
 
-    def pass_params_to_launch(self, params: t.Dict[str, object]) -> t.Self:
+    def pass_params_to_launch(self, params: dict[str, object]) -> t.Self:
         """
         Ability to pass custom params from oidc login to launch.
         """

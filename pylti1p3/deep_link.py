@@ -47,7 +47,7 @@ class DeepLink:
 
     def get_message_jwt(
         self, resources: t.Sequence[DeepLinkResource]
-    ) -> t.Dict[str, object]:
+    ) -> dict[str, object]:
         message_jwt = {
             "iss": self._registration.get_client_id(),
             "aud": [self._registration.get_issuer()],

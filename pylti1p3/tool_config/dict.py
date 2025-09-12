@@ -22,15 +22,15 @@ TIssConf = te.TypedDict(
     total=False,
 )
 
-TJsonData = t.Dict[str, t.Union[list[TIssConf], TIssConf]]
+TJsonData = dict[str, t.Union[list[TIssConf], TIssConf]]
 
 
 class ToolConfDict(ToolConfAbstract[Request]):
     _config = None
-    _private_key_one_client: t.Dict[str, str]
-    _public_key_one_client: t.Dict[str, str]
-    _private_key_many_clients: t.Dict[str, t.Dict[str, str]]
-    _public_key_many_clients: t.Dict[str, t.Dict[str, str]]
+    _private_key_one_client: dict[str, str]
+    _public_key_one_client: dict[str, str]
+    _private_key_many_clients: dict[str, dict[str, str]]
+    _public_key_many_clients: dict[str, dict[str, str]]
 
     def __init__(self, json_data: TJsonData):
         """

@@ -60,15 +60,15 @@ class DeepLinkResource:
         self._icon_url = value
         return self
 
-    def to_dict(self) -> t.Dict[str, object]:
-        res: t.Dict[str, object] = {
+    def to_dict(self) -> dict[str, object]:
+        res: dict[str, object] = {
             "type": self._type,
             "title": self._title,
             "url": self._url,
             "custom": self._custom_params,
         }
         if self._lineitem:
-            line_item: t.Dict[str, object] = {
+            line_item: dict[str, object] = {
                 "scoreMaximum": self._lineitem.get_score_maximum(),
             }
 

@@ -13,8 +13,8 @@ from .registration import Registration
 TServiceConnectorResponse = te.TypedDict(
     "TServiceConnectorResponse",
     {
-        "headers": t.Union[t.Dict[str, str], t.MutableMapping[str, str]],
-        "body": t.Union[None, int, float, list[object], t.Dict[str, object], str],
+        "headers": t.Union[dict[str, str], t.MutableMapping[str, str]],
+        "body": t.Union[None, int, float, list[object], dict[str, object], str],
         "next_page_url": str | None,
     },
 )
@@ -25,7 +25,7 @@ REQUESTS_USER_AGENT = "PyLTI1p3-client"
 
 class ServiceConnector:
     _registration: Registration
-    _access_tokens: t.Dict[str, str]
+    _access_tokens: dict[str, str]
 
     def __init__(
         self,
@@ -59,7 +59,7 @@ class ServiceConnector:
         auth_audience = self._registration.get_auth_audience()
         aud = auth_audience if auth_audience else auth_url
 
-        jwt_claim: t.Dict[str, t.Union[str, int]] = {
+        jwt_claim: dict[str, t.Union[str, int]] = {
             "iss": str(client_id),
             "sub": str(client_id),
             "aud": str(aud),
@@ -95,9 +95,9 @@ class ServiceConnector:
 
     def encode_jwt(
         self,
-        message: t.Dict[str, t.Union[str, int]],
+        message: dict[str, t.Union[str, int]],
         private_key: str,
-        headers: t.Dict[str, str],
+        headers: dict[str, str],
     ) -> str:
         jwt_val = jwt.encode(message, private_key, algorithm="RS256", headers=headers)
         if isinstance(jwt_val, bytes):

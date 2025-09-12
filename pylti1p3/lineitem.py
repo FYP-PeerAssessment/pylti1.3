@@ -12,7 +12,7 @@ TSubmissionReview = te.TypedDict(
         # Optional data
         "label": str,
         "url": str,
-        "custom": t.Dict[str, str],
+        "custom": dict[str, str],
     },
     total=False,
 )
@@ -173,7 +173,7 @@ class LineItem:
         reviewable_status: list,
         label: str | None = None,
         url: str | None = None,
-        custom: t.Dict[str, str] | None = None,
+        custom: dict[str, str] | None = None,
     ) -> "LineItem":
         if not isinstance(reviewable_status, list):
             raise Exception('Invalid "reviewable_status" argument')

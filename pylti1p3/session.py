@@ -4,7 +4,7 @@ from .request import Request
 from .launch_data_storage.base import LaunchDataStorage
 
 
-TStateParams = t.Dict[str, object]
+TStateParams = dict[str, object]
 TJwtBody = t.Mapping[str, t.Any]
 
 

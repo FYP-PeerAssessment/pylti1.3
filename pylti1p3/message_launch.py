@@ -190,7 +190,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
     _session_service: SessionServiceT
     _cookie_service: CookieServiceT
     _jwt: TJwtData
-    _jwt_verify_options: t.Dict[str, bool]
+    _jwt_verify_options: dict[str, bool]
     _registration: Registration | None
     _launch_id: str
     _validated: bool = False
@@ -251,7 +251,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         self._jwt = val
         return self
 
-    def set_jwt_verify_options(self, val: t.Dict[str, bool]) -> "MessageLaunch":
+    def set_jwt_verify_options(self, val: dict[str, bool]) -> "MessageLaunch":
         self._jwt_verify_options = val
         return self
 
