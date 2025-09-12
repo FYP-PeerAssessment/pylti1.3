@@ -78,7 +78,7 @@ class ToolConfAbstract(t.Generic[REQ]):
         raise NotImplementedError
 
     @abstractmethod
-    def find_deployment(self, iss: str, deployment_id: str) -> t.Optional[Deployment]:
+    def find_deployment(self, iss: str, deployment_id: str) -> Deployment | None:
         """
         Find deployment in case if iss has only one client id, i.e
         in case of { ... "iss": { ... "client_id: "client" ... }, ... } config.
@@ -90,7 +90,7 @@ class ToolConfAbstract(t.Generic[REQ]):
     @abstractmethod
     def find_deployment_by_params(
         self, iss: str, deployment_id: str, client_id: str, *args, **kwargs
-    ) -> t.Optional[Deployment]:
+    ) -> Deployment | None:
         """
         Find deployment in case if iss has many client ids, i.e
         in case of { ... "iss": [ { ... "client_id: "client1" ... }, { ... "client_id: "client2" ... } ], ... } config.
@@ -101,7 +101,7 @@ class ToolConfAbstract(t.Generic[REQ]):
         raise NotImplementedError
 
     def get_jwks(
-        self, iss: t.Optional[str] = None, client_id: t.Optional[str] = None, **kwargs
+        self, iss: str | None = None, client_id: str | None = None, **kwargs
     ):
         keys: t.List[t.Mapping[str, t.Any]] = []
         if iss:

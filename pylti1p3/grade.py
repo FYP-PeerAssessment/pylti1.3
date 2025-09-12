@@ -7,23 +7,23 @@ TExtaClaims = t.Mapping[str, t.Any]
 
 
 class Grade:
-    _score_given: t.Optional[float] = None
-    _score_maximum: t.Optional[float] = None
-    _activity_progress: t.Optional[str] = None
-    _grading_progress: t.Optional[str] = None
-    _timestamp: t.Optional[str] = None
-    _user_id: t.Optional[str] = None
-    _comment: t.Optional[str] = None
-    _extra_claims: t.Optional[TExtaClaims] = None
+    _score_given: float | None = None
+    _score_maximum: float | None = None
+    _activity_progress: str | None = None
+    _grading_progress: str | None = None
+    _timestamp: str | None = None
+    _user_id: str | None = None
+    _comment: str | None = None
+    _extra_claims: TExtaClaims | None = None
 
-    def _validate_score(self, score_value) -> t.Optional[str]:
+    def _validate_score(self, score_value) -> str | None:
         if not isinstance(score_value, (int, float)):
             return "score must be integer or float"
         if score_value < 0:
             return "score must be positive number (including 0)"
         return None
 
-    def get_score_given(self) -> t.Optional[float]:
+    def get_score_given(self) -> float | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#scoregiven-and-scoremaximum
         """
@@ -39,7 +39,7 @@ class Grade:
         self._score_given = value
         return self
 
-    def get_score_maximum(self) -> t.Optional[float]:
+    def get_score_maximum(self) -> float | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#scoregiven-and-scoremaximum
         """
@@ -55,7 +55,7 @@ class Grade:
         self._score_maximum = value
         return self
 
-    def get_activity_progress(self) -> t.Optional[str]:
+    def get_activity_progress(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#activityprogress
         """
@@ -68,7 +68,7 @@ class Grade:
         self._activity_progress = value
         return self
 
-    def get_grading_progress(self) -> t.Optional[str]:
+    def get_grading_progress(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#gradingprogress
         """
@@ -81,7 +81,7 @@ class Grade:
         self._grading_progress = value
         return self
 
-    def get_timestamp(self) -> t.Optional[str]:
+    def get_timestamp(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#timestamp
         """
@@ -94,7 +94,7 @@ class Grade:
         self._timestamp = value
         return self
 
-    def get_user_id(self) -> t.Optional[str]:
+    def get_user_id(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#userid-0
         """
@@ -107,7 +107,7 @@ class Grade:
         self._user_id = value
         return self
 
-    def get_comment(self) -> t.Optional[str]:
+    def get_comment(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#comment-0
         """
@@ -124,7 +124,7 @@ class Grade:
         self._extra_claims = value
         return self
 
-    def get_extra_claims(self) -> t.Optional[TExtaClaims]:
+    def get_extra_claims(self) -> TExtaClaims | None:
         return self._extra_claims
 
     def get_value(self) -> str:

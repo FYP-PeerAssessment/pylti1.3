@@ -79,7 +79,7 @@ class ToolConfJsonFile(ToolConfDict):
                 self._process_iss_conf_item(t.cast(TIssConf, iss_conf_dict[iss]), iss)
 
     def _process_iss_conf_item(
-        self, iss_conf: TIssConf, iss: str, client_id: t.Optional[str] = None
+        self, iss_conf: TIssConf, iss: str, client_id: str | None = None
     ):
         private_key_file = iss_conf.get("private_key_file")
         if not private_key_file:

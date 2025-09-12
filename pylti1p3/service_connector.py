@@ -15,7 +15,7 @@ TServiceConnectorResponse = te.TypedDict(
     {
         "headers": t.Union[t.Dict[str, str], t.MutableMapping[str, str]],
         "body": t.Union[None, int, float, t.List[object], t.Dict[str, object], str],
-        "next_page_url": t.Optional[str],
+        "next_page_url": str | None,
     },
 )
 
@@ -30,7 +30,7 @@ class ServiceConnector:
     def __init__(
         self,
         registration: Registration,
-        requests_session: t.Optional[requests.Session] = None,
+        requests_session: requests.Session | None = None,
     ):
         self._registration = registration
         self._access_tokens = {}
@@ -109,7 +109,7 @@ class ServiceConnector:
         scopes: t.Sequence[str],
         url: str,
         is_post: bool = False,
-        data: t.Optional[str] = None,
+        data: str | None = None,
         content_type: str = "application/json",
         accept: str = "application/json",
         case_insensitive_headers: bool = False,

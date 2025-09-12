@@ -18,7 +18,7 @@ class SessionService:
         self.data_storage.set_request(request)
 
     def _get_key(
-        self, key: str, nonce: t.Optional[str] = None, add_prefix: bool = True
+        self, key: str, nonce: str | None = None, add_prefix: bool = True
     ):
         return (
             ((self._session_prefix + "-") if add_prefix else "")

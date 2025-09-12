@@ -8,7 +8,7 @@ T = t.TypeVar("T")
 class CacheDataStorage(LaunchDataStorage[T], t.Generic[T]):
     _cache = None
 
-    def get_session_cookie_name(self) -> t.Optional[str]:
+    def get_session_cookie_name(self) -> str | None:
         """
         Workaround for the local non-HTTP usage.
         There is odd situation that all cookies become unavailable from some time
@@ -31,7 +31,7 @@ class CacheDataStorage(LaunchDataStorage[T], t.Generic[T]):
         key = self._prepare_key(key)
         return self._get_cache().get(key)
 
-    def set_value(self, key: str, value: T, exp: t.Optional[int] = None) -> None:
+    def set_value(self, key: str, value: T, exp: int | None = None) -> None:
         key = self._prepare_key(key)
         self._get_cache().set(key, value, exp)
 

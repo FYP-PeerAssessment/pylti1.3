@@ -12,12 +12,12 @@ TIssConf = te.TypedDict(
         "client_id": str,
         "auth_login_url": str,
         "auth_token_url": str,
-        "auth_audience": t.Optional[str],
-        "key_set_url": t.Optional[str],
-        "key_set": t.Optional[TKeySet],
+        "auth_audience": str | None,
+        "key_set_url": str | None,
+        "key_set": TKeySet | None,
         "deployment_ids": t.List[str],
-        "private_key_file": t.Optional[str],
-        "public_key_file": t.Optional[str],
+        "private_key_file": str | None,
+        "public_key_file": str | None,
     },
     total=False,
 )
@@ -171,7 +171,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
         return self._get_deployment(iss_conf, deployment_id)
 
     def set_public_key(
-        self, iss: str, key_content: str, client_id: t.Optional[str] = None
+        self, iss: str, key_content: str, client_id: str | None = None
     ):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
@@ -182,7 +182,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
         else:
             self._public_key_one_client[iss] = key_content
 
-    def get_public_key(self, iss: str, client_id: t.Optional[str] = None):
+    def get_public_key(self, iss: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
                 raise Exception("Can't get public key: missing client_id")
@@ -193,7 +193,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
         return self._public_key_one_client.get(iss)
 
     def set_private_key(
-        self, iss: str, key_content: str, client_id: t.Optional[str] = None
+        self, iss: str, key_content: str, client_id: str | None = None
     ):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
@@ -204,7 +204,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
         else:
             self._private_key_one_client[iss] = key_content
 
-    def get_private_key(self, iss: str, client_id: t.Optional[str] = None):
+    def get_private_key(self, iss: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
                 raise Exception("Can't get private key: missing client_id")
@@ -214,7 +214,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
             return clients_dict.get(client_id)
         return self._private_key_one_client.get(iss)
 
-    def get_iss_config(self, iss: str, client_id: t.Optional[str] = None):
+    def get_iss_config(self, iss: str, client_id: str | None = None):
         if not self._config:
             raise Exception("Config is not set")
         if iss not in self._config:
@@ -235,7 +235,7 @@ class ToolConfDict(ToolConfAbstract[Request]):
         return config_iss
 
     def get_jwks(
-        self, iss: t.Optional[str] = None, client_id: t.Optional[str] = None, **kwargs
+        self, iss: str | None = None, client_id: str | None = None, **kwargs
     ):
         # pylint: disable=unused-argument
         if iss or client_id:

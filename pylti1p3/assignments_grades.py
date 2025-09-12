@@ -62,7 +62,7 @@ class AssignmentsGradesService:
         )
 
     def put_grade(
-        self, grade: Grade, lineitem: t.Optional[LineItem] = None
+        self, grade: Grade, lineitem: LineItem | None = None
     ) -> TServiceConnectorResponse:
         """
         Send grade to the LTI platform.
@@ -94,7 +94,7 @@ class AssignmentsGradesService:
             content_type="application/vnd.ims.lis.v1.score+json",
         )
 
-    def get_lineitem(self, lineitem_url: t.Optional[str] = None):
+    def get_lineitem(self, lineitem_url: str | None = None):
         """
         Retrieves an individual lineitem. By default retrieves the lineitem
         associated with the LTI message.
@@ -116,8 +116,8 @@ class AssignmentsGradesService:
         return LineItem(t.cast(TLineItem, lineitem_response["body"]))
 
     def get_lineitems_page(
-        self, lineitems_url: t.Optional[str] = None
-    ) -> t.Tuple[list, t.Optional[str]]:
+        self, lineitems_url: str | None = None
+    ) -> t.Tuple[list, str | None]:
         """
         Get one page with line items.
 
@@ -146,7 +146,7 @@ class AssignmentsGradesService:
         :return: list
         """
         lineitems_res_lst = []
-        lineitems_url: t.Optional[str] = self._service_data["lineitems"]
+        lineitems_url: str | None = self._service_data["lineitems"]
 
         while lineitems_url:
             lineitems, lineitems_url = self.get_lineitems_page(lineitems_url)
@@ -154,7 +154,7 @@ class AssignmentsGradesService:
 
         return lineitems_res_lst
 
-    def find_lineitem(self, prop_name: str, prop_value: t.Any) -> t.Optional[LineItem]:
+    def find_lineitem(self, prop_name: str, prop_value: t.Any) -> LineItem | None:
         """
         Find line item by some property (ID/Tag).
 
@@ -162,7 +162,7 @@ class AssignmentsGradesService:
         :param prop_value: property value
         :return: LineItem instance or None
         """
-        lineitems_url: t.Optional[str] = self._service_data["lineitems"]
+        lineitems_url: str | None = self._service_data["lineitems"]
 
         while lineitems_url:
             lineitems, lineitems_url = self.get_lineitems_page(lineitems_url)
@@ -172,7 +172,7 @@ class AssignmentsGradesService:
                     return LineItem(lineitem)
         return None
 
-    def find_lineitem_by_id(self, ln_id: str) -> t.Optional[LineItem]:
+    def find_lineitem_by_id(self, ln_id: str) -> LineItem | None:
         """
         Find line item by ID.
 
@@ -181,7 +181,7 @@ class AssignmentsGradesService:
         """
         return self.find_lineitem("id", ln_id)
 
-    def find_lineitem_by_tag(self, tag: str) -> t.Optional[LineItem]:
+    def find_lineitem_by_tag(self, tag: str) -> LineItem | None:
         """
         Find line item by Tag.
 
@@ -192,7 +192,7 @@ class AssignmentsGradesService:
 
     def find_lineitem_by_resource_link_id(
         self, resource_link_id: str
-    ) -> t.Optional[LineItem]:
+    ) -> LineItem | None:
         """
         Find line item by Resource LinkID.
 
@@ -201,7 +201,7 @@ class AssignmentsGradesService:
         """
         return self.find_lineitem("resourceLinkId", resource_link_id)
 
-    def find_lineitem_by_resource_id(self, resource_id: str) -> t.Optional[LineItem]:
+    def find_lineitem_by_resource_id(self, resource_id: str) -> LineItem | None:
         """
         Find line item by Resource ID.
 
@@ -261,7 +261,7 @@ class AssignmentsGradesService:
             raise LtiException("Unknown response type received for create line item")
         return LineItem(t.cast(TLineItem, created_lineitem["body"]))
 
-    def get_grades(self, lineitem: t.Optional[LineItem] = None) -> list:
+    def get_grades(self, lineitem: LineItem | None = None) -> list:
         """
         Return all grades for the passed line item (across all users enrolled in the line item's context).
 

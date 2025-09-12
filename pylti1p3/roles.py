@@ -14,10 +14,10 @@ class AbstractRole:
     _base_prefix: str = "http://purl.imsglobal.org/vocab/lis/v2"
     _role_types = [RoleType.SYSTEM, RoleType.INSTITUTION, RoleType.CONTEXT]
     _jwt_roles: t.List[str] = []
-    _common_roles: t.Optional[t.Tuple] = None
-    _system_roles: t.Optional[t.Tuple] = None
-    _institution_roles: t.Optional[t.Tuple] = None
-    _context_roles: t.Optional[t.Tuple] = None
+    _common_roles: t.Tuple | None = None
+    _system_roles: t.Tuple | None = None
+    _institution_roles: t.Tuple | None = None
+    _context_roles: t.Tuple | None = None
 
     def __init__(self, jwt_body):
         self._jwt_roles = jwt_body.get(
@@ -56,7 +56,7 @@ class AbstractRole:
             )
         )
 
-    def parse_role_str(self, role_str: str) -> t.Tuple[str, t.Optional[str]]:
+    def parse_role_str(self, role_str: str) -> t.Tuple[str, str | None]:
         if role_str.startswith(self._base_prefix):
             role = role_str[len(self._base_prefix) :]
             role_parts = role.split("/")

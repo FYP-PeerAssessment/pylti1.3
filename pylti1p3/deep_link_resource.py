@@ -4,12 +4,12 @@ from .lineitem import LineItem
 
 class DeepLinkResource:
     _type: str = "ltiResourceLink"
-    _title: t.Optional[str] = None
-    _url: t.Optional[str] = None
-    _lineitem: t.Optional[LineItem] = None
+    _title: str | None = None
+    _url: str | None = None
+    _lineitem: LineItem | None = None
     _custom_params: t.Mapping[str, str] = {}
     _target: str = "iframe"
-    _icon_url: t.Optional[str] = None
+    _icon_url: str | None = None
 
     def get_type(self):
         return self._type
@@ -18,21 +18,21 @@ class DeepLinkResource:
         self._type = value
         return self
 
-    def get_title(self) -> t.Optional[str]:
+    def get_title(self) -> str | None:
         return self._title
 
     def set_title(self, value: str) -> "DeepLinkResource":
         self._title = value
         return self
 
-    def get_url(self) -> t.Optional[str]:
+    def get_url(self) -> str | None:
         return self._url
 
     def set_url(self, value: str) -> "DeepLinkResource":
         self._url = value
         return self
 
-    def get_lineitem(self) -> t.Optional[LineItem]:
+    def get_lineitem(self) -> LineItem | None:
         return self._lineitem
 
     def set_lineitem(self, value: LineItem) -> "DeepLinkResource":
@@ -53,7 +53,7 @@ class DeepLinkResource:
         self._target = value
         return self
 
-    def get_icon_url(self) -> t.Optional[str]:
+    def get_icon_url(self) -> str | None:
         return self._icon_url
 
     def set_icon_url(self, value: str) -> "DeepLinkResource":

@@ -28,7 +28,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
     _tool_config: ToolConfT
     _session_service: SessionServiceT
     _cookie_service: CookieServiceT
-    _launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None
+    _launch_data_storage: LaunchDataStorage[t.Any] | None = None
     _registration: Registration
 
     _cookies_check: bool = False
@@ -47,7 +47,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
         tool_config: ToolConfT,
         session_service: SessionServiceT,
         cookie_service: CookieServiceT,
-        launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
+        launch_data_storage: LaunchDataStorage[t.Any] | None = None,
     ):
         self._request = request
         self._tool_config = tool_config
@@ -62,12 +62,12 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
     def get_response(self, html: str) -> RedirectT:  # pylint: disable=unused-argument
         return ""  # type: ignore
 
-    def get_iss(self) -> t.Optional[str]:
+    def get_iss(self) -> str | None:
         if self._registration:
             return self._registration.get_issuer()
         return None
 
-    def get_client_id(self) -> t.Optional[str]:
+    def get_client_id(self) -> str | None:
         if self._registration:
             return self._registration.get_client_id()
         return None
@@ -201,9 +201,9 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
     def enable_check_cookies(
         self,
-        main_msg: t.Optional[str] = None,
-        click_msg: t.Optional[str] = None,
-        loading_msg: t.Optional[str] = None,
+        main_msg: str | None = None,
+        click_msg: str | None = None,
+        loading_msg: str | None = None,
         **kwargs
     ) -> t.Self:
         # pylint: disable=unused-argument

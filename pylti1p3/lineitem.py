@@ -35,17 +35,17 @@ TLineItem = te.TypedDict(
 
 
 class LineItem:
-    _id: t.Optional[str] = None
-    _score_maximum: t.Optional[float] = None
-    _label: t.Optional[str] = None
-    _resource_id: t.Optional[str] = None
-    _resource_link_id: t.Optional[str] = None
-    _tag: t.Optional[str] = None
-    _start_date_time: t.Optional[str] = None
-    _end_date_time: t.Optional[str] = None
-    _submission_review: t.Optional[TSubmissionReview] = None
+    _id: str | None = None
+    _score_maximum: float | None = None
+    _label: str | None = None
+    _resource_id: str | None = None
+    _resource_link_id: str | None = None
+    _tag: str | None = None
+    _start_date_time: str | None = None
+    _end_date_time: str | None = None
+    _submission_review: TSubmissionReview | None = None
 
-    def __init__(self, lineitem: t.Optional[TLineItem] = None):
+    def __init__(self, lineitem: TLineItem | None = None):
         if not lineitem:
             lineitem = {}
         self._id = lineitem.get("id")
@@ -58,14 +58,14 @@ class LineItem:
         self._end_date_time = lineitem.get("endDateTime")
         self._submission_review = lineitem.get("submissionReview")
 
-    def get_id(self) -> t.Optional[str]:
+    def get_id(self) -> str | None:
         return self._id
 
     def set_id(self, value: str) -> "LineItem":
         self._id = value
         return self
 
-    def get_label(self) -> t.Optional[str]:
+    def get_label(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#label
         """
@@ -78,7 +78,7 @@ class LineItem:
         self._label = value
         return self
 
-    def get_score_maximum(self) -> t.Optional[float]:
+    def get_score_maximum(self) -> float | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#scoremaximum
         """
@@ -100,7 +100,7 @@ class LineItem:
         self._score_maximum = value
         return self
 
-    def get_resource_id(self) -> t.Optional[str]:
+    def get_resource_id(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#tool-resource-identifier-resourceid
         """
@@ -113,7 +113,7 @@ class LineItem:
         self._resource_id = value
         return self
 
-    def get_resource_link_id(self) -> t.Optional[str]:
+    def get_resource_link_id(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0#resourcelinkid-and-binding-a-line-item-to-a-resource-link
         """
@@ -126,7 +126,7 @@ class LineItem:
         self._resource_link_id = value
         return self
 
-    def get_tag(self) -> t.Optional[str]:
+    def get_tag(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#tag
         """
@@ -139,7 +139,7 @@ class LineItem:
         self._tag = value
         return self
 
-    def get_start_date_time(self) -> t.Optional[str]:
+    def get_start_date_time(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#startdatetime
         """
@@ -152,7 +152,7 @@ class LineItem:
         self._start_date_time = value
         return self
 
-    def get_end_date_time(self) -> t.Optional[str]:
+    def get_end_date_time(self) -> str | None:
         """
         https://www.imsglobal.org/spec/lti-ags/v2p0/#enddatetime
         """
@@ -165,15 +165,15 @@ class LineItem:
         self._end_date_time = value
         return self
 
-    def get_submission_review(self) -> t.Optional[TSubmissionReview]:
+    def get_submission_review(self) -> TSubmissionReview | None:
         return self._submission_review
 
     def set_submission_review(
         self,
         reviewable_status: t.List,
-        label: t.Optional[str] = None,
-        url: t.Optional[str] = None,
-        custom: t.Optional[t.Dict[str, str]] = None,
+        label: str | None = None,
+        url: str | None = None,
+        custom: t.Dict[str, str] | None = None,
     ) -> "LineItem":
         if not isinstance(reviewable_status, list):
             raise Exception('Invalid "reviewable_status" argument')

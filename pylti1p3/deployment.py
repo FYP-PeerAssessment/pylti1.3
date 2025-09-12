@@ -3,9 +3,9 @@ import typing as t
 
 class Deployment:
 
-    _deployment_id: t.Optional[str] = None
+    _deployment_id: str | None = None
 
-    def get_deployment_id(self) -> t.Optional[str]:
+    def get_deployment_id(self) -> str | None:
         return self._deployment_id
 
     def set_deployment_id(self, deployment_id: str) -> "Deployment":

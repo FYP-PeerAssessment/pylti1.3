@@ -25,7 +25,7 @@ TMember = te.TypedDict(
         "lis_person_sourcedid": str,
         "roles": t.List[str],
         "message": t.Union[t.List[t.Dict[str, object]], t.Dict[str, object]],
-        "lti11_legacy_user_id": t.Optional[str],
+        "lti11_legacy_user_id": str | None,
     },
     total=False,
 )
@@ -41,7 +41,7 @@ class NamesRolesProvisioningService:
         self._service_connector = service_connector
         self._service_data = service_data
 
-    def get_nrps_data(self, members_url: t.Optional[str] = None):
+    def get_nrps_data(self, members_url: str | None = None):
         if not members_url:
             members_url = self._service_data["context_memberships_url"]
 
@@ -55,8 +55,8 @@ class NamesRolesProvisioningService:
         return data
 
     def get_members_page(
-        self, members_url: t.Optional[str] = None
-    ) -> t.Tuple[t.List[TMember], t.Optional[str]]:
+        self, members_url: str | None = None
+    ) -> t.Tuple[t.List[TMember], str | None]:
         """
         Get one page with the users.
 
@@ -67,7 +67,7 @@ class NamesRolesProvisioningService:
         data_body = t.cast(t.Any, data.get("body", {}))
         return data_body.get("members", []), data["next_page_url"]
 
-    def get_members(self, resource_link_id: t.Optional[str] = None) -> t.List[TMember]:
+    def get_members(self, resource_link_id: str | None = None) -> t.List[TMember]:
         """
         Get list with all users.
 
@@ -75,7 +75,7 @@ class NamesRolesProvisioningService:
         :return: list
         """
         members_res_lst: t.List[TMember] = []
-        members_url: t.Optional[str] = self._service_data["context_memberships_url"]
+        members_url: str | None = self._service_data["context_memberships_url"]
 
         if members_url and resource_link_id:
             members_url = add_param_to_url(members_url, "rlid", resource_link_id)

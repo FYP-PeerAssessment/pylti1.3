@@ -7,8 +7,8 @@ T = t.TypeVar("T")
 
 class LaunchDataStorage(t.Generic[T]):
     __metaclass__ = ABCMeta
-    _request: t.Optional[Request] = None
-    _session_id: t.Optional[str] = None
+    _request: Request | None = None
+    _session_id: str | None = None
     _session_cookie_name: str = "session-id"
     _prefix: str = "lti1p3-"
 
@@ -18,10 +18,10 @@ class LaunchDataStorage(t.Generic[T]):
     def set_request(self, request: Request) -> None:
         self._request = request
 
-    def get_session_cookie_name(self) -> t.Optional[str]:
+    def get_session_cookie_name(self) -> str | None:
         return self._session_cookie_name
 
-    def get_session_id(self) -> t.Optional[str]:
+    def get_session_id(self) -> str | None:
         return self._session_id
 
     def set_session_id(self, session_id: str) -> None:
@@ -48,7 +48,7 @@ class LaunchDataStorage(t.Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def set_value(self, key: str, value: T, exp: t.Optional[int] = None) -> None:
+    def set_value(self, key: str, value: T, exp: int | None = None) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -57,10 +57,10 @@ class LaunchDataStorage(t.Generic[T]):
 
 
 class DisableSessionId:
-    _session_id: t.Optional[str] = None
-    _launch_data_storage: t.Optional[LaunchDataStorage] = None
+    _session_id: str | None = None
+    _launch_data_storage: LaunchDataStorage | None = None
 
-    def __init__(self, launch_data_storage: t.Optional[LaunchDataStorage]) -> None:
+    def __init__(self, launch_data_storage: LaunchDataStorage | None) -> None:
         self._launch_data_storage = launch_data_storage
         if launch_data_storage:
             self._session_id = launch_data_storage.get_session_id()

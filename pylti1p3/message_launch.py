@@ -191,23 +191,23 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
     _cookie_service: CookieServiceT
     _jwt: TJwtData
     _jwt_verify_options: t.Dict[str, bool]
-    _registration: t.Optional[Registration]
+    _registration: Registration | None
     _launch_id: str
     _validated: bool = False
     _auto_validation: bool = True
     _restored: bool = False
-    _id_token_hash: t.Optional[str]
-    _public_key_cache_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None
-    _public_key_cache_lifetime: t.Optional[int] = None
+    _id_token_hash: str | None
+    _public_key_cache_data_storage: LaunchDataStorage[t.Any] | None = None
+    _public_key_cache_lifetime: int | None = None
 
     def __init__(
         self,
         request: RequestT,
         tool_config: ToolConfT,
-        session_service: t.Optional[SessionServiceT] = None,
-        cookie_service: t.Optional[CookieServiceT] = None,
-        launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
-        requests_session: t.Optional[requests.Session] = None,
+        session_service: SessionServiceT | None = None,
+        cookie_service: CookieServiceT | None = None,
+        launch_data_storage: LaunchDataStorage[t.Any] | None = None,
+        requests_session: requests.Session | None = None,
     ):
         self._request = request
         self._tool_config = tool_config
@@ -279,10 +279,10 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         launch_id: str,
         request: RequestT,
         tool_config: ToolConfT,
-        session_service: t.Optional[SessionServiceT] = None,
-        cookie_service: t.Optional[CookieServiceT] = None,
-        launch_data_storage: t.Optional[LaunchDataStorage[t.Any]] = None,
-        requests_session: t.Optional[requests.Session] = None,
+        session_service: SessionServiceT | None = None,
+        cookie_service: CookieServiceT | None = None,
+        launch_data_storage: LaunchDataStorage[t.Any] | None = None,
+        requests_session: requests.Session | None = None,
     ) -> "MessageLaunch":
         obj = cls(
             request,
@@ -463,7 +463,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return DeepLink(self._registration, deployment_id, deep_linking_settings)
 
-    def get_data_privacy_launch_user(self) -> t.Optional[TForUserClaim]:
+    def get_data_privacy_launch_user(self) -> TForUserClaim | None:
         """
         Applicable for DataPrivacyLaunchRequest only. Returns information about user
         who's data the launch is intended to action upon, for instance the student
@@ -474,7 +474,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         jwt_body = self._get_jwt_body()
         return jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/for_user")
 
-    def get_submission_review_user(self) -> t.Optional[TForUserClaim]:
+    def get_submission_review_user(self) -> TForUserClaim | None:
         """
         Applicable for LtiSubmissionReviewRequest only. Returns information about user
         who's submission should be displayed for review.

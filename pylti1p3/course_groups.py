@@ -60,7 +60,7 @@ class CourseGroupsService:
 
     def get_page(
         self, data_url: str, data_key: str = "groups"
-    ) -> t.Tuple[list, t.Optional[str]]:
+    ) -> t.Tuple[list, str | None]:
         """
         Get one page with the groups/sets.
 
