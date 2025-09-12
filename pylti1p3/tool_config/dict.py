@@ -22,10 +22,10 @@ TIssConf = t.TypedDict(
 )
 
 TJsonData = dict[str, list[TIssConf] | TIssConf]
+RequestT = t.TypeVar("RequestT", bound=Request)
 
-
-class ToolConfDict(ToolConfAbstract[Request]):
-    _config = None
+class ToolConfDict(t.Generic[RequestT], ToolConfAbstract[RequestT]):
+    _config: TJsonData
     _private_key_one_client: dict[str, str]
     _public_key_one_client: dict[str, str]
     _private_key_many_clients: dict[str, dict[str, str]]
