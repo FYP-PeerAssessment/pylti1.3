@@ -17,7 +17,7 @@ class IssuerToClientRelation(StrEnum):
 
 class ToolConfAbstract(t.Generic[REQ]):
     __metaclass__ = ABCMeta
-    issuers_relation_types: t.MutableMapping[str, IssuerToClientRelation] = {}
+    issuers_relation_types: collections.abc.MutableMapping[str, IssuerToClientRelation] = {}
 
     def check_iss_has_one_client(self, iss: str) -> bool:
         """

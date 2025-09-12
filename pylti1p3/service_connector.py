@@ -3,6 +3,7 @@ import re
 import time
 import typing as t
 import uuid
+from collections import abc
 
 import jwt  # type: ignore
 import requests
@@ -13,7 +14,7 @@ from .registration import Registration
 TServiceConnectorResponse = te.TypedDict(
     "TServiceConnectorResponse",
     {
-        "headers": t.Union[dict[str, str], t.MutableMapping[str, str]],
+        "headers": t.Union[dict[str, str], abc.MutableMapping[str, str]],
         "body": t.Union[None, int, float, list[object], dict[str, object], str],
         "next_page_url": str | None,
     },
