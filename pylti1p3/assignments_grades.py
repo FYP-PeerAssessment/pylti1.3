@@ -117,7 +117,7 @@ class AssignmentsGradesService:
 
     def get_lineitems_page(
         self, lineitems_url: str | None = None
-    ) -> t.Tuple[list, str | None]:
+    ) -> tuple[list, str | None]:
         """
         Get one page with line items.
 

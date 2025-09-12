@@ -56,7 +56,7 @@ class NamesRolesProvisioningService:
 
     def get_members_page(
         self, members_url: str | None = None
-    ) -> t.Tuple[list[TMember], str | None]:
+    ) -> tuple[list[TMember], str | None]:
         """
         Get one page with the users.
 

@@ -583,7 +583,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
                     f"Invalid response from {key_set_url}. Must be JSON: {resp.text}"
                 ) from e
 
-    def get_public_key(self) -> t.Tuple[str, str]:
+    def get_public_key(self) -> tuple[str, str]:
         assert self._registration is not None, "Registration not yet set"
         public_key_set = self._registration.get_key_set()
         key_set_url = self._registration.get_key_set_url()
