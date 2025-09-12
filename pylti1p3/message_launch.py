@@ -126,7 +126,7 @@ TLaunchData = t.TypedDict(
         # Required data
         "iss": str,
         "nonce": str,
-        "aud": t.Union[list[str], str],
+        "aud": list[str] | str,
         "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Literal[
             "LtiResourceLinkRequest",
             "LtiDeepLinkingRequest",

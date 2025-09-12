@@ -13,8 +13,8 @@ from .registration import Registration
 TServiceConnectorResponse = t.TypedDict(
     "TServiceConnectorResponse",
     {
-        "headers": t.Union[dict[str, str], abc.MutableMapping[str, str]],
-        "body": t.Union[None, int, float, list[object], dict[str, object], str],
+        "headers": dict[str, str] | abc.MutableMapping[str, str],
+        "body": int | float | list[object] | dict[str, object] | str | None,
         "next_page_url": str | None,
     },
 )
@@ -59,7 +59,7 @@ class ServiceConnector:
         auth_audience = self._registration.get_auth_audience()
         aud = auth_audience if auth_audience else auth_url
 
-        jwt_claim: dict[str, t.Union[str, int]] = {
+        jwt_claim: dict[str, str | int] = {
             "iss": str(client_id),
             "sub": str(client_id),
             "aud": str(aud),
@@ -95,7 +95,7 @@ class ServiceConnector:
 
     def encode_jwt(
         self,
-        message: dict[str, t.Union[str, int]],
+        message: dict[str, str | int],
         private_key: str,
         headers: dict[str, str],
     ) -> str:

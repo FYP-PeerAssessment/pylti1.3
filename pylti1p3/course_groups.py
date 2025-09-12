@@ -23,11 +23,11 @@ TGroup = t.TypedDict(
     "TGroup",
     {
         # Required data
-        "id": t.Union[str, int],
+        "id": str | int,
         "name": str,
         # Optional data
         "tag": str,
-        "set_id": t.Union[str, int],
+        "set_id": str | int,
     },
     total=False,
 )
@@ -36,7 +36,7 @@ TSet = t.TypedDict(
     "TSet",
     {
         # Required data
-        "id": t.Union[str, int],
+        "id": str | int,
         "name": str,
         # Optional data
         "groups": list[TGroup],

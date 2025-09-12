@@ -1,4 +1,3 @@
-import typing as t
 from abc import ABCMeta, abstractmethod
 
 
@@ -12,6 +11,6 @@ class CookieService:
 
     @abstractmethod
     def set_cookie(
-        self, name: str, value: t.Union[str, int], exp: int | None = 3600
+        self, name: str, value: str | int, exp: int | None = 3600
     ):
         raise NotImplementedError

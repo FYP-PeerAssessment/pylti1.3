@@ -21,7 +21,7 @@ TIssConf = t.TypedDict(
     total=False,
 )
 
-TJsonData = dict[str, t.Union[list[TIssConf], TIssConf]]
+TJsonData = dict[str, list[TIssConf] | TIssConf]
 
 
 class ToolConfDict(ToolConfAbstract[Request]):

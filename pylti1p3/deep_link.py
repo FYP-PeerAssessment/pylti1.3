@@ -16,8 +16,8 @@ TDeepLinkData = t.TypedDict(
             t.Literal["iframe", "window", "embed"]
         ],
         # Optional data
-        "accept_multiple": t.Union[bool, t.Literal["true", "false"]],
-        "auto_create": t.Union[bool, t.Literal["true", "false"]],
+        "accept_multiple": bool | t.Literal["true", "false"],
+        "auto_create": bool | t.Literal["true", "false"],
         "title": str,
         "text": str,
         "data": object,
