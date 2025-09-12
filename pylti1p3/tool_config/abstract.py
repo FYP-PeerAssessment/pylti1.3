@@ -1,6 +1,5 @@
 import typing as t
 from abc import ABCMeta, abstractmethod
-import typing_extensions as te
 from ..deployment import Deployment
 from ..registration import Registration
 from ..request import Request
@@ -10,8 +9,8 @@ REQ = t.TypeVar("REQ", bound=Request)
 
 
 class IssuerToClientRelation:
-    ONE_CLIENT_ID_PER_ISSUER: te.Final = "one-issuer-one-client-id"
-    MANY_CLIENTS_IDS_PER_ISSUER: te.Final = "one-issuer-many-client-ids"
+    ONE_CLIENT_ID_PER_ISSUER: t.Final = "one-issuer-one-client-id"
+    MANY_CLIENTS_IDS_PER_ISSUER: t.Final = "one-issuer-many-client-ids"
 
 
 class ToolConfAbstract(t.Generic[REQ]):

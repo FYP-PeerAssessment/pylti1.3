@@ -1,12 +1,11 @@
 from abc import ABCMeta
 import typing as t
-import typing_extensions as te
 
 
 class RoleType:
-    SYSTEM: te.Final = "system"
-    INSTITUTION: te.Final = "institution"
-    CONTEXT: te.Final = "membership"
+    SYSTEM: t.Final = "system"
+    INSTITUTION: t.Final = "institution"
+    CONTEXT: t.Final = "membership"
 
 
 class AbstractRole:
