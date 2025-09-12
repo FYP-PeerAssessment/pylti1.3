@@ -7,7 +7,7 @@ from ..registration import Registration
 from ..request import Request
 
 
-REQ = t.TypeVar("REQ", bound=Request)
+RequestT = t.TypeVar("RequestT", bound=Request)
 
 
 class IssuerToClientRelation(StrEnum):
@@ -15,7 +15,7 @@ class IssuerToClientRelation(StrEnum):
     MANY_CLIENTS_IDS_PER_ISSUER = "one-issuer-many-client-ids"
 
 
-class ToolConfAbstract(t.Generic[REQ]):
+class ToolConfAbstract(t.Generic[RequestT]):
     __metaclass__ = ABCMeta
     issuers_relation_types: collections.abc.MutableMapping[str, IssuerToClientRelation] = {}
 
