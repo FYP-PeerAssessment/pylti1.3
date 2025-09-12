@@ -7,11 +7,10 @@ from collections import abc
 
 import jwt  # type: ignore
 import requests
-import typing_extensions as te
 from .exception import LtiServiceException
 from .registration import Registration
 
-TServiceConnectorResponse = te.TypedDict(
+TServiceConnectorResponse = t.TypedDict(
     "TServiceConnectorResponse",
     {
         "headers": t.Union[dict[str, str], abc.MutableMapping[str, str]],

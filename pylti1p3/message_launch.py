@@ -40,7 +40,7 @@ from .service_connector import ServiceConnector, REQUESTS_USER_AGENT
 from .tool_config import ToolConfAbstract
 
 
-TResourceLinkClaim = te.TypedDict(
+TResourceLinkClaim = t.TypedDict(
     "TResourceLinkClaim",
     {
         # Required data
@@ -52,7 +52,7 @@ TResourceLinkClaim = te.TypedDict(
     total=False,
 )
 
-TContextClaim = te.TypedDict(
+TContextClaim = t.TypedDict(
     "TContextClaim",
     {
         # Required data
@@ -65,7 +65,7 @@ TContextClaim = te.TypedDict(
     total=False,
 )
 
-TToolPlatformClaim = te.TypedDict(
+TToolPlatformClaim = t.TypedDict(
     "TToolPlatformClaim",
     {
         # Required data
@@ -81,7 +81,7 @@ TToolPlatformClaim = te.TypedDict(
     total=False,
 )
 
-TLearningInformationServicesClaim = te.TypedDict(
+TLearningInformationServicesClaim = t.TypedDict(
     "TLearningInformationServicesClaim",
     {
         "person_sourcedid": str,
@@ -91,7 +91,7 @@ TLearningInformationServicesClaim = te.TypedDict(
     total=False,
 )
 
-TMigrationClaim = te.TypedDict(
+TMigrationClaim = t.TypedDict(
     "TMigrationClaim",
     {
         # Required data
@@ -106,7 +106,7 @@ TMigrationClaim = te.TypedDict(
     total=False,
 )
 
-TForUserClaim = te.TypedDict(
+TForUserClaim = t.TypedDict(
     "TForUserClaim",
     {
         # Required data
@@ -121,7 +121,7 @@ TForUserClaim = te.TypedDict(
     },
 )
 
-TLaunchData = te.TypedDict(
+TLaunchData = t.TypedDict(
     "TLaunchData",
     {
         # Required data
@@ -160,7 +160,7 @@ TLaunchData = te.TypedDict(
     total=False,
 )
 
-TJwtHeader = te.TypedDict(
+TJwtHeader = t.TypedDict(
     "TJwtHeader",
     {
         "kid": str,
@@ -169,7 +169,7 @@ TJwtHeader = te.TypedDict(
     total=False,
 )
 
-TJwtData = te.TypedDict(
+TJwtData = t.TypedDict(
     "TJwtData",
     {
         "header": TJwtHeader,

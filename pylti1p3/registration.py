@@ -1,12 +1,11 @@
 import json
 import typing as t
-import typing_extensions as te
 from collections import abc
 from jwcrypto.jwk import JWK  # type: ignore
 
 
-TKey = te.TypedDict("TKey", {"kid": str, "alg": str}, total=True)
-TKeySet = te.TypedDict("TKeySet", {"keys": list[TKey]}, total=True)
+TKey = t.TypedDict("TKey", {"kid": str, "alg": str}, total=True)
+TKeySet = t.TypedDict("TKeySet", {"keys": list[TKey]}, total=True)
 
 
 class Registration:

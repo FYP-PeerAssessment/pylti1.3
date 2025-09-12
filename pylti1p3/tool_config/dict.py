@@ -1,11 +1,10 @@
 import typing as t
-import typing_extensions as te
 from ..deployment import Deployment
 from ..registration import Registration, TKeySet
 from ..request import Request
 from .abstract import ToolConfAbstract
 
-TIssConf = te.TypedDict(
+TIssConf = t.TypedDict(
     "TIssConf",
     {
         "default": bool,

@@ -3,7 +3,7 @@ import typing_extensions as te
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
-TGroupsServiceData = te.TypedDict(
+TGroupsServiceData = t.TypedDict(
     "TGroupsServiceData",
     {
         # Required data
@@ -20,7 +20,7 @@ TGroupsServiceData = te.TypedDict(
     total=False,
 )
 
-TGroup = te.TypedDict(
+TGroup = t.TypedDict(
     "TGroup",
     {
         # Required data
@@ -33,7 +33,7 @@ TGroup = te.TypedDict(
     total=False,
 )
 
-TSet = te.TypedDict(
+TSet = t.TypedDict(
     "TSet",
     {
         # Required data

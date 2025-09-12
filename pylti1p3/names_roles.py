@@ -3,7 +3,7 @@ import typing_extensions as te
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
-TNamesAndRolesData = te.TypedDict(
+TNamesAndRolesData = t.TypedDict(
     "TNamesAndRolesData",
     {
         "context_memberships_url": str,
@@ -11,7 +11,7 @@ TNamesAndRolesData = te.TypedDict(
     total=False,
 )
 
-TMember = te.TypedDict(
+TMember = t.TypedDict(
     "TMember",
     {
         "name": str,

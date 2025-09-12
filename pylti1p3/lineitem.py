@@ -1,10 +1,9 @@
 import json
 import typing as t
-import typing_extensions as te
 from .exception import LtiException
 
 
-TSubmissionReview = te.TypedDict(
+TSubmissionReview = t.TypedDict(
     "TSubmissionReview",
     {
         # Required data
@@ -17,7 +16,7 @@ TSubmissionReview = te.TypedDict(
     total=False,
 )
 
-TLineItem = te.TypedDict(
+TLineItem = t.TypedDict(
     "TLineItem",
     {
         "id": str,

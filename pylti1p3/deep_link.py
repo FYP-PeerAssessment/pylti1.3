@@ -7,7 +7,7 @@ import typing_extensions as te
 from .deep_link_resource import DeepLinkResource
 from .registration import Registration
 
-TDeepLinkData = te.TypedDict(
+TDeepLinkData = t.TypedDict(
     "TDeepLinkData",
     {
         # Required data:
