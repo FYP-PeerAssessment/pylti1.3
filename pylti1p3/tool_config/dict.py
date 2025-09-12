@@ -4,22 +4,18 @@ from ..registration import Registration, TKeySet
 from ..request import Request
 from .abstract import ToolConfAbstract
 
-TIssConf = t.TypedDict(
-    "TIssConf",
-    {
-        "default": bool,
-        "client_id": str,
-        "auth_login_url": str,
-        "auth_token_url": str,
-        "auth_audience": str | None,
-        "key_set_url": str | None,
-        "key_set": TKeySet | None,
-        "deployment_ids": list[str],
-        "private_key_file": str | None,
-        "public_key_file": str | None,
-    },
-    total=False,
-)
+class TIssConf(t.TypedDict, total=False):
+    """Tool Issuer Configuration"""
+    default: bool
+    client_id: t.Required[str]
+    auth_login_url: t.Required[str]
+    auth_token_url: t.Required[str]
+    auth_audience: str | None
+    key_set_url: str | None
+    key_set: TKeySet | None
+    deployment_ids: t.Required[list[str]]
+    private_key_file: str | None
+    public_key_file: str | None
 
 TJsonData = dict[str, list[TIssConf] | TIssConf]
 RequestT = t.TypeVar("RequestT", bound=Request)
@@ -101,7 +97,7 @@ class ToolConfDict(t.Generic[RequestT], ToolConfAbstract[RequestT]):
 
     def _validate_iss_config_item(self, iss: str, iss_conf: TIssConf):
         if not isinstance(iss_conf, dict):
-            raise Exception(
+            raise ValueError(
                 f"Invalid configuration {iss} for the {str(iss_conf)} issuer. Must be dict"
             )
         required_keys = [
@@ -112,11 +108,11 @@ class ToolConfDict(t.Generic[RequestT], ToolConfAbstract[RequestT]):
         ]
         for key in required_keys:
             if key not in iss_conf:
-                raise Exception(
+                raise ValueError(
                     f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer"
                 )
         if not isinstance(iss_conf["deployment_ids"], list):
-            raise Exception(
+            raise ValueError(
                 f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. "
                 f"Must be a list"
             )
