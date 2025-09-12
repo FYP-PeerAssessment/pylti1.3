@@ -1,6 +1,6 @@
-import typing as t
+from enum import StrEnum
 
 
-class Action:
-    OIDC_LOGIN: t.Final = "oidc_login"
-    MESSAGE_LAUNCH: t.Final = "message_launch"
+class Action(StrEnum):
+    OIDC_LOGIN = "oidc_login"
+    MESSAGE_LAUNCH = "message_launch"

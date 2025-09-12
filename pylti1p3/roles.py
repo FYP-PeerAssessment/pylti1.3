@@ -1,11 +1,12 @@
 from abc import ABCMeta
+from enum import StrEnum
 import typing as t
 
 
-class RoleType:
-    SYSTEM: t.Final = "system"
-    INSTITUTION: t.Final = "institution"
-    CONTEXT: t.Final = "membership"
+class RoleType(StrEnum):
+    SYSTEM = "system"
+    INSTITUTION = "institution"
+    CONTEXT = "membership"
 
 
 class AbstractRole:
@@ -31,7 +32,7 @@ class AbstractRole:
                 return True
         return False
 
-    def _check_access(self, role_name: str, role_type: t.Optional[str] = None):
+    def _check_access(self, role_name: str, role_type: RoleType | None = None):
         return bool(
             (
                 self._system_roles

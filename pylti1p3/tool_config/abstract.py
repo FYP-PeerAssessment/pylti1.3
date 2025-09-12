@@ -1,3 +1,4 @@
+from enum import StrEnum
 import typing as t
 from abc import ABCMeta, abstractmethod
 from ..deployment import Deployment
@@ -8,14 +9,14 @@ from ..request import Request
 REQ = t.TypeVar("REQ", bound=Request)
 
 
-class IssuerToClientRelation:
-    ONE_CLIENT_ID_PER_ISSUER: t.Final = "one-issuer-one-client-id"
-    MANY_CLIENTS_IDS_PER_ISSUER: t.Final = "one-issuer-many-client-ids"
+class IssuerToClientRelation(StrEnum):
+    ONE_CLIENT_ID_PER_ISSUER = "one-issuer-one-client-id"
+    MANY_CLIENTS_IDS_PER_ISSUER = "one-issuer-many-client-ids"
 
 
 class ToolConfAbstract(t.Generic[REQ]):
     __metaclass__ = ABCMeta
-    issuers_relation_types: t.MutableMapping[str, str] = {}
+    issuers_relation_types: t.MutableMapping[str, IssuerToClientRelation] = {}
 
     def check_iss_has_one_client(self, iss: str) -> bool:
         """
