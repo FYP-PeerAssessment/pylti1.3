@@ -1,5 +1,4 @@
 import typing as t
-import typing_extensions as te
 from .exception import LtiException
 from .lineitem import LineItem
 from .grade import Grade

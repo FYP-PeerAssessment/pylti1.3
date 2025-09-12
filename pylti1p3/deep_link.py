@@ -3,7 +3,6 @@ import typing as t
 import uuid
 
 import jwt  # type: ignore
-import typing_extensions as te
 from .deep_link_resource import DeepLinkResource
 from .registration import Registration
 

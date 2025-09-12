@@ -8,7 +8,6 @@ from abc import ABCMeta, abstractmethod
 
 import jwt  # type: ignore
 import requests
-import typing_extensions as te
 from jwcrypto.jwk import JWK  # type: ignore
 
 from .actions import Action

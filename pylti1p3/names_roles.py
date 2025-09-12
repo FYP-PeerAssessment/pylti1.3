@@ -1,5 +1,5 @@
 import typing as t
-import typing_extensions as te
+
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
