@@ -6,24 +6,19 @@ import jwt  # type: ignore
 from .deep_link_resource import DeepLinkResource
 from .registration import Registration
 
-TDeepLinkData = t.TypedDict(
-    "TDeepLinkData",
-    {
-        # Required data:
-        "deep_link_return_url": str,
-        "accept_types": list[t.Literal["link", "ltiResourceLink"]],
-        "accept_presentation_document_targets": list[
-            t.Literal["iframe", "window", "embed"]
-        ],
-        # Optional data
-        "accept_multiple": bool | t.Literal["true", "false"],
-        "auto_create": bool | t.Literal["true", "false"],
-        "title": str,
-        "text": str,
-        "data": object,
-    },
-    total=False,
-)
+class TDeepLinkData(t.TypedDict, total=False):
+    # Required data:
+    deep_link_return_url: t.Required[str]
+    accept_types: t.Required[list[t.Literal["link", "ltiResourceLink"]]]
+    accept_presentation_document_targets: t.Required[list[
+        t.Literal["iframe", "window", "embed"]
+    ]]
+    # Optional data
+    accept_multiple: bool | t.Literal["true", "false"]
+    auto_create: bool | t.Literal["true", "false"]
+    title: str
+    text: str
+    data: object
 
 
 class DeepLink:

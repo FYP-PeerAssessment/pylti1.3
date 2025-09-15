@@ -3,34 +3,24 @@ import typing as t
 from .exception import LtiException
 
 
-TSubmissionReview = t.TypedDict(
-    "TSubmissionReview",
-    {
-        # Required data
-        "reviewableStatus": list,
-        # Optional data
-        "label": str,
-        "url": str,
-        "custom": dict[str, str],
-    },
-    total=False,
-)
+class TSubmissionReview(t.TypedDict, total=False):
+    # Required data
+    reviewableStatus: t.Required[list]
+    # Optional data
+    label: str
+    url: str
+    custom: dict[str, str]
 
-TLineItem = t.TypedDict(
-    "TLineItem",
-    {
-        "id": str,
-        "scoreMaximum": int,
-        "label": str,
-        "resourceId": str,
-        "tag": str,
-        "resourceLinkId": str,
-        "startDateTime": str,
-        "endDateTime": str,
-        "submissionReview": TSubmissionReview,
-    },
-    total=False,
-)
+class TLineItem(t.TypedDict, total=False):
+    id: str
+    scoreMaximum: int
+    label: str
+    resourceId: str
+    tag: str
+    resourceLinkId: str
+    startDateTime: str
+    endDateTime: str
+    submissionReview: TSubmissionReview
 
 
 class LineItem:

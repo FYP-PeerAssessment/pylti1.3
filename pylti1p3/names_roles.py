@@ -3,32 +3,22 @@ import typing as t
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
-TNamesAndRolesData = t.TypedDict(
-    "TNamesAndRolesData",
-    {
-        "context_memberships_url": str,
-    },
-    total=False,
-)
+class TNamesAndRolesData(t.TypedDict, total=False):
+    context_memberships_url: str
 
-TMember = t.TypedDict(
-    "TMember",
-    {
-        "name": str,
-        "status": t.Literal["Active", "Inactive", "Deleted"],
-        "picture": str,
-        "given_name": str,
-        "family_name": str,
-        "middle_name": str,
-        "email": str,
-        "user_id": str,
-        "lis_person_sourcedid": str,
-        "roles": list[str],
-        "message": list[dict[str, object]] | dict[str, object],
-        "lti11_legacy_user_id": str | None,
-    },
-    total=False,
-)
+class TMember(t.TypedDict, total=False):
+    name: str
+    status: t.Literal["Active", "Inactive", "Deleted"]
+    picture: str
+    given_name: str
+    family_name: str
+    middle_name: str
+    email: str
+    user_id: str
+    lis_person_sourcedid: str
+    roles: list[str]
+    message: list[dict[str, object]] | dict[str, object]
+    lti11_legacy_user_id: str | None
 
 
 class NamesRolesProvisioningService:

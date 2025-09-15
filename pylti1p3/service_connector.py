@@ -10,14 +10,10 @@ import requests
 from .exception import LtiServiceException
 from .registration import Registration
 
-TServiceConnectorResponse = t.TypedDict(
-    "TServiceConnectorResponse",
-    {
-        "headers": dict[str, str] | abc.MutableMapping[str, str],
-        "body": int | float | list[object] | dict[str, object] | str | None,
-        "next_page_url": str | None,
-    },
-)
+class TServiceConnectorResponse(t.TypedDict):
+    headers: dict[str, str] | abc.MutableMapping[str, str]
+    body: int | float | list[object] | dict[str, object] | str | None
+    next_page_url: str | None
 
 
 REQUESTS_USER_AGENT = "PyLTI1p3-client"

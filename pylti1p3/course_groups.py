@@ -2,47 +2,32 @@ import typing as t
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
-TGroupsServiceData = t.TypedDict(
-    "TGroupsServiceData",
-    {
-        # Required data
-        "context_groups_url": str,
-        "scope": list[
-            t.Literal[
-                "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
-            ]
-        ],
-        "service_versions": list[str],
-        # Optional data
-        "context_group_sets_url": str,
-    },
-    total=False,
-)
+class TGroupsServiceData(t.TypedDict, total=False):
+    # Required data
+    context_groups_url: t.Required[str]
+    scope: t.Required[list[
+        t.Literal[
+            "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
+        ]
+    ]]
+    service_versions: t.Required[list[str]]
+    # Optional data
+    context_group_sets_url: str
 
-TGroup = t.TypedDict(
-    "TGroup",
-    {
-        # Required data
-        "id": str | int,
-        "name": str,
-        # Optional data
-        "tag": str,
-        "set_id": str | int,
-    },
-    total=False,
-)
+class TGroup(t.TypedDict, total=False):
+    # Required data
+    id: t.Required[str | int]
+    name: t.Required[str]
+    # Optional data
+    tag: str
+    set_id: str | int
 
-TSet = t.TypedDict(
-    "TSet",
-    {
-        # Required data
-        "id": str | int,
-        "name": str,
-        # Optional data
-        "groups": list[TGroup],
-    },
-    total=False,
-)
+class TSet(t.TypedDict, total=False):
+    # Required data
+    id: t.Required[str | int]
+    name: t.Required[str]
+    # Optional data
+    groups: list[TGroup]
 
 
 class CourseGroupsService:

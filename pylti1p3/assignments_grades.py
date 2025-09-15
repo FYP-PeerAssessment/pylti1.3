@@ -6,22 +6,17 @@ from .lineitem import TLineItem
 from .service_connector import ServiceConnector, TServiceConnectorResponse
 
 
-TAssignmentsGradersData = t.TypedDict(
-    "TAssignmentsGradersData",
-    {
-        "scope": list[
-            t.Literal[
-                "https://purl.imsglobal.org/spec/lti-ags/scope/score",
-                "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
-                "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
-                "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly",
-            ]
-        ],
-        "lineitems": str,
-        "lineitem": str,
-    },
-    total=False,
-)
+class TAssignmentsGradersData(t.TypedDict, total=False):
+    scope: list[
+        t.Literal[
+            "https://purl.imsglobal.org/spec/lti-ags/scope/score",
+            "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+            "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+            "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly",
+        ]
+    ]
+    lineitems: str
+    lineitem: str
 
 
 class AssignmentsGradesService:

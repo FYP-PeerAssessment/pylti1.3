@@ -39,106 +39,73 @@ from .service_connector import ServiceConnector, REQUESTS_USER_AGENT
 from .tool_config import ToolConfAbstract
 
 
-TResourceLinkClaim = t.TypedDict(
-    "TResourceLinkClaim",
-    {
-        # Required data
-        "id": str,
-        # Optional data
-        "description": str,
-        "title": str,
-    },
-    total=False,
-)
+class TResourceLinkClaim(t.TypedDict, total=False):
+    id: t.Required[str]
+    description: str
+    title: str
 
-TContextClaim = t.TypedDict(
-    "TContextClaim",
-    {
-        # Required data
-        "id": str,
-        # Optional data
-        "label": str,
-        "title": str,
-        "type": list[str],
-    },
-    total=False,
-)
 
-TToolPlatformClaim = t.TypedDict(
-    "TToolPlatformClaim",
-    {
-        # Required data
-        "guid": str,
-        # Optional data
-        "contact_email": str,
-        "description": str,
-        "name": str,
-        "url": str,
-        "product_family_code": str,
-        "version": str,
-    },
-    total=False,
-)
+class TContextClaim(t.TypedDict, total=False):
+    id: t.Required[str]
+    label: str
+    title: str
+    type: list[str]
 
-TLearningInformationServicesClaim = t.TypedDict(
-    "TLearningInformationServicesClaim",
-    {
-        "person_sourcedid": str,
-        "course_offering_sourcedid": str,
-        "course_section_sourcedid": str,
-    },
-    total=False,
-)
 
-TMigrationClaim = t.TypedDict(
-    "TMigrationClaim",
-    {
-        # Required data
-        "oauth_consumer_key": str,
-        # Optional data
-        "oauth_consumer_key_sign": str,
-        "user_id": str,
-        "context_id": str,
-        "tool_consumer_instance_guid ": str,
-        "resource_link_id": str,
-    },
-    total=False,
-)
+class TToolPlatformClaim(t.TypedDict, total=False):
+    guid: t.Required[str]
+    contact_email: str
+    description: str
+    name: str
+    url: str
+    product_family_code: str
+    version: str
 
-TForUserClaim = t.TypedDict(
-    "TForUserClaim",
-    {
-        # Required data
-        "user_id": str,
-        # Optional data
-        "person_sourcedId": str,
-        "given_name": str,
-        "family_name": str,
-        "name": str,
-        "email": str,
-        "roles": list[str],
-    },
-)
+
+class TLearningInformationServicesClaim(t.TypedDict, total=False):
+    person_sourcedid: str
+    course_offering_sourcedid: str
+    course_section_sourcedid: str
+
+
+class TMigrationClaim(t.TypedDict, total=False):
+    oauth_consumer_key: t.Required[str]
+    oauth_consumer_key_sign: str
+    user_id: str
+    context_id: str
+    tool_consumer_instance_guid: str
+    resource_link_id: str
+
+
+class TForUserClaim(t.TypedDict, total=False):
+    user_id: t.Required[str]
+    person_sourcedId: str
+    given_name: str
+    family_name: str
+    name: str
+    email: str
+    roles: list[str]
+
 
 TLaunchData = t.TypedDict(
     "TLaunchData",
     {
         # Required data
-        "iss": str,
-        "nonce": str,
-        "aud": list[str] | str,
-        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Literal[
+        "iss": t.Required[str],
+        "nonce": t.Required[str],
+        "aud": t.Required[list[str] | str],
+        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Required[t.Literal[
             "LtiResourceLinkRequest",
             "LtiDeepLinkingRequest",
             "DataPrivacyLaunchRequest",
             "LtiSubmissionReviewRequest",
-        ],
-        "https://purl.imsglobal.org/spec/lti/claim/version": t.Literal["1.3.0"],
-        "https://purl.imsglobal.org/spec/lti/claim/deployment_id": str,
-        "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": str,
-        "https://purl.imsglobal.org/spec/lti/claim/resource_link": TResourceLinkClaim,
-        "https://purl.imsglobal.org/spec/lti/claim/roles": list[str],
-        "sub": str,
+        ]],
+        "https://purl.imsglobal.org/spec/lti/claim/version": t.Required[t.Literal["1.3.0"]],
+        "https://purl.imsglobal.org/spec/lti/claim/deployment_id": t.Required[str],
+        "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": t.Required[str],
+        "https://purl.imsglobal.org/spec/lti/claim/resource_link": t.Required[TResourceLinkClaim],
+        "https://purl.imsglobal.org/spec/lti/claim/roles": t.Required[list[str]],
+        "sub": t.Required[str],
         # Optional data
         "given_name": str,
         "family_name": str,
@@ -159,23 +126,15 @@ TLaunchData = t.TypedDict(
     total=False,
 )
 
-TJwtHeader = t.TypedDict(
-    "TJwtHeader",
-    {
-        "kid": str,
-        "alg": str,
-    },
-    total=False,
-)
+class TJwtHeader(t.TypedDict, total=False):
+    kid: str
+    alg: str
 
-TJwtData = t.TypedDict(
-    "TJwtData",
-    {
-        "header": TJwtHeader,
-        "body": TLaunchData,
-    },
-    total=False,
-)
+
+class TJwtData(t.TypedDict, total=False):
+    header: TJwtHeader
+    body: TLaunchData
+
 
 RequestT = t.TypeVar("RequestT", bound=Request)
 ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract[t.Any])

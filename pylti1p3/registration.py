@@ -4,8 +4,13 @@ from collections import abc
 from jwcrypto.jwk import JWK  # type: ignore
 
 
-TKey = t.TypedDict("TKey", {"kid": str, "alg": str}, total=True)
-TKeySet = t.TypedDict("TKeySet", {"keys": list[TKey]}, total=True)
+class TKey(t.TypedDict):
+    kid: str
+    alg: str
+
+
+class TKeySet(t.TypedDict):
+    keys: list[TKey]
 
 
 class Registration:
