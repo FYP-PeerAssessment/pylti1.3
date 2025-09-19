@@ -137,7 +137,7 @@ class TJwtData(t.TypedDict, total=False):
 
 
 RequestT = t.TypeVar("RequestT", bound=Request)
-ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract[t.Any])
+ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract)
 SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
 CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
@@ -634,10 +634,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         jwt_body = self._get_jwt_body()
         client_id = self.get_client_id()
 
-        # Mypy doesn't support higher kinded types yet so it thinks that all
-        # generic attrs have type `Any`. See issue:
-        # https://github.com/python/mypy/issues/8228
-        config: ToolConfAbstract[RequestT] = self._tool_config
+        config: ToolConfAbstract = self._tool_config
         req: RequestT = self._request
 
         # Find registration

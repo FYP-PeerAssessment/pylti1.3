@@ -2,14 +2,10 @@ import typing as t
 import json
 import os
 
-from ..request import Request
-
 from .dict import ToolConfDict, TIssConf, TJsonData
 
 
-RequestT = t.TypeVar("RequestT", bound=Request)
-
-class ToolConfJsonFile(t.Generic[RequestT], ToolConfDict[RequestT]):
+class ToolConfJsonFile(ToolConfDict):
     _configs_dir: str
 
     def __init__(self, config_file: str):
