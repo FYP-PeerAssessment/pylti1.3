@@ -17,7 +17,7 @@ from .tool_config import ToolConfAbstract
 
 RedirectT = t.TypeVar("RedirectT")
 RequestT = t.TypeVar("RequestT", bound=Request)
-ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract[t.Any])
+ToolConfT = t.TypeVar("ToolConfT", bound=ToolConfAbstract)
 SessionServiceT = t.TypeVar("SessionServiceT", bound=SessionService)
 CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 

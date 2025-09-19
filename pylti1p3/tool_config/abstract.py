@@ -4,10 +4,6 @@ import collections.abc
 from abc import ABC, abstractmethod
 from ..deployment import Deployment
 from ..registration import Registration
-from ..request import Request
-
-
-RequestT = t.TypeVar("RequestT", bound=Request)
 
 
 class IssuerToClientRelation(StrEnum):
@@ -15,7 +11,7 @@ class IssuerToClientRelation(StrEnum):
     MANY_CLIENTS_IDS_PER_ISSUER = "one-issuer-many-client-ids"
 
 
-class ToolConfAbstract(t.Generic[RequestT], ABC):
+class ToolConfAbstract(ABC):
     issuers_relation_types: collections.abc.MutableMapping[str, IssuerToClientRelation] = {}
 
     def check_iss_has_one_client(self, iss: str) -> bool:

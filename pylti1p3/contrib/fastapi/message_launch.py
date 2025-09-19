@@ -10,7 +10,7 @@ from pylti1p3.tool_config.abstract import ToolConfAbstract
 from .cookie import FastAPICookieService
 from .session import FastAPISessionService
 
-ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract[Any])
+ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract)
 
 class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService]):
     def __init__(

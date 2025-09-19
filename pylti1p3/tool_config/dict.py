@@ -1,7 +1,6 @@
 import typing as t
 from ..deployment import Deployment
 from ..registration import Registration, TKeySet
-from ..request import Request
 from .abstract import ToolConfAbstract
 
 class TIssConf(t.TypedDict, total=False):
@@ -18,9 +17,9 @@ class TIssConf(t.TypedDict, total=False):
     public_key_file: str | None
 
 TJsonData = dict[str, list[TIssConf] | TIssConf]
-RequestT = t.TypeVar("RequestT", bound=Request)
 
-class ToolConfDict(t.Generic[RequestT], ToolConfAbstract[RequestT]):
+
+class ToolConfDict(ToolConfAbstract):
     _config: TJsonData
     _private_key_one_client: dict[str, str]
     _public_key_one_client: dict[str, str]
