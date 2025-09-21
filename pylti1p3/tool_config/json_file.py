@@ -1,6 +1,6 @@
 import typing as t
 import json
-import os
+from pathlib import Path
 
 from .dict import ToolConfDict, TIssConf, TJsonData
 
@@ -8,7 +8,7 @@ from .dict import ToolConfDict, TIssConf, TJsonData
 class ToolConfJsonFile(ToolConfDict):
     _configs_dir: str
 
-    def __init__(self, config_file: str):
+    def __init__(self, config_file: str | Path):
         """
         config_file contains JSON with issuers settings.
         Each key is issuer and value is issuer's configuration.
@@ -60,11 +60,15 @@ class ToolConfJsonFile(ToolConfDict):
         public_key_file - relative path to the tool's public key
         deployment_ids (list) - The deployment_id passed by the platform during launch
         """
-        if not os.path.isfile(config_file):
-            raise Exception("LTI tool config file not found: " + config_file)
-        self._configs_dir = os.path.dirname(config_file)
+        config_path = Path(config_file)
 
-        with open(config_file, encoding="utf-8") as cfg:
+        if not config_path.is_file():
+            raise Exception(
+                "LTI tool config file not found: " + str(config_path)
+            )
+        self._configs_dir = str(config_path.parent)
+
+        with config_path.open(encoding="utf-8") as cfg:
             iss_conf_dict: TJsonData = json.loads(cfg.read())
             super().__init__(iss_conf_dict)
 
