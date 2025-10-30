@@ -70,3 +70,42 @@ dev = [
     "flake8>=4.0.1",
     "tox>=3.28.0",
 ]
+
+[tool.ruff]
+target-version = "py37"
+line-length = 120
+extend-exclude = [
+  "CVS",   # mirror: ignore=CVS
+  ".#*",   # mirror: ignore-patterns=^\.#
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "PL"]
+ignore = [
+    "PLC0414",  # useless-import-alias
+    "PLR0913",  # too-many-arguments
+    "PLR0914",  # too-many-locals
+    # "PLR0902",  # too-many-instance-attributes, not available in ruff
+    "PLR0904",  # too-many-public-methods
+    # "PLR0903",  # too-few-public-methods, not available in ruff
+    "PLR6301",  # no-self-use
+]
+task-tags = ["FIXME", "XXX", "TODO"]
+ignore-init-module-imports = true
+dummy-variable-rgx = "_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_"
+
+[tool.ruff.lint.pylint]
+# Mirror Pylint's design thresholds.
+max-args = 5
+# max-attributes = 7
+max-bool-expr = 5
+max-branches = 12
+max-locals = 15
+# max-parents = 7
+max-public-methods = 20
+max-returns = 6
+max-statements = 50
+# min-public-methods = 2
+
+[tool.ruff.lint.isort]
+known-third-party = ["enchant"]
