@@ -84,6 +84,7 @@ class TForUserClaim(t.TypedDict, total=False):
     family_name: str
     name: str
     email: str
+    locale: str
     roles: list[str]
 
 
@@ -113,6 +114,7 @@ TLaunchData = t.TypedDict(
         "family_name": str,
         "name": str,
         "email": str,
+        "locale": str,
         "https://purl.imsglobal.org/spec/lti/claim/context": TContextClaim,
         "https://purl.imsglobal.org/spec/lti/claim/lis": TLearningInformationServicesClaim,
         "https://purl.imsglobal.org/spec/lti/claim/custom": collections.abc.Mapping[str, str],
