@@ -95,6 +95,11 @@ task-tags = ["FIXME", "XXX", "TODO"]
 ignore-init-module-imports = true
 dummy-variable-rgx = "_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_"
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "PLR0915", # too-many-statements
+]
+
 [tool.ruff.lint.pylint]
 # Mirror Pylint's design thresholds.
 max-args = 5
