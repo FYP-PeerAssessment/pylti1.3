@@ -13,9 +13,7 @@ class TestCourseGroups(TestServicesBase):
 
         tool_conf = get_test_tool_conf()
 
-        with patch.object(
-            FlaskMessageLaunch, "_get_jwt_body", autospec=True
-        ) as get_jwt_body:
+        with patch.object(FlaskMessageLaunch, "_get_jwt_body", autospec=True) as get_jwt_body:
             message_launch = FlaskMessageLaunch(FakeRequest(), tool_conf)
             get_jwt_body.side_effect = lambda x: self._get_jwt_body()
             with patch("socket.gethostbyname", return_value="127.0.0.1"):
@@ -113,12 +111,8 @@ class TestCourseGroups(TestServicesBase):
                         "sets": sets_data,
                     }
 
-                    m.get(
-                        self.context_groups_url, text=json.dumps(groups_full_response)
-                    )
-                    m.get(
-                        self.context_group_sets_url, text=json.dumps(sets_full_response)
-                    )
+                    m.get(self.context_groups_url, text=json.dumps(groups_full_response))
+                    m.get(self.context_group_sets_url, text=json.dumps(sets_full_response))
 
                     message_launch = message_launch.validate_registration()
                     self.assertTrue(message_launch.has_cgs())

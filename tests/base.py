@@ -30,11 +30,7 @@ class TestLinkBase(unittest.TestCase):
         with patch("socket.gethostbyname", return_value="127.0.0.1"):
             with requests_mock.Mocker() as m:
                 # pylint: disable=no-member
-                key_set_url_text = (
-                    key_set_url_response
-                    if key_set_url_response
-                    else json.dumps(self.jwt_canvas_keys)
-                )
+                key_set_url_text = key_set_url_response if key_set_url_response else json.dumps(self.jwt_canvas_keys)
                 m.get(TOOL_CONFIG[self.iss]["key_set_url"], text=key_set_url_text)
                 if force_validation:
                     return obj.validate()
@@ -73,9 +69,7 @@ class TestServicesBase(unittest.TestCase):
             "validation_context": None,
         },
         "https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice": {
-            "scope": [
-                "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
-            ],
+            "scope": ["https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"],
             "context_groups_url": context_groups_url,
             "context_group_sets_url": context_group_sets_url,
             "service_versions": ["1.0"],

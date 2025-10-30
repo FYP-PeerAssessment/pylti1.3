@@ -32,12 +32,8 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
     _cookies_check: bool = False
     _cookies_check_loading_text: str = "Loading..."
-    _cookies_unavailable_msg_main_text: str = (
-        "Your browser prohibits to save cookies in the iframes."
-    )
-    _cookies_unavailable_msg_click_text: str = (
-        "Click here to open content in the new tab."
-    )
+    _cookies_unavailable_msg_main_text: str = "Your browser prohibits to save cookies in the iframes."
+    _cookies_unavailable_msg_click_text: str = "Click here to open content in the new tab."
     _state_params: dict[str, object] = {}
 
     def __init__(
@@ -122,9 +118,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
             "redirect_uri": launch_url,  # URL to return to after login
             "state": state,  # State to identify browser session
             "nonce": nonce,  # Prevent replay attacks
-            "login_hint": self._get_request_param(
-                "login_hint"
-            ),  # Login hint to identify platform session
+            "login_hint": self._get_request_param("login_hint"),  # Login hint to identify platform session
         }
 
         # pass back LTI message hint if we have it
@@ -177,9 +171,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
         # fetch registration details
         if self._tool_config.check_iss_has_one_client(iss):
-            registration = self._tool_config.find_registration(
-                iss, action=Action.OIDC_LOGIN, request=self._request
-            )
+            registration = self._tool_config.find_registration(iss, action=Action.OIDC_LOGIN, request=self._request)
         else:
             registration = self._tool_config.find_registration_by_params(
                 iss, client_id, action=Action.OIDC_LOGIN, request=self._request
@@ -199,11 +191,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
         return self
 
     def enable_check_cookies(
-        self,
-        main_msg: str | None = None,
-        click_msg: str | None = None,
-        loading_msg: str | None = None,
-        **kwargs
+        self, main_msg: str | None = None, click_msg: str | None = None, loading_msg: str | None = None, **kwargs
     ) -> t.Self:
         # pylint: disable=unused-argument
         self._cookies_check = True
@@ -255,9 +243,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
         return page.get_html()
 
-    def set_launch_data_storage(
-        self, data_storage: LaunchDataStorage[t.Any]
-    ) -> t.Self:
+    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> t.Self:
         data_storage.set_request(self._request)
         session_cookie_name = data_storage.get_session_cookie_name()
         if session_cookie_name:

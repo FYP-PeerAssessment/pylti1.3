@@ -94,12 +94,14 @@ TLaunchData = t.TypedDict(
         "iss": t.Required[str],
         "nonce": t.Required[str],
         "aud": t.Required[list[str] | str],
-        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Required[t.Literal[
-            "LtiResourceLinkRequest",
-            "LtiDeepLinkingRequest",
-            "DataPrivacyLaunchRequest",
-            "LtiSubmissionReviewRequest",
-        ]],
+        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Required[
+            t.Literal[
+                "LtiResourceLinkRequest",
+                "LtiDeepLinkingRequest",
+                "DataPrivacyLaunchRequest",
+                "LtiSubmissionReviewRequest",
+            ]
+        ],
         "https://purl.imsglobal.org/spec/lti/claim/version": t.Required[t.Literal["1.3.0"]],
         "https://purl.imsglobal.org/spec/lti/claim/deployment_id": t.Required[str],
         "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": t.Required[str],
@@ -125,6 +127,7 @@ TLaunchData = t.TypedDict(
     },
     total=False,
 )
+
 
 class TJwtHeader(t.TypedDict, total=False):
     kid: str
@@ -308,9 +311,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         return self._id_token_hash
 
     def _get_deployment_id(self) -> str:
-        deployment_id = self._get_jwt_body().get(
-            "https://purl.imsglobal.org/spec/lti/claim/deployment_id"
-        )
+        deployment_id = self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti/claim/deployment_id")
         if not deployment_id:
             raise LtiException("deployment_id is not set in jwt body")
         return deployment_id
@@ -340,9 +341,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         """
         assert self._registration is not None, "Registration not yet set"
         connector = self.get_service_connector()
-        names_role_service = self._get_jwt_body().get(
-            "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice"
-        )
+        names_role_service = self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice")
         if not names_role_service:
             raise LtiException("namesroleservice is not set in jwt body")
         return NamesRolesProvisioningService(connector, names_role_service)
@@ -353,12 +352,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         :return: bool  Returns a boolean indicating the availability of assignments and grades.
         """
-        return (
-            self._get_jwt_body().get(
-                "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint", None
-            )
-            is not None
-        )
+        return self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti-ags/claim/endpoint", None) is not None
 
     def get_ags(self) -> AssignmentsGradesService:
         """
@@ -368,9 +362,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         """
         assert self._registration is not None, "Registration not yet set"
         connector = self.get_service_connector()
-        endpoint = self._get_jwt_body().get(
-            "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint"
-        )
+        endpoint = self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti-ags/claim/endpoint")
         if not endpoint:
             raise LtiException("endpoint is not set in jwt body")
         return AssignmentsGradesService(connector, endpoint)
@@ -381,9 +373,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         :return: bool  Returns a boolean indicating the availability of groups.
         """
-        groups_service_data = self._get_jwt_body().get(
-            "https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice", {}
-        )
+        groups_service_data = self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice", {})
         return groups_service_data.get("context_groups_url", None) is not None
 
     def get_cgs(self) -> CourseGroupsService:
@@ -394,9 +384,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         """
         assert self._registration is not None, "Registration not yet set"
         connector = self.get_service_connector()
-        groups_service_data = self._get_jwt_body().get(
-            "https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice"
-        )
+        groups_service_data = self._get_jwt_body().get("https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice")
         if not groups_service_data:
             raise LtiException("groupsservice is not set in jwt body")
         context_groups_url = groups_service_data.get("context_groups_url", None)
@@ -506,16 +494,12 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         tmp = val.translate(str.maketrans("-_", "+/"))  # type: ignore
         return base64.b64decode(tmp).decode("utf-8")  # type: ignore
 
-    def set_public_key_caching(
-        self, data_storage: LaunchDataStorage[t.Any], cache_lifetime: int = 7200
-    ):
+    def set_public_key_caching(self, data_storage: LaunchDataStorage[t.Any], cache_lifetime: int = 7200):
         self._public_key_cache_data_storage = data_storage
         self._public_key_cache_lifetime = cache_lifetime
 
     def fetch_public_key(self, key_set_url: str) -> TKeySet:
-        cache_key = (
-            "key-set-url-" + hashlib.md5(key_set_url.encode("utf-8")).hexdigest()
-        )
+        cache_key = "key-set-url-" + hashlib.md5(key_set_url.encode("utf-8")).hexdigest()
 
         with DisableSessionId(self._public_key_cache_data_storage):
             if self._public_key_cache_data_storage:
@@ -526,9 +510,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
             try:
                 resp = self._requests_session.get(key_set_url)
             except requests.exceptions.RequestException as e:
-                raise LtiException(
-                    f"Error during fetch URL {key_set_url}: {str(e)}"
-                ) from e
+                raise LtiException(f"Error during fetch URL {key_set_url}: {str(e)}") from e
             try:
                 public_key = resp.json()
                 if self._public_key_cache_data_storage:
@@ -537,9 +519,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
                     )
                 return public_key
             except ValueError as e:
-                raise LtiException(
-                    f"Invalid response from {key_set_url}. Must be JSON: {resp.text}"
-                ) from e
+                raise LtiException(f"Invalid response from {key_set_url}. Must be JSON: {resp.text}") from e
 
     def get_public_key(self) -> tuple[str, str]:
         assert self._registration is not None, "Registration not yet set"
@@ -547,9 +527,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         key_set_url = self._registration.get_key_set_url()
 
         if not public_key_set:
-            assert (
-                key_set_url is not None
-            ), "If public_key_set is not set, public_set_url should be set"
+            assert key_set_url is not None, "If public_key_set is not set, public_set_url should be set"
             if key_set_url.startswith(("http://", "https://")):
                 public_key_set = self.fetch_public_key(key_set_url)
                 self._registration.set_key_set(public_key_set)
@@ -587,9 +565,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
             raise LtiException("Missing state param")
 
         id_token_hash = self._get_id_token_hash()
-        if not self._session_service.check_state_is_valid(
-            state_from_request, id_token_hash
-        ):
+        if not self._session_service.check_state_is_valid(state_from_request, id_token_hash):
             state_from_cookie = self._cookie_service.get_cookie(state_from_request)
             if state_from_request != state_from_cookie:
                 # Error if state doesn't match.
@@ -688,9 +664,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         if tool_config.check_iss_has_one_client(iss):
             deployment = tool_config.find_deployment(iss, deployment_id)
         else:
-            deployment = tool_config.find_deployment_by_params(
-                iss, deployment_id, client_id
-            )
+            deployment = tool_config.find_deployment_by_params(iss, deployment_id, client_id)
         if not deployment:
             raise LtiException("Unable to find deployment")
 
@@ -698,9 +672,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
     def validate_message(self) -> "MessageLaunch":
         jwt_body = self._get_jwt_body()
-        message_type = jwt_body.get(
-            "https://purl.imsglobal.org/spec/lti/claim/message_type", None
-        )
+        message_type = jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/message_type", None)
         if not message_type:
             raise LtiException("Invalid message type")
 
@@ -720,9 +692,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def set_launch_data_storage(
-        self, data_storage: LaunchDataStorage[t.Any]
-    ) -> "MessageLaunch":
+    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> "MessageLaunch":
         data_storage.set_request(self._request)
         session_cookie_name = data_storage.get_session_cookie_name()
         if session_cookie_name:

@@ -11,16 +11,12 @@ class LtiToolKeyAdmin(admin.ModelAdmin):
 
     add_fieldsets = ((None, {"fields": ("name", "private_key", "public_key")}),)
 
-    change_fieldsets = (
-        (None, {"fields": ("name", "private_key", "public_key", "public_jwk")}),
-    )
+    change_fieldsets = ((None, {"fields": ("name", "private_key", "public_key", "public_jwk")}),)
 
     readonly_fields = ("public_jwk",)
 
     def get_form(self, request, obj=None, **kwargs):  # pylint: disable=arguments-differ
-        help_texts = {
-            "public_key_jwk_json": "Tool's generated Public key presented as JWK."
-        }
+        help_texts = {"public_key_jwk_json": "Tool's generated Public key presented as JWK."}
         kwargs.update({"help_texts": help_texts})
         return super().get_form(request, obj, **kwargs)
 

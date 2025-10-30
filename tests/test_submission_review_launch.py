@@ -127,17 +127,13 @@ class SubmissionReviewLaunchBase(TestLinkBase):
     def test_submission_review_launch_success(self):
         tool_conf, login_request, login_response = self._make_oidc_login()
         launch_request = self._get_request(login_request, login_response)
-        validated_message_launch = self._launch(
-            launch_request, tool_conf, force_validation=True
-        )
+        validated_message_launch = self._launch(launch_request, tool_conf, force_validation=True)
         message_launch_data = validated_message_launch.get_launch_data()
         self.assertDictEqual(message_launch_data, self.expected_launch_data)
         self.assertTrue(validated_message_launch.is_submission_review_launch())
         self.assertDictEqual(
             validated_message_launch.get_submission_review_user(),
-            self.expected_launch_data.get(
-                "https://purl.imsglobal.org/spec/lti/claim/for_user"
-            ),
+            self.expected_launch_data.get("https://purl.imsglobal.org/spec/lti/claim/for_user"),
         )
 
 

@@ -1,8 +1,4 @@
-import typing as t
-
-
 class Deployment:
-
     _deployment_id: str | None = None
 
     def get_deployment_id(self) -> str | None:

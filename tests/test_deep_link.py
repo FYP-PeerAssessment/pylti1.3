@@ -97,9 +97,7 @@ class DeepLinkBase(TestLinkBase):
         "https://purl.imsglobal.org/spec/lti/claim/roles": [
             "http://purl.imsglobal.org/vocab/lis/v2/institution/person#Instructor"
         ],
-        "https://purl.imsglobal.org/spec/lti/claim/role_scope_mentor": [
-            "a62c52c02ba262003f5e"
-        ],
+        "https://purl.imsglobal.org/spec/lti/claim/role_scope_mentor": ["a62c52c02ba262003f5e"],
         "https://purl.imsglobal.org/spec/lti/claim/context": {
             "id": "422",
             "label": "Test Course",
@@ -146,14 +144,10 @@ class DeepLinkBase(TestLinkBase):
     }
 
     def test_deep_link_launch_success(self):
-        tool_conf, login_request, login_response = self._make_oidc_login(
-            uuid_val="462a941bbf6a4356afa7"
-        )
+        tool_conf, login_request, login_response = self._make_oidc_login(uuid_val="462a941bbf6a4356afa7")
 
         launch_request = self._get_request(login_request, login_response)
-        validated_message_launch = self._launch(
-            launch_request, tool_conf, force_validation=True
-        )
+        validated_message_launch = self._launch(launch_request, tool_conf, force_validation=True)
         message_launch_data = validated_message_launch.get_launch_data()
         self.assertDictEqual(message_launch_data, self.expected_message_launch_data)
 
@@ -169,8 +163,7 @@ class DeepLinkBase(TestLinkBase):
         html = validated_message_launch.get_deep_link().output_response_form([resource])
         self.assertTrue(
             html.startswith(
-                f'<form id="lti13_deep_link_auto_submit" action="{deep_link_return_url}" '
-                f'method="POST">'
+                f'<form id="lti13_deep_link_auto_submit" action="{deep_link_return_url}" ' f'method="POST">'
             )
         )
         self.assertTrue('<input type="hidden" name="JWT" value=' in html)

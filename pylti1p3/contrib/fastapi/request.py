@@ -1,4 +1,4 @@
-from typing import Any, Optional, Dict, Union
+from typing import Any, Optional, Dict
 
 import fastapi  # type: ignore
 import starlette.datastructures  # type: ignore

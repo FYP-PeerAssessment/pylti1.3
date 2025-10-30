@@ -29,7 +29,5 @@ class TestToolConf(TestServicesBase):
         self.assertEqual(jwks, expected_jwks)
 
         tc_extended = get_test_tool_conf(tool_conf_extended=True)
-        jwks = tc_extended.get_jwks(
-            "https://canvas.instructure.com", client_id="10000000000004"
-        )
+        jwks = tc_extended.get_jwks("https://canvas.instructure.com", client_id="10000000000004")
         self.assertEqual(jwks, expected_jwks)

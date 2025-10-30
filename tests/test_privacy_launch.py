@@ -116,9 +116,7 @@ class PrivacyLaunchBase(TestLinkBase):
             "url": "https://platform.example.org",
             "contact_email": "someone@platform.example.org",
         },
-        "https://purl.imsglobal.org/spec/lti/claim/custom": {
-            "Some_custom_setting": "a_value1"
-        },
+        "https://purl.imsglobal.org/spec/lti/claim/custom": {"Some_custom_setting": "a_value1"},
         "https://purl.imsglobal.org/spec/lti/claim/lis": {
             "person_sourcedid": "example.edu:b6b93105-8d2f-4af8-93ec-36c050b98413"
         },
@@ -131,17 +129,13 @@ class PrivacyLaunchBase(TestLinkBase):
     def test_privacy_launch_success(self):
         tool_conf, login_request, login_response = self._make_oidc_login()
         launch_request = self._get_request(login_request, login_response)
-        validated_message_launch = self._launch(
-            launch_request, tool_conf, force_validation=True
-        )
+        validated_message_launch = self._launch(launch_request, tool_conf, force_validation=True)
         message_launch_data = validated_message_launch.get_launch_data()
         self.assertDictEqual(message_launch_data, self.expected_message_launch_data)
         self.assertTrue(validated_message_launch.is_data_privacy_launch())
         self.assertDictEqual(
             validated_message_launch.get_data_privacy_launch_user(),
-            self.expected_message_launch_data.get(
-                "https://purl.imsglobal.org/spec/lti/claim/for_user"
-            ),
+            self.expected_message_launch_data.get("https://purl.imsglobal.org/spec/lti/claim/for_user"),
         )
 
 

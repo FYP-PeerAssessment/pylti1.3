@@ -20,29 +20,21 @@ class ToolConfAbstract(ABC):
         with the previous versions of the library (1.4.0 and early) where ToolConfDict supported only client_id per iss.
         Should return False for all new ToolConf-s
         """
-        iss_type = self.issuers_relation_types.get(
-            iss, IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER
-        )
+        iss_type = self.issuers_relation_types.get(iss, IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER)
         return iss_type == IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER
 
     def check_iss_has_many_clients(self, iss: str) -> bool:
         """
         Should return True for all new ToolConf-s
         """
-        iss_type = self.issuers_relation_types.get(
-            iss, IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER
-        )
+        iss_type = self.issuers_relation_types.get(iss, IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER)
         return iss_type == IssuerToClientRelation.MANY_CLIENTS_IDS_PER_ISSUER
 
     def set_iss_has_one_client(self, iss: str):
-        self.issuers_relation_types[iss] = (
-            IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER
-        )
+        self.issuers_relation_types[iss] = IssuerToClientRelation.ONE_CLIENT_ID_PER_ISSUER
 
     def set_iss_has_many_clients(self, iss: str):
-        self.issuers_relation_types[iss] = (
-            IssuerToClientRelation.MANY_CLIENTS_IDS_PER_ISSUER
-        )
+        self.issuers_relation_types[iss] = IssuerToClientRelation.MANY_CLIENTS_IDS_PER_ISSUER
 
     def find_registration(self, iss: str, *args, **kwargs) -> Registration:
         """
@@ -61,9 +53,7 @@ class ToolConfAbstract(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find_registration_by_params(
-        self, iss: str, client_id: str, *args, **kwargs
-    ) -> Registration:
+    def find_registration_by_params(self, iss: str, client_id: str, *args, **kwargs) -> Registration:
         """
         Find registration in case if iss has many client ids, i.e
         in case of { ... "iss": [ { ... "client_id: "client1" ... }, { ... "client_id: "client2" ... } ], ... } config.
@@ -96,9 +86,7 @@ class ToolConfAbstract(ABC):
         """
         raise NotImplementedError
 
-    def get_jwks(
-        self, iss: str | None = None, client_id: str | None = None, **kwargs
-    ):
+    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs):
         keys: list[collections.abc.Mapping[str, t.Any]] = []
         if iss:
             if self.check_iss_has_one_client(iss):

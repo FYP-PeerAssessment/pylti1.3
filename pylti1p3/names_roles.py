@@ -3,8 +3,10 @@ import typing as t
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
+
 class TNamesAndRolesData(t.TypedDict, total=False):
     context_memberships_url: str
+
 
 class TMember(t.TypedDict, total=False):
     name: str
@@ -25,9 +27,7 @@ class NamesRolesProvisioningService:
     _service_connector: ServiceConnector
     _service_data: TNamesAndRolesData
 
-    def __init__(
-        self, service_connector: ServiceConnector, service_data: TNamesAndRolesData
-    ):
+    def __init__(self, service_connector: ServiceConnector, service_data: TNamesAndRolesData):
         self._service_connector = service_connector
         self._service_data = service_data
 
@@ -36,17 +36,13 @@ class NamesRolesProvisioningService:
             members_url = self._service_data["context_memberships_url"]
 
         data = self._service_connector.make_service_request(
-            [
-                "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly"
-            ],
+            ["https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly"],
             members_url,
             accept="application/vnd.ims.lti-nrps.v2.membershipcontainer+json",
         )
         return data
 
-    def get_members_page(
-        self, members_url: str | None = None
-    ) -> tuple[list[TMember], str | None]:
+    def get_members_page(self, members_url: str | None = None) -> tuple[list[TMember], str | None]:
         """
         Get one page with the users.
 

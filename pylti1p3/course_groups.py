@@ -2,17 +2,15 @@ import typing as t
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
+
 class TGroupsServiceData(t.TypedDict, total=False):
     # Required data
     context_groups_url: t.Required[str]
-    scope: t.Required[list[
-        t.Literal[
-            "https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"
-        ]
-    ]]
+    scope: t.Required[list[t.Literal["https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"]]]
     service_versions: t.Required[list[str]]
     # Optional data
     context_group_sets_url: str
+
 
 class TGroup(t.TypedDict, total=False):
     # Required data
@@ -21,6 +19,7 @@ class TGroup(t.TypedDict, total=False):
     # Optional data
     tag: str
     set_id: str | int
+
 
 class TSet(t.TypedDict, total=False):
     # Required data
@@ -42,9 +41,7 @@ class CourseGroupsService:
         self._service_connector = service_connector
         self._service_data = groups_service_data
 
-    def get_page(
-        self, data_url: str, data_key: str = "groups"
-    ) -> tuple[list, str | None]:
+    def get_page(self, data_url: str, data_key: str = "groups") -> tuple[list, str | None]:
         """
         Get one page with the groups/sets.
 

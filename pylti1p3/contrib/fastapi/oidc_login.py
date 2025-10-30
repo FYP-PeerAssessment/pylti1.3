@@ -12,7 +12,9 @@ from .redirect import FastAPIRedirect
 from .session import FastAPISessionService
 
 
-class FastAPIOIDCLogin(OIDCLogin[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService, fastapi.Response]):
+class FastAPIOIDCLogin(
+    OIDCLogin[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService, fastapi.Response]
+):
     def __init__(
         self,
         request: FastAPIRequest,
@@ -21,12 +23,8 @@ class FastAPIOIDCLogin(OIDCLogin[FastAPIRequest, ToolConfT, FastAPISessionServic
         cookie_service: Optional[FastAPICookieService] = None,
         launch_data_storage: Optional[LaunchDataStorage[Any]] = None,
     ) -> None:
-        cookie_service = (
-            cookie_service if cookie_service else FastAPICookieService(request)
-        )
-        session_service = (
-            session_service if session_service else FastAPISessionService(request)
-        )
+        cookie_service = cookie_service if cookie_service else FastAPICookieService(request)
+        session_service = session_service if session_service else FastAPISessionService(request)
         super().__init__(
             request,
             tool_config,

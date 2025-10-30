@@ -135,12 +135,8 @@ def get_test_tool_conf(tool_conf_cls=None, tool_conf_extended=False):
     for iss, iss_conf in tc.items():
         if isinstance(iss_conf, list):
             for iss_conf_item in iss_conf:
-                tool_conf.set_private_key(
-                    iss, PRIVATE_KEY, client_id=iss_conf_item["client_id"]
-                )
-                tool_conf.set_public_key(
-                    iss, PUBLIC_KEY, client_id=iss_conf_item["client_id"]
-                )
+                tool_conf.set_private_key(iss, PRIVATE_KEY, client_id=iss_conf_item["client_id"])
+                tool_conf.set_public_key(iss, PUBLIC_KEY, client_id=iss_conf_item["client_id"])
         else:
             tool_conf.set_private_key(iss, PRIVATE_KEY)
             tool_conf.set_public_key(iss, PUBLIC_KEY)

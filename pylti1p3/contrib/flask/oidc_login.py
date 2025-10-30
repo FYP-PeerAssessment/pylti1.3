@@ -14,15 +14,9 @@ class FlaskOIDCLogin(OIDCLogin):
         cookie_service=None,
         launch_data_storage=None,
     ):
-        cookie_service = (
-            cookie_service if cookie_service else FlaskCookieService(request)
-        )
-        session_service = (
-            session_service if session_service else FlaskSessionService(request)
-        )
-        super().__init__(
-            request, tool_config, session_service, cookie_service, launch_data_storage
-        )
+        cookie_service = cookie_service if cookie_service else FlaskCookieService(request)
+        session_service = session_service if session_service else FlaskSessionService(request)
+        super().__init__(request, tool_config, session_service, cookie_service, launch_data_storage)
 
     def get_redirect(self, url):
         return FlaskRedirect(url, self._cookie_service)

@@ -9,28 +9,20 @@ from pylti1p3.registration import Registration
 
 
 class LtiToolKey(models.Model):
-    name = models.CharField(
-        max_length=255, null=False, blank=False, unique=True, help_text=_("Key name")
-    )
+    name = models.CharField(max_length=255, null=False, blank=False, unique=True, help_text=_("Key name"))
     private_key = models.TextField(
         null=False,
         blank=False,
         help_text=_("Tool's generated Private key. Keep this value in secret"),
     )
-    public_key = models.TextField(
-        null=True, blank=True, help_text=_("Tool's generated Public key")
-    )
+    public_key = models.TextField(null=True, blank=True, help_text=_("Tool's generated Public key"))
     public_jwk = models.TextField(
         null=True,
         blank=True,
-        help_text=_(
-            "Tool's generated Public key (from the field above) presented as JWK."
-        ),
+        help_text=_("Tool's generated Public key (from the field above) presented as JWK."),
     )
 
-    def save(
-        self, *args, **kwargs
-    ):  # pylint: disable=arguments-differ,signature-differs
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ,signature-differs
         if self.public_key:
             public_jwk_dict = Registration.get_jwk(self.public_key)
             self.public_jwk = json.dumps(public_jwk_dict)
@@ -55,8 +47,7 @@ class LtiTool(models.Model):
     issuer = models.CharField(
         max_length=255,
         help_text=_(
-            "This will usually look something like 'http://example.com'. "
-            "Value provided by LTI 1.3 Platform"
+            "This will usually look something like 'http://example.com'. " "Value provided by LTI 1.3 Platform"
         ),
     )
     client_id = models.CharField(
@@ -73,20 +64,14 @@ class LtiTool(models.Model):
         max_length=1024,
         null=False,
         blank=False,
-        help_text=_(
-            "The platform's OIDC login endpoint. Value provided by LTI 1.3 Platform"
-        ),
+        help_text=_("The platform's OIDC login endpoint. Value provided by LTI 1.3 Platform"),
         validators=[URLValidator()],
     )
     auth_token_url = models.CharField(
         max_length=1024,
         null=False,
         blank=False,
-        help_text=_(
-            "The platform's service authorization "
-            "endpoint. Value provided by "
-            "LTI 1.3 Platform"
-        ),
+        help_text=_("The platform's service authorization " "endpoint. Value provided by " "LTI 1.3 Platform"),
         validators=[URLValidator()],
     )
     auth_audience = models.CharField(
@@ -111,9 +96,7 @@ class LtiTool(models.Model):
             "Value provided by LTI 1.3 Platform"
         ),
     )
-    tool_key = models.ForeignKey(
-        LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools"
-    )
+    tool_key = models.ForeignKey(LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools")
     deployment_ids = models.TextField(
         null=False,
         blank=False,
@@ -126,13 +109,7 @@ class LtiTool(models.Model):
 
     def clean(self):
         if not self.key_set_url and not self.key_set:
-            raise ValidationError(
-                {
-                    "key_set_url": _(
-                        'Even one of "key_set_url" or "key_set" should be set'
-                    )
-                }
-            )
+            raise ValidationError({"key_set_url": _('Even one of "key_set_url" or "key_set" should be set')})
 
         if self.key_set:
             key_set_valid = False
@@ -153,13 +130,7 @@ class LtiTool(models.Model):
         except ValueError:
             pass
         if not deployment_ids_valid:
-            raise ValidationError(
-                {
-                    "deployment_ids": _(
-                        'Should be a list. Example: ["test-id-1", "test-id-2", ...]'
-                    )
-                }
-            )
+            raise ValidationError({"deployment_ids": _('Should be a list. Example: ["test-id-1", "test-id-2", ...]')})
 
     def to_dict(self):
         data = {
@@ -170,9 +141,7 @@ class LtiTool(models.Model):
             "auth_audience": self.auth_audience,
             "key_set_url": self.key_set_url,
             "key_set": json.loads(self.key_set) if self.key_set else None,
-            "deployment_ids": (
-                json.loads(self.deployment_ids) if self.deployment_ids else []
-            ),
+            "deployment_ids": (json.loads(self.deployment_ids) if self.deployment_ids else []),
         }
         return data
 

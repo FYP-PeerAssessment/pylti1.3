@@ -3,8 +3,10 @@ from ..deployment import Deployment
 from ..registration import Registration, TKeySet
 from .abstract import ToolConfAbstract
 
+
 class TIssConf(t.TypedDict, total=False):
     """Tool Issuer Configuration"""
+
     default: bool
     client_id: t.Required[str]
     auth_login_url: t.Required[str]
@@ -15,6 +17,7 @@ class TIssConf(t.TypedDict, total=False):
     deployment_ids: t.Required[list[str]]
     private_key_file: str | None
     public_key_file: str | None
+
 
 TJsonData = dict[str, list[TIssConf] | TIssConf]
 
@@ -84,9 +87,7 @@ class ToolConfDict(ToolConfAbstract):
                 for v in iss_conf:
                     self._validate_iss_config_item(iss, v)
             else:
-                raise Exception(
-                    "Invalid tool conf format. Allowed types of elements: list or dict"
-                )
+                raise Exception("Invalid tool conf format. Allowed types of elements: list or dict")
 
         self._config = json_data
         self._private_key_one_client = {}
@@ -96,9 +97,7 @@ class ToolConfDict(ToolConfAbstract):
 
     def _validate_iss_config_item(self, iss: str, iss_conf: TIssConf):
         if not isinstance(iss_conf, dict):
-            raise ValueError(
-                f"Invalid configuration {iss} for the {str(iss_conf)} issuer. Must be dict"
-            )
+            raise ValueError(f"Invalid configuration {iss} for the {str(iss_conf)} issuer. Must be dict")
         required_keys = [
             "auth_login_url",
             "auth_token_url",
@@ -107,28 +106,19 @@ class ToolConfDict(ToolConfAbstract):
         ]
         for key in required_keys:
             if key not in iss_conf:
-                raise ValueError(
-                    f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer"
-                )
+                raise ValueError(f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer")
         if not isinstance(iss_conf["deployment_ids"], list):
             raise ValueError(
-                f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. "
-                f"Must be a list"
+                f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. " f"Must be a list"
             )
 
     def _get_registration(self, iss: str, iss_conf: TIssConf) -> Registration:
         reg = Registration()
-        reg.set_auth_login_url(iss_conf["auth_login_url"]).set_auth_token_url(
-            iss_conf["auth_token_url"]
-        ).set_client_id(iss_conf["client_id"]).set_key_set(
-            iss_conf.get("key_set")
-        ).set_key_set_url(
-            iss_conf.get("key_set_url")
-        ).set_issuer(
+        reg.set_auth_login_url(iss_conf["auth_login_url"]).set_auth_token_url(iss_conf["auth_token_url"]).set_client_id(
+            iss_conf["client_id"]
+        ).set_key_set(iss_conf.get("key_set")).set_key_set_url(iss_conf.get("key_set_url")).set_issuer(
             iss
-        ).set_tool_private_key(
-            self.get_private_key(iss, iss_conf["client_id"])
-        )
+        ).set_tool_private_key(self.get_private_key(iss, iss_conf["client_id"]))
         auth_audience = iss_conf.get("auth_audience")
         if auth_audience:
             reg.set_auth_audience(auth_audience)
@@ -157,16 +147,12 @@ class ToolConfDict(ToolConfAbstract):
         iss_conf = self.get_iss_config(iss)
         return self._get_deployment(iss_conf, deployment_id)
 
-    def find_deployment_by_params(
-        self, iss: str, deployment_id: str, client_id: str, *args, **kwargs
-    ):
+    def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str, *args, **kwargs):
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss, client_id)
         return self._get_deployment(iss_conf, deployment_id)
 
-    def set_public_key(
-        self, iss: str, key_content: str, client_id: str | None = None
-    ):
+    def set_public_key(self, iss: str, key_content: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
                 raise Exception("Can't set public key: missing client_id")
@@ -186,9 +172,7 @@ class ToolConfDict(ToolConfAbstract):
             return clients_dict.get(client_id)
         return self._public_key_one_client.get(iss)
 
-    def set_private_key(
-        self, iss: str, key_content: str, client_id: str | None = None
-    ):
+    def set_private_key(self, iss: str, key_content: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
                 raise Exception("Can't set private key: missing client_id")
@@ -229,9 +213,7 @@ class ToolConfDict(ToolConfAbstract):
         return config_iss
 
     @t.override
-    def get_jwks(
-        self, iss: str | None = None, client_id: str | None = None, **kwargs
-    ):
+    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs):
         # pylint: disable=unused-argument
         if iss or client_id:
             return super().get_jwks(iss, client_id)

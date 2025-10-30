@@ -9,7 +9,5 @@ class CookieService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def set_cookie(
-        self, name: str, value: str | int, exp: int | None = 3600
-    ):
+    def set_cookie(self, name: str, value: str | int, exp: int | None = 3600):
         raise NotImplementedError

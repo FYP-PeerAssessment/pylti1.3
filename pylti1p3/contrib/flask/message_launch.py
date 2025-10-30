@@ -13,12 +13,8 @@ class FlaskMessageLaunch(MessageLaunch):
         launch_data_storage=None,
         requests_session=None,
     ):
-        cookie_service = (
-            cookie_service if cookie_service else FlaskCookieService(request)
-        )
-        session_service = (
-            session_service if session_service else FlaskSessionService(request)
-        )
+        cookie_service = cookie_service if cookie_service else FlaskCookieService(request)
+        session_service = session_service if session_service else FlaskSessionService(request)
         super().__init__(
             request,
             tool_config,

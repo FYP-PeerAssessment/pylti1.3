@@ -6,14 +6,10 @@ class DeepLinkMessageValidator(MessageValidatorAbstract):
     def validate(self, jwt_body) -> bool:
         self.run_common_validators(jwt_body)
 
-        if not jwt_body.get(
-            "https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings"
-        ):
+        if not jwt_body.get("https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings"):
             raise LtiException("Missing Deep Linking Settings")
 
-        deep_link_settings = jwt_body.get(
-            "https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings"
-        )
+        deep_link_settings = jwt_body.get("https://purl.imsglobal.org/spec/lti-dl/claim/deep_linking_settings")
         if not deep_link_settings:
             raise LtiException("Missing Deep Linking Return URL")
 
@@ -28,7 +24,4 @@ class DeepLinkMessageValidator(MessageValidatorAbstract):
         return True
 
     def can_validate(self, jwt_body) -> bool:
-        return (
-            jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/message_type")
-            == "LtiDeepLinkingRequest"
-        )
+        return jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/message_type") == "LtiDeepLinkingRequest"

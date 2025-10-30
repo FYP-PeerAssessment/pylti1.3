@@ -1,6 +1,5 @@
 from abc import ABC
 from enum import StrEnum
-import typing as t
 
 
 class RoleType(StrEnum):
@@ -19,9 +18,7 @@ class AbstractRole(ABC):
     _context_roles: tuple | None = None
 
     def __init__(self, jwt_body):
-        self._jwt_roles = jwt_body.get(
-            "https://purl.imsglobal.org/spec/lti/claim/roles", []
-        )
+        self._jwt_roles = jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/roles", [])
 
     def check(self) -> bool:
         for role_str in self._jwt_roles:
@@ -33,26 +30,10 @@ class AbstractRole(ABC):
 
     def _check_access(self, role_name: str, role_type: RoleType | None = None):
         return bool(
-            (
-                self._system_roles
-                and role_type == RoleType.SYSTEM
-                and role_name in self._system_roles
-            )
-            or (
-                self._institution_roles
-                and role_type == RoleType.INSTITUTION
-                and role_name in self._institution_roles
-            )
-            or (
-                self._context_roles
-                and role_type == RoleType.CONTEXT
-                and role_name in self._context_roles
-            )
-            or (
-                self._common_roles
-                and role_type is None
-                and role_name in self._common_roles
-            )
+            (self._system_roles and role_type == RoleType.SYSTEM and role_name in self._system_roles)
+            or (self._institution_roles and role_type == RoleType.INSTITUTION and role_name in self._institution_roles)
+            or (self._context_roles and role_type == RoleType.CONTEXT and role_name in self._context_roles)
+            or (self._common_roles and role_type is None and role_name in self._common_roles)
         )
 
     def parse_role_str(self, role_str: str) -> tuple[str, str | None]:

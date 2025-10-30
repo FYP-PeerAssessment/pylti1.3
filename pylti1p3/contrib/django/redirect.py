@@ -17,9 +17,7 @@ class DjangoRedirect(Redirect):
 
     def do_js_redirect(self):
         return self._process_response(
-            HttpResponse(
-                f'<script type="text/javascript">window.location="{self._location}";</script>'
-            )
+            HttpResponse(f'<script type="text/javascript">window.location="{self._location}";</script>')
         )
 
     def set_redirect_url(self, location):

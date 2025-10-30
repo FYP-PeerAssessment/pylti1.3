@@ -1,4 +1,4 @@
-from typing import Optional, Union, TypeVar
+from typing import Optional, TypeVar
 
 import fastapi
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -24,9 +24,7 @@ class FastAPIRedirect(Redirect[fastapi.Response]):
 
     def do_js_redirect(self) -> fastapi.Response:
         return self._process_response(
-            HTMLResponse(
-                f'<script type="text/javascript">window.location="{self._location}";</script>'
-            )
+            HTMLResponse(f'<script type="text/javascript">window.location="{self._location}";</script>')
         )
 
     def set_redirect_url(self, location: str) -> None:

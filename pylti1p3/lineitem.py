@@ -11,6 +11,7 @@ class TSubmissionReview(t.TypedDict, total=False):
     url: str
     custom: dict[str, str]
 
+
 class TLineItem(t.TypedDict, total=False):
     id: str
     scoreMaximum: int
@@ -78,13 +79,9 @@ class LineItem:
         https://www.imsglobal.org/spec/lti-ags/v2p0/#scoremaximum
         """
         if not isinstance(value, (int, float)):
-            raise LtiException(
-                "Invalid scoreMaximum value: score must be integer or float"
-            )
+            raise LtiException("Invalid scoreMaximum value: score must be integer or float")
         if value <= 0:
-            raise LtiException(
-                "Invalid scoreMaximum value: score must be non null value, strictly greater than 0"
-            )
+            raise LtiException("Invalid scoreMaximum value: score must be non null value, strictly greater than 0")
 
         self._score_maximum = value
         return self
@@ -167,9 +164,7 @@ class LineItem:
         if not isinstance(reviewable_status, list):
             raise Exception('Invalid "reviewable_status" argument')
 
-        self._submission_review: TSubmissionReview = {
-            "reviewableStatus": reviewable_status
-        }
+        self._submission_review: TSubmissionReview = {"reviewableStatus": reviewable_status}
         if label:
             self._submission_review["label"] = label
         if url:

@@ -23,41 +23,26 @@ class AssignmentsGradesService:
     _service_connector: ServiceConnector
     _service_data: TAssignmentsGradersData
 
-    def __init__(
-        self, service_connector: ServiceConnector, service_data: TAssignmentsGradersData
-    ):
+    def __init__(self, service_connector: ServiceConnector, service_data: TAssignmentsGradersData):
         self._service_connector = service_connector
         self._service_data = service_data
 
     def can_read_lineitem(self) -> bool:
         return (
-            "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly"
-            in self._service_data["scope"]
-            or "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem"
-            in self._service_data["scope"]
+            "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly" in self._service_data["scope"]
+            or "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem" in self._service_data["scope"]
         )
 
     def can_create_lineitem(self) -> bool:
-        return (
-            "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem"
-            in self._service_data["scope"]
-        )
+        return "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem" in self._service_data["scope"]
 
     def can_read_grades(self) -> bool:
-        return (
-            "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly"
-            in self._service_data["scope"]
-        )
+        return "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly" in self._service_data["scope"]
 
     def can_put_grade(self) -> bool:
-        return (
-            "https://purl.imsglobal.org/spec/lti-ags/scope/score"
-            in self._service_data["scope"]
-        )
+        return "https://purl.imsglobal.org/spec/lti-ags/scope/score" in self._service_data["scope"]
 
-    def put_grade(
-        self, grade: Grade, lineitem: LineItem | None = None
-    ) -> TServiceConnectorResponse:
+    def put_grade(self, grade: Grade, lineitem: LineItem | None = None) -> TServiceConnectorResponse:
         """
         Send grade to the LTI platform.
 
@@ -109,9 +94,7 @@ class AssignmentsGradesService:
         )
         return LineItem(t.cast(TLineItem, lineitem_response["body"]))
 
-    def get_lineitems_page(
-        self, lineitems_url: str | None = None
-    ) -> tuple[list, str | None]:
+    def get_lineitems_page(self, lineitems_url: str | None = None) -> tuple[list, str | None]:
         """
         Get one page with line items.
 
@@ -184,9 +167,7 @@ class AssignmentsGradesService:
         """
         return self.find_lineitem("tag", tag)
 
-    def find_lineitem_by_resource_link_id(
-        self, resource_link_id: str
-    ) -> LineItem | None:
+    def find_lineitem_by_resource_link_id(self, resource_link_id: str) -> LineItem | None:
         """
         Find line item by Resource LinkID.
 
@@ -204,9 +185,7 @@ class AssignmentsGradesService:
         """
         return self.find_lineitem("resourceId", resource_id)
 
-    def find_or_create_lineitem(
-        self, new_lineitem: LineItem, find_by: str = "tag"
-    ) -> LineItem:
+    def find_or_create_lineitem(self, new_lineitem: LineItem, find_by: str = "tag") -> LineItem:
         """
         Try to find line item using ID or Tag. New lime item will be created if nothing is found.
 

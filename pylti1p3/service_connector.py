@@ -10,6 +10,7 @@ import requests
 from .exception import LtiServiceException
 from .registration import Registration
 
+
 class TServiceConnectorResponse(t.TypedDict):
     headers: dict[str, str] | abc.MutableMapping[str, str]
     body: int | float | list[object] | dict[str, object] | str | None

@@ -13,9 +13,7 @@ class TestNamesRolesProvisioningService(TestServicesBase):
 
         tool_conf = get_test_tool_conf()
 
-        with patch.object(
-            DjangoMessageLaunch, "_get_jwt_body", autospec=True
-        ) as get_jwt_body:
+        with patch.object(DjangoMessageLaunch, "_get_jwt_body", autospec=True) as get_jwt_body:
             message_launch = DjangoMessageLaunch(FakeRequest(), tool_conf)
             get_jwt_body.side_effect = lambda x: self._get_jwt_body()
             with patch("socket.gethostbyname", return_value="127.0.0.1"):
@@ -25,18 +23,16 @@ class TestNamesRolesProvisioningService(TestServicesBase):
                         text=json.dumps(self._get_auth_token_response()),
                     )
                     m.get(
-                        self._get_jwt_body()[
-                            "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice"
-                        ]["context_memberships_url"],
+                        self._get_jwt_body()["https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice"][
+                            "context_memberships_url"
+                        ],
                         text=json.dumps(
                             {
                                 "members": [
                                     {
                                         "status": "Active",
                                         "user_id": "20eb59f5-26e8-46bc-87b0-57ed54820aeb",
-                                        "roles": [
-                                            "http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"
-                                        ],
+                                        "roles": ["http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"],
                                     }
                                 ],
                                 "id": "http://canvas.docker/api/lti/courses/1/names_and_roles",
@@ -73,17 +69,13 @@ class TestNamesRolesProvisioningService(TestServicesBase):
                             "Content-Type": "application/vnd.ims.lti-nrps.v2.membershipcontainer+json; charset=utf-8",
                         },
                     )
-                    members = (
-                        message_launch.validate_registration().get_nrps().get_members()
-                    )
+                    members = message_launch.validate_registration().get_nrps().get_members()
                     self.assertEqual(len(members), 1)
                     self.assertDictEqual(
                         members[0],
                         {
                             "status": "Active",
                             "user_id": "20eb59f5-26e8-46bc-87b0-57ed54820aeb",
-                            "roles": [
-                                "http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"
-                            ],
+                            "roles": ["http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"],
                         },
                     )

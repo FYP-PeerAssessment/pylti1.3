@@ -6,13 +6,12 @@ import jwt  # type: ignore
 from .deep_link_resource import DeepLinkResource
 from .registration import Registration
 
+
 class TDeepLinkData(t.TypedDict, total=False):
     # Required data:
     deep_link_return_url: t.Required[str]
     accept_types: t.Required[list[t.Literal["link", "ltiResourceLink"]]]
-    accept_presentation_document_targets: t.Required[list[
-        t.Literal["iframe", "window", "embed"]
-    ]]
+    accept_presentation_document_targets: t.Required[list[t.Literal["iframe", "window", "embed"]]]
     # Optional data
     accept_multiple: bool | t.Literal["true", "false"]
     auto_create: bool | t.Literal["true", "false"]
@@ -39,9 +38,7 @@ class DeepLink:
     def _generate_nonce(self):
         return uuid.uuid4().hex + uuid.uuid1().hex
 
-    def get_message_jwt(
-        self, resources: t.Sequence[DeepLinkResource]
-    ) -> dict[str, object]:
+    def get_message_jwt(self, resources: t.Sequence[DeepLinkResource]) -> dict[str, object]:
         message_jwt = {
             "iss": self._registration.get_client_id(),
             "aud": [self._registration.get_issuer()],
@@ -51,12 +48,8 @@ class DeepLink:
             "https://purl.imsglobal.org/spec/lti/claim/deployment_id": self._deployment_id,
             "https://purl.imsglobal.org/spec/lti/claim/message_type": "LtiDeepLinkingResponse",
             "https://purl.imsglobal.org/spec/lti/claim/version": "1.3.0",
-            "https://purl.imsglobal.org/spec/lti-dl/claim/content_items": [
-                r.to_dict() for r in resources
-            ],
-            "https://purl.imsglobal.org/spec/lti-dl/claim/data": self._deep_link_settings.get(
-                "data"
-            ),
+            "https://purl.imsglobal.org/spec/lti-dl/claim/content_items": [r.to_dict() for r in resources],
+            "https://purl.imsglobal.org/spec/lti-dl/claim/data": self._deep_link_settings.get("data"),
         }
         return message_jwt
 

@@ -17,9 +17,7 @@ class FlaskRedirect(Redirect):
 
     def do_js_redirect(self):
         return self._process_response(
-            make_response(
-                f'<script type="text/javascript">window.location="{self._location}";</script>'
-            )
+            make_response(f'<script type="text/javascript">window.location="{self._location}";</script>')
         )
 
     def set_redirect_url(self, location):

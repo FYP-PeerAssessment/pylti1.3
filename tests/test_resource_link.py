@@ -190,9 +190,7 @@ class ResourceLinkBase(TestLinkBase):
             enable_check_cookies=enable_check_cookies,
             cache=cache,
         )
-        launch_request = self._get_request(
-            login_request, login_response, request_is_secure=secure
-        )
+        launch_request = self._get_request(login_request, login_response, request_is_secure=secure)
         message_launch_data = self._launch(launch_request, tool_conf, cache=cache)
         self.assertDictEqual(message_launch_data, self.expected_message_launch_data)
 
@@ -204,7 +202,10 @@ class ResourceLinkBase(TestLinkBase):
         ]
     )
     def test_res_link_launch_success(
-        self, name, secure, tool_conf_extended  # pylint: disable=unused-argument
+        self,
+        name,
+        secure,
+        tool_conf_extended,  # pylint: disable=unused-argument
     ):
         self._launch_success(None, secure, tool_conf_extended)
 
@@ -227,15 +228,11 @@ class ResourceLinkBase(TestLinkBase):
         post_data = self.post_launch_data.copy()
         post_data.pop("state", None)
 
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
         with self.assertRaisesRegex(LtiException, "Missing state param"):
             self._launch(launch_request, tool_conf)
 
-        launch_request = self._get_request(
-            login_request, login_response, empty_cookies=True
-        )
+        launch_request = self._get_request(login_request, login_response, empty_cookies=True)
         with self.assertRaisesRegex(LtiException, "State not found"):
             self._launch(launch_request, tool_conf)
 
@@ -245,18 +242,14 @@ class ResourceLinkBase(TestLinkBase):
         post_data = self.post_launch_data.copy()
         post_data["id_token"] += ".absjdbasdj"
 
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
         with self.assertRaisesRegex(LtiException, "Invalid id_token"):
             self._launch(launch_request, tool_conf)
 
         post_data = self.post_launch_data.copy()
         post_data["id_token"] = "jbafjjsdbjasdabsjdbasdj1212121212.sdfhdhsf.sdfdsfdsf"
 
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
         with self.assertRaisesRegex(LtiException, "Invalid JWT format"):
             self._launch(launch_request, tool_conf)
 
@@ -266,9 +259,7 @@ class ResourceLinkBase(TestLinkBase):
         post_data = self.post_launch_data.copy()
         post_data["id_token"] += "jbafjjsdbjasdabsjdbasdj"
 
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
         with self.assertRaisesRegex(LtiException, "Can't decode id_token"):
             self._launch(launch_request, tool_conf)
 
@@ -282,39 +273,26 @@ class ResourceLinkBase(TestLinkBase):
         message_launch_data["aud"] = "dsfsdfsdfsdfsd"
         return message_launch_data
 
-    def _get_data_with_invalid_deployment(
-        self, *args
-    ):  # pylint: disable=unused-argument
+    def _get_data_with_invalid_deployment(self, *args):  # pylint: disable=unused-argument
         message_launch_data = self.expected_message_launch_data.copy()
-        message_launch_data[
-            "https://purl.imsglobal.org/spec/lti/claim/deployment_id"
-        ] = "dsfsdfsdfsdfsd"
+        message_launch_data["https://purl.imsglobal.org/spec/lti/claim/deployment_id"] = "dsfsdfsdfsdfsd"
         return message_launch_data
 
     def _get_data_with_invalid_message(self, *args):  # pylint: disable=unused-argument
         message_launch_data = self.expected_message_launch_data.copy()
-        message_launch_data["https://purl.imsglobal.org/spec/lti/claim/version"] = (
-            "1.2.0"
-        )
+        message_launch_data["https://purl.imsglobal.org/spec/lti/claim/version"] = "1.2.0"
         return message_launch_data
 
     def test_res_link_launch_invalid_nonce(self):
-
         tool_conf, login_request, login_response = self._make_oidc_login()
 
         post_data = self.post_launch_data.copy()
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
 
         with self.assertRaisesRegex(LtiException, '"nonce" is empty'):
-            self._launch_with_invalid_jwt_body(
-                self._get_data_without_nonce, launch_request, tool_conf
-            )
+            self._launch_with_invalid_jwt_body(self._get_data_without_nonce, launch_request, tool_conf)
 
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data, empty_session=True
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data, empty_session=True)
 
         with self.assertRaisesRegex(LtiException, "Invalid Nonce"):
             self._launch(launch_request, tool_conf)
@@ -323,42 +301,28 @@ class ResourceLinkBase(TestLinkBase):
         tool_conf, login_request, login_response = self._make_oidc_login()
 
         post_data = self.post_launch_data.copy()
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
 
-        with self.assertRaisesRegex(
-            LtiException, "Client id not registered for this issuer"
-        ):
-            self._launch_with_invalid_jwt_body(
-                self._get_data_with_invalid_aud, launch_request, tool_conf
-            )
+        with self.assertRaisesRegex(LtiException, "Client id not registered for this issuer"):
+            self._launch_with_invalid_jwt_body(self._get_data_with_invalid_aud, launch_request, tool_conf)
 
     def test_res_link_launch_invalid_deployment(self):
         tool_conf, login_request, login_response = self._make_oidc_login()
 
         post_data = self.post_launch_data.copy()
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
 
         with self.assertRaisesRegex(Exception, "Unable to find deployment"):
-            self._launch_with_invalid_jwt_body(
-                self._get_data_with_invalid_deployment, launch_request, tool_conf
-            )
+            self._launch_with_invalid_jwt_body(self._get_data_with_invalid_deployment, launch_request, tool_conf)
 
     def test_res_link_launch_invalid_message(self):
         tool_conf, login_request, login_response = self._make_oidc_login()
 
         post_data = self.post_launch_data.copy()
-        launch_request = self._get_request(
-            login_request, login_response, post_data=post_data
-        )
+        launch_request = self._get_request(login_request, login_response, post_data=post_data)
 
         with self.assertRaisesRegex(LtiException, "Incorrect version"):
-            self._launch_with_invalid_jwt_body(
-                self._get_data_with_invalid_message, launch_request, tool_conf
-            )
+            self._launch_with_invalid_jwt_body(self._get_data_with_invalid_message, launch_request, tool_conf)
 
 
 class TestDjangoResourceLink(DjangoMixin, ResourceLinkBase):

@@ -12,6 +12,7 @@ from .session import FastAPISessionService
 
 ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract)
 
+
 class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService]):
     def __init__(
         self,
@@ -22,12 +23,8 @@ class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessi
         launch_data_storage: Optional[LaunchDataStorage[Any]] = None,
         requests_session: Optional[Session] = None,
     ) -> None:
-        cookie_service = (
-            cookie_service if cookie_service else FastAPICookieService(request)
-        )
-        session_service = (
-            session_service if session_service else FastAPISessionService(request)
-        )
+        cookie_service = cookie_service if cookie_service else FastAPICookieService(request)
+        session_service = session_service if session_service else FastAPISessionService(request)
         super().__init__(
             request,
             tool_config,

@@ -76,15 +76,11 @@ class ToolConfJsonFile(ToolConfDict):
             if isinstance(iss_conf_dict[iss], list):
                 for iss_conf in iss_conf_dict[iss]:
                     client_id = t.cast(TIssConf, iss_conf).get("client_id")
-                    self._process_iss_conf_item(
-                        t.cast(TIssConf, iss_conf), iss, client_id
-                    )
+                    self._process_iss_conf_item(t.cast(TIssConf, iss_conf), iss, client_id)
             else:
                 self._process_iss_conf_item(t.cast(TIssConf, iss_conf_dict[iss]), iss)
 
-    def _process_iss_conf_item(
-        self, iss_conf: TIssConf, iss: str, client_id: str | None = None
-    ):
+    def _process_iss_conf_item(self, iss_conf: TIssConf, iss: str, client_id: str | None = None):
         private_key_file = iss_conf.get("private_key_file")
         if not private_key_file:
             raise Exception("iss config error: private_key_file not found")

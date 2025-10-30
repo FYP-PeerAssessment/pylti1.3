@@ -18,14 +18,8 @@ class SessionService:
         self.data_storage = SessionDataStorage()
         self.data_storage.set_request(request)
 
-    def _get_key(
-        self, key: str, nonce: str | None = None, add_prefix: bool = True
-    ):
-        return (
-            ((self._session_prefix + "-") if add_prefix else "")
-            + key
-            + (("-" + nonce) if nonce else "")
-        )
+    def _get_key(self, key: str, nonce: str | None = None, add_prefix: bool = True):
+        return ((self._session_prefix + "-") if add_prefix else "") + key + (("-" + nonce) if nonce else "")
 
     def _set_value(self, key: str, value: object):
         self.data_storage.set_value(key, value, exp=self._launch_data_lifetime)
