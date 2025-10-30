@@ -88,6 +88,7 @@ ignore = [
     # "PLR0902",  # too-many-instance-attributes, not available in ruff
     "PLR0904",  # too-many-public-methods
     # "PLR0903",  # too-few-public-methods, not available in ruff
+    "PLR2004",  # magic-value-comparison
     "PLR6301",  # no-self-use
 ]
 task-tags = ["FIXME", "XXX", "TODO"]
