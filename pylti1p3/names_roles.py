@@ -4,7 +4,7 @@ from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
 
-class TNamesAndRolesData(t.TypedDict, total=False):
+class TNamesAndRolesData(t.TypedDict):
     context_memberships_url: str
 
 
