@@ -122,3 +122,32 @@ max-statements = 50
 
 [tool.ruff.lint.isort]
 known-third-party = ["enchant"]
+
+[tool.basedpyright]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "standard"
+
+enableExperimentalFeatures = true
+reportUnusedCallResult = false
+reportImportCycles = false
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+deprecateTypingAliases = true
+reportPropertyTypeMismatch = "error"
+reportUntypedFunctionDecorator = "information"
+reportUntypedClassDecorator = "information"
+reportUntypedBaseClass = "information"
+reportUntypedNamedTuple = "information"
+reportPrivateUsage = "warning"
+reportConstantRedefinition = "information"
+reportDeprecated = "information"
+reportInconsistentConstructor = "warning"
+reportUnknownVariableType = "information"
+reportMissingParameterType = "warning"
+reportUnnecessaryIsInstance = "warning"
+reportUnnecessaryCast = "warning"
+reportUnnecessaryComparison = "error"
+reportUnnecessaryContains = "error"
+reportImplicitOverride = "error"
