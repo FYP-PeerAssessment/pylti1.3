@@ -1,12 +1,14 @@
 import typing as t
-from collections import abc
+
 from .launch_data_storage.session import SessionDataStorage
 from .request import Request
 from .launch_data_storage.base import LaunchDataStorage
 
+if t.TYPE_CHECKING:
+    from .message_launch import TLaunchData
+
 
 TStateParams = dict[str, object]
-TJwtBody = abc.Mapping[str, t.Any]
 
 
 class SessionService:
@@ -27,10 +29,10 @@ class SessionService:
     def _get_value(self, key: str) -> t.Any:
         return self.data_storage.get_value(key)
 
-    def get_launch_data(self, key: str) -> TJwtBody:
+    def get_launch_data(self, key: str) -> "TLaunchData":
         return self._get_value(self._get_key(key, add_prefix=False))
 
-    def save_launch_data(self, key: str, jwt_body: TJwtBody):
+    def save_launch_data(self, key: str, jwt_body: "TLaunchData"):
         self._set_value(self._get_key(key, add_prefix=False), jwt_body)
 
     def save_nonce(self, nonce: str):
