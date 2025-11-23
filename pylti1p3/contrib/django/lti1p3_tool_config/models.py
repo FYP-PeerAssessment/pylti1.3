@@ -10,12 +10,12 @@ from pylti1p3.registration import Registration
 
 class LtiToolKey(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False, unique=True, help_text=_("Key name"))
-    private_key = models.TextField(
+    private_key: models.TextField[str, str] = models.TextField(
         null=False,
         blank=False,
         help_text=_("Tool's generated Private key. Keep this value in secret"),
     )
-    public_key = models.TextField(null=True, blank=True, help_text=_("Tool's generated Public key"))
+    public_key: models.TextField[str | None, str | None] = models.TextField(null=True, blank=True, help_text=_("Tool's generated Public key"))
     public_jwk = models.TextField(
         null=True,
         blank=True,
@@ -47,7 +47,7 @@ class LtiTool(models.Model):
     issuer = models.CharField(
         max_length=255,
         help_text=_(
-            "This will usually look something like 'http://example.com'. " "Value provided by LTI 1.3 Platform"
+            "This will usually look something like 'http://example.com'. Value provided by LTI 1.3 Platform"
         ),
     )
     client_id = models.CharField(
@@ -71,23 +71,23 @@ class LtiTool(models.Model):
         max_length=1024,
         null=False,
         blank=False,
-        help_text=_("The platform's service authorization " "endpoint. Value provided by " "LTI 1.3 Platform"),
+        help_text=_("The platform's service authorization endpoint. Value provided by LTI 1.3 Platform"),
         validators=[URLValidator()],
     )
-    auth_audience = models.CharField(
+    auth_audience: models.CharField[str | None, str | None] = models.CharField(
         max_length=1024,
         null=True,
         blank=True,
         help_text=_("The platform's OAuth2 Audience (aud). Usually could be skipped"),
     )
-    key_set_url = models.CharField(
+    key_set_url: models.CharField[str | None, str | None] = models.CharField(
         max_length=1024,
         null=True,
         blank=True,
         help_text=_("The platform's JWKS endpoint. Value provided by LTI 1.3 Platform"),
         validators=[URLValidator()],
     )
-    key_set = models.TextField(
+    key_set: models.TextField[str | None, str | None] = models.TextField(
         null=True,
         blank=True,
         help_text=_(
@@ -96,8 +96,8 @@ class LtiTool(models.Model):
             "Value provided by LTI 1.3 Platform"
         ),
     )
-    tool_key = models.ForeignKey(LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools")
-    deployment_ids = models.TextField(
+    tool_key: models.ForeignKey[LtiToolKey, LtiToolKey] = models.ForeignKey(LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools")
+    deployment_ids: models.TextField[str, str] = models.TextField(
         null=False,
         blank=False,
         help_text=_(

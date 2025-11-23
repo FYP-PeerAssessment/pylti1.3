@@ -1,4 +1,6 @@
 import typing as t
+from collections import abc
+
 from ..deployment import Deployment
 from ..registration import Registration, TKeySet
 from .abstract import ToolConfAbstract
@@ -114,11 +116,14 @@ class ToolConfDict(ToolConfAbstract):
 
     def _get_registration(self, iss: str, iss_conf: TIssConf) -> Registration:
         reg = Registration()
+        tool_private_key = self.get_private_key(iss, iss_conf["client_id"])
+        if not tool_private_key:
+            raise Exception(f"Private key not found for iss {iss} client_id {iss_conf['client_id']}")
         reg.set_auth_login_url(iss_conf["auth_login_url"]).set_auth_token_url(iss_conf["auth_token_url"]).set_client_id(
             iss_conf["client_id"]
         ).set_key_set(iss_conf.get("key_set")).set_key_set_url(iss_conf.get("key_set_url")).set_issuer(
             iss
-        ).set_tool_private_key(self.get_private_key(iss, iss_conf["client_id"]))
+        ).set_tool_private_key(tool_private_key)
         auth_audience = iss_conf.get("auth_audience")
         if auth_audience:
             reg.set_auth_audience(auth_audience)
@@ -133,21 +138,34 @@ class ToolConfDict(ToolConfAbstract):
         d = Deployment()
         return d.set_deployment_id(deployment_id)
 
-    def find_registration_by_issuer(self, iss: str, *args, **kwargs):
+    @t.override
+    def find_registration_by_issuer(
+        self,
+        iss: str,
+        **unused_kwargs: t.Any
+    ) -> Registration:
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss)
         return self._get_registration(iss, iss_conf)
 
-    def find_registration_by_params(self, iss: str, client_id: str, *args, **kwargs):
+    @t.override
+    def find_registration_by_params(
+        self,
+        iss: str,
+        client_id: str,
+        **unused_kwargs: t.Any
+    ):
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss, client_id)
         return self._get_registration(iss, iss_conf)
 
+    @t.override
     def find_deployment(self, iss: str, deployment_id: str):
         iss_conf = self.get_iss_config(iss)
         return self._get_deployment(iss_conf, deployment_id)
 
-    def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str, *args, **kwargs):
+    @t.override
+    def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str | None):
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss, client_id)
         return self._get_deployment(iss_conf, deployment_id)
@@ -182,7 +200,7 @@ class ToolConfDict(ToolConfAbstract):
         else:
             self._private_key_one_client[iss] = key_content
 
-    def get_private_key(self, iss: str, client_id: str | None = None):
+    def get_private_key(self, iss: str, client_id: str | None = None) -> str | None:
         if self.check_iss_has_many_clients(iss):
             if not client_id:
                 raise Exception("Can't get private key: missing client_id")
@@ -213,12 +231,12 @@ class ToolConfDict(ToolConfAbstract):
         return config_iss
 
     @t.override
-    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs):
+    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **unused_kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=unused-argument
         if iss or client_id:
             return super().get_jwks(iss, client_id)
 
-        public_keys = []
+        public_keys: list[str] = []
         for iss_item1 in self._public_key_one_client.values():
             if iss_item1 not in public_keys:
                 public_keys.append(iss_item1)

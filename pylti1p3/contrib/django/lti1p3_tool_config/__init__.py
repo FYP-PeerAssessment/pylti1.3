@@ -1,18 +1,24 @@
 import json
+import typing as t
+from collections import abc
 
+from pylti1p3.actions import Action
 from pylti1p3.deployment import Deployment
 from pylti1p3.exception import LtiException
 from pylti1p3.registration import Registration
+from pylti1p3.request import Request
 from pylti1p3.tool_config.abstract import ToolConfAbstract
 
+if t.TYPE_CHECKING:
+    from .models import LtiTool, LtiToolKey
 
 default_app_config = "pylti1p3.contrib.django.lti1p3_tool_config.apps.PyLTI1p3ToolConfig"
 
 
 class DjangoDbToolConf(ToolConfAbstract):
-    _lti_tools = None
-    _tools_cls = None
-    _keys_cls = None
+    _lti_tools: dict[str, dict[str, "LtiTool"] | "LtiTool"]
+    _tools_cls: type["LtiTool"]
+    _keys_cls: type["LtiToolKey"]
 
     def __init__(self):
         # pylint: disable=import-outside-toplevel
@@ -23,9 +29,15 @@ class DjangoDbToolConf(ToolConfAbstract):
         self._tools_cls = LtiTool
         self._keys_cls = LtiToolKey
 
-    def get_lti_tool(self, iss, client_id):
+    @t.overload
+    def get_lti_tool(self, iss: str, client_id: str) -> "LtiTool": ...
+
+    @t.overload
+    def get_lti_tool(self, iss: str, client_id: None) -> "dict[str, LtiTool] | LtiTool": ...
+
+    def get_lti_tool(self, iss: str, client_id: str | None):
         # pylint: disable=no-member
-        lti_tool = self._lti_tools.get(iss) if client_id is None else self._lti_tools.get(iss, {}).get(client_id)
+        lti_tool: "dict[str, LtiTool] | LtiTool | None" = self._lti_tools.get(iss) if client_id is None else t.cast("LtiTool | None", self._lti_tools.get(iss, {}).get(client_id))
         if lti_tool:
             return lti_tool
 
@@ -45,21 +57,42 @@ class DjangoDbToolConf(ToolConfAbstract):
         else:
             if iss not in self._lti_tools:
                 self._lti_tools[iss] = {}
-            self._lti_tools[iss][client_id] = lti_tool
+            self._lti_tools[iss][client_id] = lti_tool  # pyright: ignore
 
         return lti_tool
 
-    def check_iss_has_one_client(self, iss):
+    @t.override
+    def check_iss_has_one_client(self, iss: str) -> t.Literal[False]:
         return False
 
-    def check_iss_has_many_clients(self, iss):
+    @t.override
+    def check_iss_has_many_clients(self, iss: str) -> t.Literal[True]:
         return True
 
-    def find_registration_by_issuer(self, iss, *args, **kwargs):
-        pass
+    @t.override
+    def find_registration_by_issuer(
+        self,
+        iss: str,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: abc.Mapping[str, t.Any] | None = None,
+    ) -> Registration:
+        raise NotImplementedError
 
-    def find_registration_by_params(self, iss, client_id, *args, **kwargs):
+    @t.override
+    def find_registration_by_params(
+        self,
+        iss: str,
+        client_id: str,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: abc.Mapping[str, t.Any] | None = None,
+    ) -> Registration:
         lti_tool = self.get_lti_tool(iss, client_id)
+        if isinstance(lti_tool, dict):
+            raise LtiException(f"iss {iss} has many client_ids, please provide client_id to find registration")
         auth_audience = lti_tool.auth_audience if lti_tool.auth_audience else None
         key_set = json.loads(lti_tool.key_set) if lti_tool.key_set else None
         key_set_url = lti_tool.key_set_url if lti_tool.key_set_url else None
@@ -73,18 +106,23 @@ class DjangoDbToolConf(ToolConfAbstract):
         ).set_tool_private_key(lti_tool.tool_key.private_key).set_tool_public_key(tool_public_key)
         return reg
 
-    def find_deployment(self, iss, deployment_id):
-        pass
+    @t.override
+    def find_deployment(self, iss: str, deployment_id: str) -> t.Never:
+        raise NotImplementedError
 
-    def find_deployment_by_params(self, iss, deployment_id, client_id, *args, **kwargs):
+    @t.override
+    def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str | None):
         lti_tool = self.get_lti_tool(iss, client_id)
-        deployment_ids = json.loads(lti_tool.deployment_ids) if lti_tool.deployment_ids else []
+        if isinstance(lti_tool, dict):
+            raise LtiException(f"iss {iss} has many client_ids, please provide client_id to find deployment")
+        deployment_ids: list[str] = json.loads(lti_tool.deployment_ids) if lti_tool.deployment_ids else []
         if deployment_id not in deployment_ids:
             return None
         d = Deployment()
         return d.set_deployment_id(deployment_id)
 
-    def get_jwks(self, iss=None, client_id=None, **kwargs):
+    @t.override
+    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=no-member
         search_kwargs = {}
         if iss:
@@ -92,6 +130,7 @@ class DjangoDbToolConf(ToolConfAbstract):
         if client_id:
             search_kwargs["lti_tools__client_id"] = client_id
 
+        assert self._keys_cls is not None
         if search_kwargs:
             search_kwargs["lti_tools__is_active"] = True
             qs = self._keys_cls.objects.filter(**search_kwargs)

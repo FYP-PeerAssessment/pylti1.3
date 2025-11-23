@@ -2,6 +2,9 @@ from enum import StrEnum
 import typing as t
 import collections.abc
 from abc import ABC, abstractmethod
+
+from ..actions import Action
+from ..request import Request
 from ..deployment import Deployment
 from ..registration import Registration
 
@@ -36,14 +39,28 @@ class ToolConfAbstract(ABC):
     def set_iss_has_many_clients(self, iss: str):
         self.issuers_relation_types[iss] = IssuerToClientRelation.MANY_CLIENTS_IDS_PER_ISSUER
 
-    def find_registration(self, iss: str, *args, **kwargs) -> Registration:
+    def find_registration(
+        self,
+        iss: str,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: collections.abc.Mapping[str, t.Any] | None = None,
+    ) -> Registration:
         """
         Backward compatibility method
         """
-        return self.find_registration_by_issuer(iss, *args, **kwargs)
+        return self.find_registration_by_issuer(iss, action=action, request=request, jwt_body=jwt_body)
 
     @abstractmethod
-    def find_registration_by_issuer(self, iss: str, *args, **kwargs) -> Registration:
+    def find_registration_by_issuer(
+        self,
+        iss: str,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: collections.abc.Mapping[str, t.Any] | None = None,
+    ) -> Registration:
         """
         Find registration in case if iss has only one client id, i.e
         in case of { ... "iss": { ... "client_id: "client" ... }, ... } config.
@@ -53,7 +70,15 @@ class ToolConfAbstract(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find_registration_by_params(self, iss: str, client_id: str, *args, **kwargs) -> Registration:
+    def find_registration_by_params(
+        self,
+        iss: str,
+        client_id: str,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: collections.abc.Mapping[str, t.Any] | None = None,
+    ) -> Registration:
         """
         Find registration in case if iss has many client ids, i.e
         in case of { ... "iss": [ { ... "client_id: "client1" ... }, { ... "client_id: "client2" ... } ], ... } config.
@@ -74,9 +99,7 @@ class ToolConfAbstract(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find_deployment_by_params(
-        self, iss: str, deployment_id: str, client_id: str, *args, **kwargs
-    ) -> Deployment | None:
+    def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str | None) -> Deployment | None:
         """
         Find deployment in case if iss has many client ids, i.e
         in case of { ... "iss": [ { ... "client_id: "client1" ... }, { ... "client_id: "client2" ... } ], ... } config.
@@ -86,7 +109,15 @@ class ToolConfAbstract(ABC):
         """
         raise NotImplementedError
 
-    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs):
+    def get_jwks(
+        self,
+        iss: str | None = None,
+        client_id: str | None = None,
+        *,
+        action: Action | None = None,
+        request: Request | None = None,
+        jwt_body: collections.abc.Mapping[str, t.Any] | None = None,
+    ) -> dict[t.Literal["keys"], list[collections.abc.Mapping[str, t.Any]]]:
         keys: list[collections.abc.Mapping[str, t.Any]] = []
         if iss:
             if self.check_iss_has_one_client(iss):
@@ -94,7 +125,7 @@ class ToolConfAbstract(ABC):
             elif self.check_iss_has_many_clients(iss):
                 if not client_id:
                     raise Exception("client_id is not specified")
-                reg = self.find_registration_by_params(iss, client_id, **kwargs)
+                reg = self.find_registration_by_params(iss, client_id, action=action, request=request, jwt_body=jwt_body)
             else:
                 raise Exception("Invalid issuer relation type")
             keys = reg.get_jwks()
