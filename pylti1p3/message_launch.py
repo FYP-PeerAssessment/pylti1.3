@@ -41,20 +41,20 @@ from .tool_config import ToolConfAbstract
 
 
 class TResourceLinkClaim(t.TypedDict, total=False):
-    id: t.Required[str]
+    id: te.Required[str]
     description: str
     title: str
 
 
 class TContextClaim(t.TypedDict, total=False):
-    id: t.Required[str]
+    id: te.Required[str]
     label: str
     title: str
     type: list[str]
 
 
 class TToolPlatformClaim(t.TypedDict, total=False):
-    guid: t.Required[str]
+    guid: te.Required[str]
     contact_email: str
     description: str
     name: str
@@ -70,7 +70,7 @@ class TLearningInformationServicesClaim(t.TypedDict, total=False):
 
 
 class TMigrationClaim(t.TypedDict, total=False):
-    oauth_consumer_key: t.Required[str]
+    oauth_consumer_key: te.Required[str]
     oauth_consumer_key_sign: str
     user_id: str
     context_id: str
@@ -79,7 +79,7 @@ class TMigrationClaim(t.TypedDict, total=False):
 
 
 class TForUserClaim(t.TypedDict, total=False):
-    user_id: t.Required[str]
+    user_id: te.Required[str]
     person_sourcedId: str
     given_name: str
     family_name: str
@@ -93,10 +93,10 @@ TLaunchData = t.TypedDict(
     "TLaunchData",
     {
         # Required data
-        "iss": t.Required[str],
-        "nonce": t.Required[str],
-        "aud": t.Required[list[str] | str],
-        "https://purl.imsglobal.org/spec/lti/claim/message_type": t.Required[
+        "iss": te.Required[str],
+        "nonce": te.Required[str],
+        "aud": te.Required[list[str] | str],
+        "https://purl.imsglobal.org/spec/lti/claim/message_type": te.Required[
             t.Literal[
                 "LtiResourceLinkRequest",
                 "LtiDeepLinkingRequest",
@@ -104,12 +104,12 @@ TLaunchData = t.TypedDict(
                 "LtiSubmissionReviewRequest",
             ]
         ],
-        "https://purl.imsglobal.org/spec/lti/claim/version": t.Required[t.Literal["1.3.0"]],
-        "https://purl.imsglobal.org/spec/lti/claim/deployment_id": t.Required[str],
-        "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": t.Required[str],
-        "https://purl.imsglobal.org/spec/lti/claim/resource_link": t.Required[TResourceLinkClaim],
-        "https://purl.imsglobal.org/spec/lti/claim/roles": t.Required[list[str]],
-        "sub": t.Required[str],
+        "https://purl.imsglobal.org/spec/lti/claim/version": te.Required[t.Literal["1.3.0"]],
+        "https://purl.imsglobal.org/spec/lti/claim/deployment_id": te.Required[str],
+        "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": te.Required[str],
+        "https://purl.imsglobal.org/spec/lti/claim/resource_link": te.Required[TResourceLinkClaim],
+        "https://purl.imsglobal.org/spec/lti/claim/roles": te.Required[list[str]],
+        "sub": te.Required[str],
         # Optional data
         "given_name": str,
         "family_name": str,

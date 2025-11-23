@@ -1,21 +1,23 @@
 import typing as t
+import typing_extensions as te
+
 from .utils import add_param_to_url
 from .service_connector import ServiceConnector
 
 
 class TGroupsServiceData(t.TypedDict, total=False):
     # Required data
-    context_groups_url: t.Required[str]
-    scope: t.Required[list[t.Literal["https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"]]]
-    service_versions: t.Required[list[str]]
+    context_groups_url: te.Required[str]
+    scope: te.Required[list[t.Literal["https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"]]]
+    service_versions: te.Required[list[str]]
     # Optional data
     context_group_sets_url: str
 
 
 class TGroup(t.TypedDict, total=False):
     # Required data
-    id: t.Required[str | int]
-    name: t.Required[str]
+    id: te.Required[str | int]
+    name: te.Required[str]
     # Optional data
     tag: str
     set_id: str | int
@@ -23,8 +25,8 @@ class TGroup(t.TypedDict, total=False):
 
 class TSet(t.TypedDict, total=False):
     # Required data
-    id: t.Required[str | int]
-    name: t.Required[str]
+    id: te.Required[str | int]
+    name: te.Required[str]
     # Optional data
     groups: list[TGroup]
 

@@ -1,5 +1,6 @@
 import time
 import typing as t
+import typing_extensions as te
 import uuid
 
 import jwt  # type: ignore
@@ -9,9 +10,9 @@ from .registration import Registration
 
 class TDeepLinkData(t.TypedDict, total=False):
     # Required data:
-    deep_link_return_url: t.Required[str]
-    accept_types: t.Required[list[t.Literal["link", "ltiResourceLink"]]]
-    accept_presentation_document_targets: t.Required[list[t.Literal["iframe", "window", "embed"]]]
+    deep_link_return_url: te.Required[str]
+    accept_types: te.Required[list[t.Literal["link", "ltiResourceLink"]]]
+    accept_presentation_document_targets: te.Required[list[t.Literal["iframe", "window", "embed"]]]
     # Optional data
     accept_multiple: bool | t.Literal["true", "false"]
     auto_create: bool | t.Literal["true", "false"]

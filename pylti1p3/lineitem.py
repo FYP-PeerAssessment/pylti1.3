@@ -1,11 +1,12 @@
 import json
 import typing as t
+import typing_extensions as te
 from .exception import LtiException
 
 
 class TSubmissionReview(t.TypedDict, total=False):
     # Required data
-    reviewableStatus: t.Required[list]
+    reviewableStatus: te.Required[list]
     # Optional data
     label: str
     url: str

@@ -1,4 +1,5 @@
 import typing as t
+import typing_extensions as te
 from collections import abc
 
 from ..deployment import Deployment
@@ -10,13 +11,13 @@ class TIssConf(t.TypedDict, total=False):
     """Tool Issuer Configuration"""
 
     default: bool
-    client_id: t.Required[str]
-    auth_login_url: t.Required[str]
-    auth_token_url: t.Required[str]
+    client_id: te.Required[str]
+    auth_login_url: te.Required[str]
+    auth_token_url: te.Required[str]
     auth_audience: str | None
     key_set_url: str | None
     key_set: TKeySet | None
-    deployment_ids: t.Required[list[str]]
+    deployment_ids: te.Required[list[str]]
     private_key_file: str | None
     public_key_file: str | None
 
