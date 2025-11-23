@@ -22,7 +22,7 @@ class TIssConf(t.TypedDict, total=False):
     public_key_file: str | None
 
 
-TJsonData = dict[str, list[TIssConf] | TIssConf]
+TJsonData = abc.Mapping[str, list[TIssConf] | TIssConf]
 
 
 class ToolConfDict(ToolConfAbstract):
