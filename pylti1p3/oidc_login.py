@@ -1,4 +1,5 @@
 import typing as t
+import typing_extensions as te
 import uuid
 from abc import ABC, abstractmethod
 from urllib.parse import urlencode
@@ -183,7 +184,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
         return registration
 
-    def pass_params_to_launch(self, params: dict[str, object]) -> t.Self:
+    def pass_params_to_launch(self, params: dict[str, object]) -> te.Self:
         """
         Ability to pass custom params from oidc login to launch.
         """
@@ -192,7 +193,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
     def enable_check_cookies(
         self, main_msg: str | None = None, click_msg: str | None = None, loading_msg: str | None = None, **kwargs
-    ) -> t.Self:
+    ) -> te.Self:
         # pylint: disable=unused-argument
         self._cookies_check = True
         if main_msg:
@@ -203,7 +204,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
             self._cookies_check_loading_text = loading_msg
         return self
 
-    def disable_check_cookies(self) -> t.Self:
+    def disable_check_cookies(self) -> te.Self:
         self._cookies_check = False
         return self
 
@@ -243,7 +244,7 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
 
         return page.get_html()
 
-    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> t.Self:
+    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> te.Self:
         data_storage.set_request(self._request)
         session_cookie_name = data_storage.get_session_cookie_name()
         if session_cookie_name:
@@ -255,6 +256,6 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
         self._session_service.set_data_storage(data_storage)
         return self
 
-    def set_launch_data_lifetime(self, time_sec: int) -> t.Self:
+    def set_launch_data_lifetime(self, time_sec: int) -> te.Self:
         self._session_service.set_launch_data_lifetime(time_sec)
         return self

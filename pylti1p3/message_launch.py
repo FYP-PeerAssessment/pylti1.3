@@ -3,6 +3,7 @@ import collections.abc
 import hashlib
 import json
 import typing as t
+import typing_extensions as te
 import uuid
 from abc import ABC, abstractmethod
 
@@ -202,23 +203,23 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
     def _get_request_param(self, key: str) -> str:
         raise NotImplementedError
 
-    def set_launch_id(self, launch_id: str) -> t.Self:
+    def set_launch_id(self, launch_id: str) -> te.Self:
         self._launch_id = launch_id
         return self
 
-    def set_auto_validation(self, enable: bool) -> t.Self:
+    def set_auto_validation(self, enable: bool) -> te.Self:
         self._auto_validation = enable
         return self
 
-    def set_jwt(self, val: TJwtData) -> t.Self:
+    def set_jwt(self, val: TJwtData) -> te.Self:
         self._jwt = val
         return self
 
-    def set_jwt_verify_options(self, val: dict[str, bool]) -> t.Self:
+    def set_jwt_verify_options(self, val: dict[str, bool]) -> te.Self:
         self._jwt_verify_options = val
         return self
 
-    def set_restored(self) -> t.Self:
+    def set_restored(self) -> te.Self:
         self._restored = True
         return self
 
@@ -266,7 +267,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
             .validate_registration()
         )
 
-    def validate(self) -> t.Self:
+    def validate(self) -> te.Self:
         """
         Validates all aspects of an incoming LTI message launch and caches the launch if successful.
         """
@@ -563,7 +564,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         # Could not find public key with a matching kid and alg.
         raise LtiException("Unable to find public key")
 
-    def validate_state(self) -> t.Self:
+    def validate_state(self) -> te.Self:
         # Check State for OIDC.
         state_from_request = self._get_request_param("state")
         if not state_from_request:
@@ -578,7 +579,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_jwt_format(self) -> t.Self:
+    def validate_jwt_format(self) -> te.Self:
         id_token = self._get_id_token()
         jwt_parts = id_token.split(".")
 
@@ -599,7 +600,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_nonce(self) -> t.Self:
+    def validate_nonce(self) -> te.Self:
         nonce = self._get_jwt_body().get("nonce")
         if not nonce:
             raise LtiException('"nonce" is empty')
@@ -610,7 +611,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_registration(self) -> t.Self:
+    def validate_registration(self) -> te.Self:
         iss = self.get_iss()
         jwt_body = self._get_jwt_body()
         client_id = self.get_client_id()
@@ -641,7 +642,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_jwt_signature(self) -> t.Self:
+    def validate_jwt_signature(self) -> te.Self:
         id_token = self._get_id_token()
 
         # Fetch public key object
@@ -659,7 +660,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_deployment(self) -> t.Self:
+    def validate_deployment(self) -> te.Self:
         iss = self.get_iss()
         client_id = self.get_client_id()
         deployment_id = self._get_deployment_id()
@@ -675,7 +676,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def validate_message(self) -> t.Self:
+    def validate_message(self) -> te.Self:
         jwt_body = self._get_jwt_body()
         message_type = jwt_body.get("https://purl.imsglobal.org/spec/lti/claim/message_type", None)
         if not message_type:
@@ -697,7 +698,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
 
         return self
 
-    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> t.Self:
+    def set_launch_data_storage(self, data_storage: LaunchDataStorage[t.Any]) -> te.Self:
         data_storage.set_request(self._request)
         session_cookie_name = data_storage.get_session_cookie_name()
         if session_cookie_name:
@@ -709,11 +710,11 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         self._session_service.set_data_storage(data_storage)
         return self
 
-    def set_launch_data_lifetime(self, time_sec: int) -> t.Self:
+    def set_launch_data_lifetime(self, time_sec: int) -> te.Self:
         self._session_service.set_launch_data_lifetime(time_sec)
         return self
 
-    def save_launch_data(self) -> t.Self:
+    def save_launch_data(self) -> te.Self:
         state_from_request = self._get_request_param("state")
         id_token_hash = self._get_id_token_hash()
 
