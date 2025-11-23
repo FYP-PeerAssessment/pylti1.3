@@ -717,7 +717,7 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         state_from_request = self._get_request_param("state")
         id_token_hash = self._get_id_token_hash()
 
-        self._session_service.save_launch_data(self._launch_id, self._jwt["body"])
+        self._session_service.save_launch_data(self._launch_id, self._get_jwt_body())
         self._session_service.set_state_valid(state_from_request, id_token_hash)
         return self
 
