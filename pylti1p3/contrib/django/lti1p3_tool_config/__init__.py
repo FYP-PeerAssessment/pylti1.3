@@ -1,5 +1,6 @@
 import json
 import typing as t
+import typing_extensions as te
 from collections import abc
 
 from pylti1p3.actions import Action
@@ -61,15 +62,15 @@ class DjangoDbToolConf(ToolConfAbstract):
 
         return lti_tool
 
-    @t.override
+    @te.override
     def check_iss_has_one_client(self, iss: str) -> t.Literal[False]:
         return False
 
-    @t.override
+    @te.override
     def check_iss_has_many_clients(self, iss: str) -> t.Literal[True]:
         return True
 
-    @t.override
+    @te.override
     def find_registration_by_issuer(
         self,
         iss: str,
@@ -80,7 +81,7 @@ class DjangoDbToolConf(ToolConfAbstract):
     ) -> Registration:
         raise NotImplementedError
 
-    @t.override
+    @te.override
     def find_registration_by_params(
         self,
         iss: str,
@@ -106,11 +107,11 @@ class DjangoDbToolConf(ToolConfAbstract):
         ).set_tool_private_key(lti_tool.tool_key.private_key).set_tool_public_key(tool_public_key)
         return reg
 
-    @t.override
-    def find_deployment(self, iss: str, deployment_id: str) -> t.Never:
+    @te.override
+    def find_deployment(self, iss: str, deployment_id: str) -> te.Never:
         raise NotImplementedError
 
-    @t.override
+    @te.override
     def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str | None):
         lti_tool = self.get_lti_tool(iss, client_id)
         if isinstance(lti_tool, dict):
@@ -121,7 +122,7 @@ class DjangoDbToolConf(ToolConfAbstract):
         d = Deployment()
         return d.set_deployment_id(deployment_id)
 
-    @t.override
+    @te.override
     def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=no-member
         search_kwargs = {}

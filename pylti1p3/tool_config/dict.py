@@ -139,7 +139,7 @@ class ToolConfDict(ToolConfAbstract):
         d = Deployment()
         return d.set_deployment_id(deployment_id)
 
-    @t.override
+    @te.override
     def find_registration_by_issuer(
         self,
         iss: str,
@@ -149,7 +149,7 @@ class ToolConfDict(ToolConfAbstract):
         iss_conf = self.get_iss_config(iss)
         return self._get_registration(iss, iss_conf)
 
-    @t.override
+    @te.override
     def find_registration_by_params(
         self,
         iss: str,
@@ -160,12 +160,12 @@ class ToolConfDict(ToolConfAbstract):
         iss_conf = self.get_iss_config(iss, client_id)
         return self._get_registration(iss, iss_conf)
 
-    @t.override
+    @te.override
     def find_deployment(self, iss: str, deployment_id: str):
         iss_conf = self.get_iss_config(iss)
         return self._get_deployment(iss_conf, deployment_id)
 
-    @t.override
+    @te.override
     def find_deployment_by_params(self, iss: str, deployment_id: str, client_id: str | None):
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss, client_id)
@@ -231,7 +231,7 @@ class ToolConfDict(ToolConfAbstract):
             raise Exception(f"iss {iss} [client_id={client_id}] not found in settings")
         return config_iss
 
-    @t.override
+    @te.override
     def get_jwks(self, iss: str | None = None, client_id: str | None = None, **unused_kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=unused-argument
         if iss or client_id:
