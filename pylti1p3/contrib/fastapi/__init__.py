@@ -5,3 +5,8 @@ from .message_launch import FastAPIMessageLaunch as FastAPIMessageLaunch
 from .oidc_login import FastAPIOIDCLogin as FastAPIOIDCLogin
 from .request import FastAPIRequest as FastAPIRequest
 from .session import FastAPISessionService as FastAPISessionService
+from .insecure import (
+    InsecureFastAPIOIDCLogin as InsecureFastAPIOIDCLogin,
+    InsecureFastAPIMessageLaunch as InsecureFastAPIMessageLaunch,
+    InsecureToolConf as InsecureToolConf,
+)
