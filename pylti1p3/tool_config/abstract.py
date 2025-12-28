@@ -125,7 +125,9 @@ class ToolConfAbstract(ABC):
             elif self.check_iss_has_many_clients(iss):
                 if not client_id:
                     raise Exception("client_id is not specified")
-                reg = self.find_registration_by_params(iss, client_id, action=action, request=request, jwt_body=jwt_body)
+                reg = self.find_registration_by_params(
+                    iss, client_id, action=action, request=request, jwt_body=jwt_body
+                )
             else:
                 raise Exception("Invalid issuer relation type")
             keys = reg.get_jwks()

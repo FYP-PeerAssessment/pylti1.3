@@ -109,7 +109,9 @@ TLaunchData = t.TypedDict(
         "https://purl.imsglobal.org/spec/lti/claim/target_link_uri": te.Required[str],
         "https://purl.imsglobal.org/spec/lti/claim/resource_link": te.Required[TResourceLinkClaim],
         "https://purl.imsglobal.org/spec/lti/claim/roles": te.Required[list[str]],
-        "sub": te.Required[str | None],  # None for anonymous users: https://www.imsglobal.org/spec/lti/v1p3/#anonymous-launch-case
+        "sub": te.Required[
+            str | None
+        ],  # None for anonymous users: https://www.imsglobal.org/spec/lti/v1p3/#anonymous-launch-case
         # Optional data
         "given_name": str,
         "family_name": str,

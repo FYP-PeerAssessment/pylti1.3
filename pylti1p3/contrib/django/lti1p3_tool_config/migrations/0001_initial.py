@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "private_key",
-                    models.TextField(help_text="Tool's generated Private key. " "Keep this value in secret"),
+                    models.TextField(help_text="Tool's generated Private key. Keep this value in secret"),
                 ),
                 (
                     "public_key",
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                     "public_jwk",
                     models.TextField(
                         blank=True,
-                        help_text="Tool's generated Public key (from the " "field above) presented as JWK.",
+                        help_text="Tool's generated Public key (from the field above) presented as JWK.",
                         null=True,
                     ),
                 ),
@@ -79,13 +79,13 @@ class Migration(migrations.Migration):
                     "use_by_default",
                     models.BooleanField(
                         default=False,
-                        help_text="This iss config will be used in case " "if client-id was not passed",
+                        help_text="This iss config will be used in case if client-id was not passed",
                     ),
                 ),
                 (
                     "auth_login_url",
                     models.CharField(
-                        help_text="The platform's OIDC login endpoint. " "Value provided by LTI 1.3 Platform",
+                        help_text="The platform's OIDC login endpoint. Value provided by LTI 1.3 Platform",
                         max_length=1024,
                         validators=[django.core.validators.URLValidator()],
                     ),
@@ -93,8 +93,7 @@ class Migration(migrations.Migration):
                 (
                     "auth_token_url",
                     models.CharField(
-                        help_text="The platform's service authorization endpoint. "
-                        "Value provided by LTI 1.3 Platform",
+                        help_text="The platform's service authorization endpoint. Value provided by LTI 1.3 Platform",
                         max_length=1024,
                         validators=[django.core.validators.URLValidator()],
                     ),
@@ -103,7 +102,7 @@ class Migration(migrations.Migration):
                     "auth_audience",
                     models.CharField(
                         blank=True,
-                        help_text="The platform's OAuth2 Audience (aud). " "Usually could be skipped",
+                        help_text="The platform's OAuth2 Audience (aud). Usually could be skipped",
                         max_length=1024,
                         null=True,
                     ),
@@ -112,7 +111,7 @@ class Migration(migrations.Migration):
                     "key_set_url",
                     models.CharField(
                         blank=True,
-                        help_text="The platform's JWKS endpoint. " "Value provided by LTI 1.3 Platform",
+                        help_text="The platform's JWKS endpoint. Value provided by LTI 1.3 Platform",
                         max_length=1024,
                         null=True,
                         validators=[django.core.validators.URLValidator()],

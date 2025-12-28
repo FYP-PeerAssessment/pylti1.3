@@ -112,7 +112,7 @@ class ToolConfDict(ToolConfAbstract):
                 raise ValueError(f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer")
         if not isinstance(iss_conf["deployment_ids"], list):
             raise ValueError(
-                f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. " f"Must be a list"
+                f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. Must be a list"
             )
 
     def _get_registration(self, iss: str, iss_conf: TIssConf) -> Registration:
@@ -140,22 +140,13 @@ class ToolConfDict(ToolConfAbstract):
         return d.set_deployment_id(deployment_id)
 
     @te.override
-    def find_registration_by_issuer(
-        self,
-        iss: str,
-        **unused_kwargs: t.Any
-    ) -> Registration:
+    def find_registration_by_issuer(self, iss: str, **unused_kwargs: t.Any) -> Registration:
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss)
         return self._get_registration(iss, iss_conf)
 
     @te.override
-    def find_registration_by_params(
-        self,
-        iss: str,
-        client_id: str,
-        **unused_kwargs: t.Any
-    ):
+    def find_registration_by_params(self, iss: str, client_id: str, **unused_kwargs: t.Any):
         # pylint: disable=unused-argument
         iss_conf = self.get_iss_config(iss, client_id)
         return self._get_registration(iss, iss_conf)
@@ -232,7 +223,9 @@ class ToolConfDict(ToolConfAbstract):
         return config_iss
 
     @te.override
-    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **unused_kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
+    def get_jwks(
+        self, iss: str | None = None, client_id: str | None = None, **unused_kwargs: t.Any
+    ) -> dict[t.Literal["keys"], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=unused-argument
         if iss or client_id:
             return super().get_jwks(iss, client_id)

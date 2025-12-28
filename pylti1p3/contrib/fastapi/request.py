@@ -1,4 +1,4 @@
-from typing import Any, Optional, Dict
+from typing import Any
 
 import fastapi  # type: ignore
 import starlette.datastructures  # type: ignore
@@ -25,15 +25,15 @@ class FastAPIRequest(Request):
         self._form_data = form_data
 
     @property
-    def session(self) -> Dict[str, Any]:
+    def session(self) -> dict[str, Any]:
         return self._request.session
 
-    def get_param(self, key: str) -> Optional[str]:
+    def get_param(self, key: str) -> str | None:
         if self._request.method == "GET":
             return self._request.query_params.get(key, None)
         return self._form_data.get(key)
 
-    def get_cookie(self, key: str) -> Optional[str]:
+    def get_cookie(self, key: str) -> str | None:
         return self._request.cookies.get(key, None)
 
     def is_secure(self) -> bool:

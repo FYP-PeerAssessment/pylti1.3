@@ -38,7 +38,11 @@ class DjangoDbToolConf(ToolConfAbstract):
 
     def get_lti_tool(self, iss: str, client_id: str | None):
         # pylint: disable=no-member
-        lti_tool: "dict[str, LtiTool] | LtiTool | None" = self._lti_tools.get(iss) if client_id is None else t.cast("LtiTool | None", self._lti_tools.get(iss, {}).get(client_id))
+        lti_tool: dict[str, LtiTool] | LtiTool | None = (
+            self._lti_tools.get(iss)
+            if client_id is None
+            else t.cast("LtiTool | None", self._lti_tools.get(iss, {}).get(client_id))
+        )
         if lti_tool:
             return lti_tool
 
@@ -123,7 +127,9 @@ class DjangoDbToolConf(ToolConfAbstract):
         return d.set_deployment_id(deployment_id)
 
     @te.override
-    def get_jwks(self, iss: str | None = None, client_id: str | None = None, **kwargs: t.Any) -> dict[t.Literal['keys'], list[abc.Mapping[str, t.Any]]]:
+    def get_jwks(
+        self, iss: str | None = None, client_id: str | None = None, **kwargs: t.Any
+    ) -> dict[t.Literal["keys"], list[abc.Mapping[str, t.Any]]]:
         # pylint: disable=no-member
         search_kwargs = {}
         if iss:

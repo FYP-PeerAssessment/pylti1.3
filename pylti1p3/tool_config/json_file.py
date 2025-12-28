@@ -63,9 +63,7 @@ class ToolConfJsonFile(ToolConfDict):
         config_path = Path(config_file)
 
         if not config_path.is_file():
-            raise Exception(
-                "LTI tool config file not found: " + str(config_path)
-            )
+            raise Exception("LTI tool config file not found: " + str(config_path))
         self._configs_dir = str(config_path.parent)
 
         with config_path.open(encoding="utf-8") as cfg:

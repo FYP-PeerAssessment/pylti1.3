@@ -1,4 +1,4 @@
-from typing import Any, Optional, TypeVar, override
+from typing import Any, TypeVar, override
 
 from requests import Session
 
@@ -18,10 +18,10 @@ class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessi
         self,
         request: FastAPIRequest,
         tool_config: ToolConfT,
-        session_service: Optional[FastAPISessionService] = None,
-        cookie_service: Optional[FastAPICookieService] = None,
-        launch_data_storage: Optional[LaunchDataStorage[Any]] = None,
-        requests_session: Optional[Session] = None,
+        session_service: FastAPISessionService | None = None,
+        cookie_service: FastAPICookieService | None = None,
+        launch_data_storage: LaunchDataStorage[Any] | None = None,
+        requests_session: Session | None = None,
     ) -> None:
         cookie_service = cookie_service if cookie_service else FastAPICookieService(request)
         session_service = session_service if session_service else FastAPISessionService(request)

@@ -1,4 +1,4 @@
-from typing import Optional, TypeVar
+from typing import TypeVar
 
 import fastapi
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -12,9 +12,9 @@ ResponseT = TypeVar("ResponseT", bound=fastapi.Response)
 
 class FastAPIRedirect(Redirect[fastapi.Response]):
     _location: str
-    _cookie_service: Optional[FastAPICookieService]
+    _cookie_service: FastAPICookieService | None
 
-    def __init__(self, location: str, cookie_service: Optional[FastAPICookieService] = None) -> None:
+    def __init__(self, location: str, cookie_service: FastAPICookieService | None = None) -> None:
         super().__init__()
         self._location = location
         self._cookie_service = cookie_service

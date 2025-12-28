@@ -1,4 +1,4 @@
-from typing import Any, Optional, override
+from typing import Any, override
 
 import fastapi
 from fastapi.responses import HTMLResponse
@@ -19,9 +19,9 @@ class FastAPIOIDCLogin(
         self,
         request: FastAPIRequest,
         tool_config: ToolConfT,
-        session_service: Optional[FastAPISessionService] = None,
-        cookie_service: Optional[FastAPICookieService] = None,
-        launch_data_storage: Optional[LaunchDataStorage[Any]] = None,
+        session_service: FastAPISessionService | None = None,
+        cookie_service: FastAPICookieService | None = None,
+        launch_data_storage: LaunchDataStorage[Any] | None = None,
     ) -> None:
         cookie_service = cookie_service if cookie_service else FastAPICookieService(request)
         session_service = session_service if session_service else FastAPISessionService(request)

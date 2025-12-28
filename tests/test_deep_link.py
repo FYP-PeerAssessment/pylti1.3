@@ -162,9 +162,7 @@ class DeepLinkBase(TestLinkBase):
 
         html = validated_message_launch.get_deep_link().output_response_form([resource])
         self.assertTrue(
-            html.startswith(
-                f'<form id="lti13_deep_link_auto_submit" action="{deep_link_return_url}" ' f'method="POST">'
-            )
+            html.startswith(f'<form id="lti13_deep_link_auto_submit" action="{deep_link_return_url}" method="POST">')
         )
         self.assertTrue('<input type="hidden" name="JWT" value=' in html)
         self.assertTrue(

@@ -15,7 +15,9 @@ class LtiToolKey(models.Model):
         blank=False,
         help_text=_("Tool's generated Private key. Keep this value in secret"),
     )
-    public_key: models.TextField[str | None, str | None] = models.TextField(null=True, blank=True, help_text=_("Tool's generated Public key"))
+    public_key: models.TextField[str | None, str | None] = models.TextField(
+        null=True, blank=True, help_text=_("Tool's generated Public key")
+    )
     public_jwk = models.TextField(
         null=True,
         blank=True,
@@ -46,9 +48,7 @@ class LtiTool(models.Model):
     is_active = models.BooleanField(default=True)
     issuer = models.CharField(
         max_length=255,
-        help_text=_(
-            "This will usually look something like 'http://example.com'. Value provided by LTI 1.3 Platform"
-        ),
+        help_text=_("This will usually look something like 'http://example.com'. Value provided by LTI 1.3 Platform"),
     )
     client_id = models.CharField(
         max_length=255,
@@ -96,7 +96,9 @@ class LtiTool(models.Model):
             "Value provided by LTI 1.3 Platform"
         ),
     )
-    tool_key: models.ForeignKey[LtiToolKey, LtiToolKey] = models.ForeignKey(LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools")
+    tool_key: models.ForeignKey[LtiToolKey, LtiToolKey] = models.ForeignKey(
+        LtiToolKey, on_delete=models.PROTECT, related_name="lti_tools"
+    )
     deployment_ids: models.TextField[str, str] = models.TextField(
         null=False,
         blank=False,
