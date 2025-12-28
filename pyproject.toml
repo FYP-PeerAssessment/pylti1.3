@@ -87,7 +87,7 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "PL"]
+select = ["E", "F", "W", "PLR"]
 ignore = [
     "PLC0414",  # useless-import-alias
     "PLR0913",  # too-many-arguments
