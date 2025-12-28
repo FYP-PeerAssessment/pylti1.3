@@ -79,7 +79,7 @@ dev = [
 ]
 
 [tool.ruff]
-target-version = "py37"
+target-version = "py310"
 line-length = 120
 extend-exclude = [
   "CVS",   # mirror: ignore=CVS
@@ -87,7 +87,13 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "PLR"]
+select = [
+    "E",
+    "F",
+    "W",
+    "PLR",
+    "UP",
+]
 ignore = [
     "PLC0414",  # useless-import-alias
     "PLR0913",  # too-many-arguments
