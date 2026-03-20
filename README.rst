@@ -642,6 +642,27 @@ Flask cache data storage
         message_launch = DjangoMessageLaunch.from_cache(launch_id, request, tool_conf,
                                                         launch_data_storage=launch_data_storage)
 
+
+Redis cache data storage
+------------------------
+
+.. code-block:: python
+
+    import redis
+    from pylti1p3.contrib import RedisCacheDataStorage
+
+    redis_client = redis.Redis(host="localhost", port=6379, db=0)
+
+    def login(request):
+        ...
+        launch_data_storage = RedisCacheDataStorage(redis_client)
+        oidc_login = DjangoOIDCLogin(request, tool_conf, launch_data_storage=launch_data_storage)
+
+    def launch(request):
+        ...
+        launch_data_storage = RedisCacheDataStorage(redis_client)
+        message_launch = DjangoMessageLaunch(request, tool_conf, launch_data_storage=launch_data_storage)
+
 Cache for Public Key
 ====================
 
