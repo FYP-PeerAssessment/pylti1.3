@@ -1,3 +1,5 @@
+"""OAuth client and request helper for platform service calls."""
+
 import hashlib
 import re
 import time
@@ -12,6 +14,8 @@ from .registration import Registration
 
 
 class TServiceConnectorResponse(t.TypedDict):
+    """Normalized response returned by service requests."""
+
     headers: dict[str, str] | abc.MutableMapping[str, str]
     body: int | float | list[object] | dict[str, object] | str | None
     next_page_url: str | None
@@ -21,6 +25,8 @@ REQUESTS_USER_AGENT = "PyLTI1p3-client"
 
 
 class ServiceConnector:
+    """Exchanges service credentials for tokens and performs LTI service calls."""
+
     _registration: Registration
     _access_tokens: dict[str, str]
 

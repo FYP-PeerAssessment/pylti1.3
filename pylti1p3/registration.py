@@ -1,18 +1,26 @@
+"""Platform registration records used during login and launch validation."""
+
 import typing as t
 from collections import abc
 from jwcrypto.jwk import JWK
 
 
 class TKey(t.TypedDict):
+    """Single JWK entry from the platform key set."""
+
     kid: str
     alg: str
 
 
 class TKeySet(t.TypedDict):
+    """JWKS document returned by the platform."""
+
     keys: list[TKey]
 
 
 class Registration:
+    """Stores the platform credentials and tool keys for one launch context."""
+
     _issuer: str | None = None
     _client_id: str | None = None
     _key_set_url: str | None = None

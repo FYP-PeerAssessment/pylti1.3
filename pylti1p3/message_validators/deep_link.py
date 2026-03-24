@@ -1,8 +1,12 @@
+"""Validator for deep-linking launches."""
+
 from ..exception import LtiException
 from .abstract import MessageValidatorAbstract
 
 
 class DeepLinkMessageValidator(MessageValidatorAbstract):
+    """Checks the claims required for an LTI deep-linking request."""
+
     def validate(self, jwt_body) -> bool:
         self.run_common_validators(jwt_body)
 

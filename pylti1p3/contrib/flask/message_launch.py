@@ -1,9 +1,13 @@
+"""Flask implementation of the launch validator."""
+
 from pylti1p3.message_launch import MessageLaunch
 from .cookie import FlaskCookieService
 from .session import FlaskSessionService
 
 
 class FlaskMessageLaunch(MessageLaunch):
+    """Wraps a Flask request so launch validation can read params and cookies."""
+
     def __init__(
         self,
         request,

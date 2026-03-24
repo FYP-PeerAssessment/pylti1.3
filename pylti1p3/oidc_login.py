@@ -1,3 +1,5 @@
+"""Builds the third-party initiated OIDC login redirect for LTI launches."""
+
 import typing as t
 import typing_extensions as te
 import uuid
@@ -24,6 +26,8 @@ CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
 class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, RedirectT], ABC):
+    """Prepares the OIDC login request that starts an LTI launch."""
+
     _request: RequestT
     _tool_config: ToolConfT
     _session_service: SessionServiceT

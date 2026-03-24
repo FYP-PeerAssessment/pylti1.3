@@ -1,3 +1,5 @@
+"""FastAPI implementation of the launch validator."""
+
 from typing import Any, TypeVar, override
 
 from requests import Session
@@ -14,6 +16,8 @@ ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract)
 
 
 class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService]):
+    """Wraps a FastAPI request so launch validation can read params and cookies."""
+
     def __init__(
         self,
         request: FastAPIRequest,

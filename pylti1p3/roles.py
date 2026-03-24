@@ -1,14 +1,20 @@
+"""Role parsing helpers used to check launch access grants."""
+
 from abc import ABC
 from enum import StrEnum
 
 
 class RoleType(StrEnum):
+    """Canonical LTI role categories encoded in the role URI."""
+
     SYSTEM = "system"
     INSTITUTION = "institution"
     CONTEXT = "membership"
 
 
 class AbstractRole(ABC):
+    """Parses the JWT role claim and checks for specific access levels."""
+
     _base_prefix: str = "http://purl.imsglobal.org/vocab/lis/v2"
     _role_types = [RoleType.SYSTEM, RoleType.INSTITUTION, RoleType.CONTEXT]
     _jwt_roles: list[str] = []
@@ -52,11 +58,15 @@ class AbstractRole(ABC):
 
 
 class StaffRole(AbstractRole):
+    """Matches roles that should be treated as staff access."""
+
     _system_roles = ("Administrator", "SysAdmin")
     _institution_roles = ("Faculty", "SysAdmin", "Staff", "Instructor")
 
 
 class StudentRole(AbstractRole):
+    """Matches roles that should be treated as student access."""
+
     _common_roles = ("Learner", "Member", "User")
     _system_roles = ("User",)
     _institution_roles = ("Student", "Learner", "Member", "ProspectiveStudent", "User")
@@ -64,25 +74,35 @@ class StudentRole(AbstractRole):
 
 
 class TeacherRole(AbstractRole):
+    """Matches roles that should be treated as instructor access."""
+
     _common_roles = ("Instructor", "Administrator")
     _context_roles = ("Instructor", "Administrator")
 
 
 class TeachingAssistantRole(AbstractRole):
+    """Matches teaching assistant roles."""
+
     _context_roles = ("TeachingAssistant",)
 
 
 class DesignerRole(AbstractRole):
+    """Matches content developer roles."""
+
     _common_roles = ("ContentDeveloper",)
     _context_roles = ("ContentDeveloper",)
 
 
 class ObserverRole(AbstractRole):
+    """Matches mentor or observer roles."""
+
     _common_roles = ("Mentor",)
     _context_roles = ("Mentor",)
 
 
 class TransientRole(AbstractRole):
+    """Matches transient roles used for temporary participants."""
+
     _common_roles = ("Transient",)
     _system_roles = ("Transient",)
     _institution_roles = ("Transient",)

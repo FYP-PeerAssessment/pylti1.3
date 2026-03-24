@@ -1,7 +1,11 @@
+"""Django request wrapper used by the shared LTI abstractions."""
+
 from pylti1p3.request import Request
 
 
 class DjangoRequest(Request):
+    """Reads launch parameters and cookies from a Django request."""
+
     _request = None
     _post_only = False
     _default_params = None

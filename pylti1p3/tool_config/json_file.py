@@ -1,3 +1,5 @@
+"""Tool configuration loaded from a JSON file on disk."""
+
 import typing as t
 import json
 from pathlib import Path
@@ -6,6 +8,8 @@ from .dict import ToolConfDict, TIssConf, TJsonData
 
 
 class ToolConfJsonFile(ToolConfDict):
+    """Reads tool configuration and keys from a JSON config file."""
+
     _configs_dir: str
 
     def __init__(self, config_file: str | Path):

@@ -1,3 +1,5 @@
+"""Tool-configuration backends and abstract lookup helpers."""
+
 # flake8: noqa
 from .abstract import ToolConfAbstract as ToolConfAbstract
 from .dict import ToolConfDict as ToolConfDict

@@ -1,3 +1,5 @@
+"""Django implementation of the OIDC login redirect builder."""
+
 from django.http import HttpResponse  # type: ignore
 from pylti1p3.oidc_login import OIDCLogin
 from pylti1p3.request import Request
@@ -9,6 +11,8 @@ from .session import DjangoSessionService
 
 
 class DjangoOIDCLogin(OIDCLogin):
+    """Prepares the OIDC login redirect using Django responses."""
+
     def __init__(
         self,
         request,

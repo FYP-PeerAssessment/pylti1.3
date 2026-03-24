@@ -1,8 +1,12 @@
+"""Validator for standard resource-link launches."""
+
 from ..exception import LtiException
 from .abstract import MessageValidatorAbstract
 
 
 class ResourceMessageValidator(MessageValidatorAbstract):
+    """Checks the claims required for a standard resource launch."""
+
     def validate(self, jwt_body) -> bool:
         self.run_common_validators(jwt_body)
 

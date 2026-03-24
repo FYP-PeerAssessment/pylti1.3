@@ -1,3 +1,5 @@
+"""Abstract redirect response used by framework adapters."""
+
 import typing as t
 from abc import ABC, abstractmethod
 
@@ -5,6 +7,8 @@ T = t.TypeVar("T")
 
 
 class Redirect(t.Generic[T], ABC):
+    """Builds either an HTTP redirect or a JavaScript redirect response."""
+
     @abstractmethod
     def do_redirect(self) -> T:
         raise NotImplementedError

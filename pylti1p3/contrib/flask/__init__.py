@@ -1,3 +1,5 @@
+"""Flask adapters for requests, redirects, cookies, and launches."""
+
 # flake8: noqa
 from .cookie import FlaskCookieService as FlaskCookieService
 from .oidc_login import FlaskOIDCLogin as FlaskOIDCLogin

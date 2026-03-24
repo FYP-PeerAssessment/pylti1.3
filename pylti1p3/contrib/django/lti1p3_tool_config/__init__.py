@@ -1,3 +1,5 @@
+"""Django database-backed tool configuration helpers."""
+
 import json
 import typing as t
 import typing_extensions as te
@@ -17,6 +19,8 @@ default_app_config = "pylti1p3.contrib.django.lti1p3_tool_config.apps.PyLTI1p3To
 
 
 class DjangoDbToolConf(ToolConfAbstract):
+    """Looks up registrations and deployments from Django models."""
+
     _lti_tools: dict[str, dict[str, "LtiTool"] | "LtiTool"]
     _tools_cls: type["LtiTool"]
     _keys_cls: type["LtiToolKey"]

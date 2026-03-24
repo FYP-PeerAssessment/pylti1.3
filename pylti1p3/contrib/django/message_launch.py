@@ -1,3 +1,5 @@
+"""Django implementation of the launch validator."""
+
 from pylti1p3.message_launch import MessageLaunch
 from pylti1p3.request import Request
 from .cookie import DjangoCookieService
@@ -6,6 +8,8 @@ from .session import DjangoSessionService
 
 
 class DjangoMessageLaunch(MessageLaunch):
+    """Wraps Django requests so launch validation can read params and cookies."""
+
     def __init__(
         self,
         request,

@@ -1,3 +1,5 @@
+"""FastAPI implementation of the OIDC login redirect builder."""
+
 from typing import Any, override
 
 import fastapi
@@ -15,6 +17,8 @@ from .session import FastAPISessionService
 class FastAPIOIDCLogin(
     OIDCLogin[FastAPIRequest, ToolConfT, FastAPISessionService, FastAPICookieService, fastapi.Response]
 ):
+    """Prepares the OIDC login redirect using FastAPI responses."""
+
     def __init__(
         self,
         request: FastAPIRequest,

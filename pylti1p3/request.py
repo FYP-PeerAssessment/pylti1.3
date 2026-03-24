@@ -1,7 +1,11 @@
+"""Abstract request wrapper used to read launch parameters and cookies."""
+
 from abc import ABC, abstractmethod
 
 
 class Request(ABC):
+    """Unifies request access across Flask, Django, and FastAPI adapters."""
+
     @property
     def session(self):
         raise NotImplementedError

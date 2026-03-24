@@ -1,9 +1,13 @@
+"""Flask redirect wrapper that also applies pending cookies."""
+
 from flask import make_response, redirect  # type: ignore
 
 from pylti1p3.redirect import Redirect
 
 
 class FlaskRedirect(Redirect):
+    """Returns Flask redirect or HTML responses for the login flow."""
+
     _location = None
     _cookie_service = None
 

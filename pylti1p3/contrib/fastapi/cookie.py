@@ -1,3 +1,5 @@
+"""FastAPI cookie service used by the launch and login adapters."""
+
 import fastapi
 
 from pylti1p3.contrib.fastapi.request import FastAPIRequest
@@ -5,6 +7,8 @@ from pylti1p3.cookie import CookieService
 
 
 class FastAPICookieService(CookieService):
+    """Stores LTI cookies using FastAPI's response API."""
+
     _request: FastAPIRequest
     _cookie_data_to_set: dict[str, dict[str, str | int]]
 

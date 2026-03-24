@@ -1,7 +1,11 @@
+"""Abstract cookie storage used by framework adapters."""
+
 from abc import ABC, abstractmethod
 
 
 class CookieService(ABC):
+    """Stores and retrieves LTI state cookies for a specific web framework."""
+
     _cookie_prefix: str = "lti1p3"
 
     @abstractmethod

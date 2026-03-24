@@ -1,3 +1,5 @@
+"""Base storage abstractions for launch data and session IDs."""
+
 import typing as t
 from abc import ABC, abstractmethod
 from ..request import Request
@@ -6,6 +8,8 @@ T = t.TypeVar("T")
 
 
 class LaunchDataStorage(t.Generic[T], ABC):
+    """Common interface for storing launch payloads with optional session scoping."""
+
     _request: Request | None = None
     _session_id: str | None = None
     _session_cookie_name: str = "session-id"
@@ -56,6 +60,8 @@ class LaunchDataStorage(t.Generic[T], ABC):
 
 
 class DisableSessionId:
+    """Context manager that temporarily disables session scoping."""
+
     _session_id: str | None = None
     _launch_data_storage: LaunchDataStorage | None = None
 

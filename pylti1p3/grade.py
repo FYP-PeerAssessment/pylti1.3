@@ -1,3 +1,5 @@
+"""Builds AGS score payloads for the platform."""
+
 import json
 import typing as t
 from collections import abc
@@ -8,6 +10,8 @@ TExtaClaims = abc.Mapping[str, t.Any]
 
 
 class Grade:
+    """Represents a single score update sent through AGS."""
+
     _score_given: float | None = None
     _score_maximum: float | None = None
     _activity_progress: str | None = None

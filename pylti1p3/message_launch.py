@@ -1,3 +1,5 @@
+"""Validates an incoming LTI launch and exposes launch-scoped services."""
+
 import base64
 import collections.abc
 import hashlib
@@ -41,12 +43,16 @@ from .tool_config import ToolConfAbstract
 
 
 class TResourceLinkClaim(t.TypedDict, total=False):
+    """Resource link claim from the launch JWT."""
+
     id: te.Required[str]
     description: str
     title: str
 
 
 class TContextClaim(t.TypedDict, total=False):
+    """Context claim from the launch JWT."""
+
     id: te.Required[str]
     label: str
     title: str
@@ -54,6 +60,8 @@ class TContextClaim(t.TypedDict, total=False):
 
 
 class TToolPlatformClaim(t.TypedDict, total=False):
+    """Tool platform claim from the launch JWT."""
+
     guid: te.Required[str]
     contact_email: str
     description: str
@@ -64,12 +72,16 @@ class TToolPlatformClaim(t.TypedDict, total=False):
 
 
 class TLearningInformationServicesClaim(t.TypedDict, total=False):
+    """LIS claim values from the launch JWT."""
+
     person_sourcedid: str
     course_offering_sourcedid: str
     course_section_sourcedid: str
 
 
 class TMigrationClaim(t.TypedDict, total=False):
+    """LTI 1.1 migration claim values from the launch JWT."""
+
     oauth_consumer_key: te.Required[str]
     oauth_consumer_key_sign: str
     user_id: str
@@ -79,6 +91,8 @@ class TMigrationClaim(t.TypedDict, total=False):
 
 
 class TForUserClaim(t.TypedDict, total=False):
+    """User target claim for privacy and submission-review launches."""
+
     user_id: te.Required[str]
     person_sourcedId: str
     given_name: str
@@ -135,11 +149,15 @@ TLaunchData = t.TypedDict(
 
 
 class TJwtHeader(t.TypedDict, total=False):
+    """Decoded JWT header."""
+
     kid: str
     alg: str
 
 
 class TJwtData(t.TypedDict, total=False):
+    """Decoded launch JWT header and body."""
+
     header: TJwtHeader
     body: TLaunchData
 
@@ -151,6 +169,8 @@ CookieServiceT = t.TypeVar("CookieServiceT", bound=CookieService)
 
 
 class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT], ABC):
+    """Validates launch requests and exposes service helpers for the launch."""
+
     _request: RequestT
     _tool_config: ToolConfT
     _session_service: SessionServiceT

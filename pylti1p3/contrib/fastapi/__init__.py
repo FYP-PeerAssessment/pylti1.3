@@ -1,3 +1,5 @@
+"""FastAPI adapters for requests, redirects, cookies, and launches."""
+
 # flake8: noqa
 from .cookie import FastAPICookieService as FastAPICookieService
 from .launch_data_storage.cache import FastAPICacheDataStorage as FastAPICacheDataStorage

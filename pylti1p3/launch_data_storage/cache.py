@@ -1,3 +1,5 @@
+"""Cache-backed launch storage for request and launch data."""
+
 import typing as t
 
 from .base import LaunchDataStorage
@@ -6,6 +8,8 @@ T = t.TypeVar("T")
 
 
 class CacheDataStorage(LaunchDataStorage[T], t.Generic[T]):
+    """Stores launch data in a cache backend with optional key expiration."""
+
     _cache = None
 
     def get_session_cookie_name(self) -> str | None:

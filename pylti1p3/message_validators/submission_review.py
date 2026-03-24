@@ -1,3 +1,5 @@
+"""Validator for submission-review launches."""
+
 from ..exception import LtiException
 from .abstract import MessageValidatorAbstract
 

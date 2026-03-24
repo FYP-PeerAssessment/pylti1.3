@@ -1,3 +1,5 @@
+"""Initial migration for the Django-backed LTI tool config models."""
+
 # mypy: ignore-errors
 import django.core.validators
 import django.db.models.deletion
@@ -5,6 +7,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Creates the database tables used by the Django tool config app."""
+
     initial = True
 
     dependencies = []

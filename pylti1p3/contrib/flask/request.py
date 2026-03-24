@@ -1,9 +1,13 @@
+"""Flask request wrapper used by the shared LTI abstractions."""
+
 from flask import request  # type: ignore
 from flask import session as flask_session
 from pylti1p3.request import Request
 
 
 class FlaskRequest(Request):
+    """Reads launch parameters and cookies from a Flask request."""
+
     _cookies = None
     _request_data = None
     _request_is_secure = None

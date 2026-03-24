@@ -1,3 +1,5 @@
+"""Django adapters for requests, redirects, cookies, and launches."""
+
 # flake8: noqa
 from .message_launch import DjangoMessageLaunch as DjangoMessageLaunch
 from .oidc_login import DjangoOIDCLogin as DjangoOIDCLogin

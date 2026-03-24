@@ -1,3 +1,5 @@
+"""Admin registrations for the Django tool-config models."""
+
 # mypy: ignore-errors
 from django.contrib import admin
 

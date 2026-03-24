@@ -1,3 +1,5 @@
+"""Names and Roles Provisioning Service helpers."""
+
 import typing as t
 
 from .utils import add_param_to_url
@@ -5,10 +7,14 @@ from .service_connector import ServiceConnector
 
 
 class TNamesAndRolesData(t.TypedDict):
+    """Names and Roles service endpoint data from the launch JWT."""
+
     context_memberships_url: str
 
 
 class TMember(t.TypedDict, total=False):
+    """Single member record returned by the NRPS endpoint."""
+
     name: str
     status: t.Literal["Active", "Inactive", "Deleted"]
     picture: str
@@ -24,6 +30,8 @@ class TMember(t.TypedDict, total=False):
 
 
 class NamesRolesProvisioningService:
+    """Fetches class roster and context data from the platform."""
+
     _service_connector: ServiceConnector
     _service_data: TNamesAndRolesData
 

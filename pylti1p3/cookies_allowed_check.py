@@ -1,9 +1,13 @@
+"""HTML page used to test whether the browser accepts iframe cookies."""
+
 from html import escape  # type: ignore
 import json
 from collections import abc
 
 
 class CookiesAllowedCheckPage:
+    """Renders the cookie-check page shown before iframe redirects."""
+
     _params: abc.Mapping[str, str] = {}
     _protocol: str = "http"
     _main_text: str = ""

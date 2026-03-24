@@ -1,3 +1,5 @@
+"""Abstract tool-configuration lookup helpers."""
+
 from enum import StrEnum
 import typing as t
 import collections.abc
@@ -10,11 +12,15 @@ from ..registration import Registration
 
 
 class IssuerToClientRelation(StrEnum):
+    """Tracks whether an issuer maps to one or many client IDs."""
+
     ONE_CLIENT_ID_PER_ISSUER = "one-issuer-one-client-id"
     MANY_CLIENTS_IDS_PER_ISSUER = "one-issuer-many-client-ids"
 
 
 class ToolConfAbstract(ABC):
+    """Defines the lookup methods used to resolve registrations and deployments."""
+
     issuers_relation_types: collections.abc.MutableMapping[str, IssuerToClientRelation] = {}
 
     def check_iss_has_one_client(self, iss: str) -> bool:

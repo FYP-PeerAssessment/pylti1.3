@@ -1,7 +1,11 @@
+"""Flask cookie service used by the launch and login adapters."""
+
 from pylti1p3.cookie import CookieService
 
 
 class FlaskCookieService(CookieService):
+    """Stores LTI cookies using Flask's response API."""
+
     _request = None
     _cookie_data_to_set = None
 

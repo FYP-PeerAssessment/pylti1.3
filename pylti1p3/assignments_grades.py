@@ -1,3 +1,5 @@
+"""Assignment and Grades Service helpers for AGS requests."""
+
 import typing as t
 from .exception import LtiException
 from .lineitem import LineItem
@@ -7,6 +9,8 @@ from .service_connector import ServiceConnector, TServiceConnectorResponse
 
 
 class TAssignmentsGradersData(t.TypedDict, total=False):
+    """AGS endpoint metadata from the launch JWT."""
+
     scope: list[
         t.Literal[
             "https://purl.imsglobal.org/spec/lti-ags/scope/score",
@@ -20,6 +24,8 @@ class TAssignmentsGradersData(t.TypedDict, total=False):
 
 
 class AssignmentsGradesService:
+    """Reads, creates, and updates AGS line items and scores."""
+
     _service_connector: ServiceConnector
     _service_data: TAssignmentsGradersData
 

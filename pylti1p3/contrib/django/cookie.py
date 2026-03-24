@@ -1,3 +1,5 @@
+"""Django cookie service used by the launch and login adapters."""
+
 import http.cookies as Cookie  # type: ignore
 import django  # type: ignore
 from pylti1p3.cookie import CookieService
@@ -9,6 +11,8 @@ if "samesite" not in Cookie.Morsel._reserved:  # type: ignore
 
 
 class DjangoCookieService(CookieService):
+    """Stores LTI cookies using Django's response API."""
+
     _request = None
     _cookie_data_to_set = None
 

@@ -1,3 +1,5 @@
+"""Django models that store LTI tool registrations and keys."""
+
 # mypy: ignore-errors
 import json
 
@@ -9,6 +11,8 @@ from pylti1p3.registration import Registration
 
 
 class LtiToolKey(models.Model):
+    """Stores a tool key pair and its derived JWK representation."""
+
     name = models.CharField(max_length=255, null=False, blank=False, unique=True, help_text=_("Key name"))
     private_key: models.TextField[str, str] = models.TextField(
         null=False,
@@ -44,6 +48,8 @@ class LtiToolKey(models.Model):
 
 
 class LtiTool(models.Model):
+    """Stores a single platform registration and its deployment IDs."""
+
     title = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     issuer = models.CharField(

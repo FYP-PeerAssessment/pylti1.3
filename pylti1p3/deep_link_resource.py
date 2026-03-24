@@ -1,8 +1,12 @@
+"""Builds deep-link content items returned to the platform."""
+
 from collections import abc
 from .lineitem import LineItem
 
 
 class DeepLinkResource:
+    """Describes a single content item in a deep-link response."""
+
     _type: str = "ltiResourceLink"
     _title: str | None = None
     _url: str | None = None

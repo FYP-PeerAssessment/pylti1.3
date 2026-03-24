@@ -1,3 +1,5 @@
+"""FastAPI request wrapper used by the shared LTI abstractions."""
+
 from typing import Any
 
 import fastapi  # type: ignore
@@ -7,6 +9,8 @@ from pylti1p3.request import Request
 
 
 class FastAPIRequest(Request):
+    """Reads launch parameters and cookies from a FastAPI request."""
+
     _request: fastapi.Request
     _form_data: starlette.datastructures.FormData
 

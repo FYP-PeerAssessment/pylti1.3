@@ -1,3 +1,5 @@
+"""Session-backed storage used to keep OIDC and launch state."""
+
 import typing as t
 
 from .launch_data_storage.session import SessionDataStorage
@@ -12,6 +14,8 @@ TStateParams = dict[str, object]
 
 
 class SessionService:
+    """Stores nonce, state, and launch payload data in request-scoped storage."""
+
     data_storage: LaunchDataStorage[t.Any]
     _launch_data_lifetime = 86400
     _session_prefix = "lti1p3"

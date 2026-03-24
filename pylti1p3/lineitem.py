@@ -1,3 +1,5 @@
+"""Represents AGS line items and their optional submission-review metadata."""
+
 import json
 import typing as t
 import typing_extensions as te
@@ -5,6 +7,8 @@ from .exception import LtiException
 
 
 class TSubmissionReview(t.TypedDict, total=False):
+    """Submission review data attached to a line item."""
+
     # Required data
     reviewableStatus: te.Required[list]
     # Optional data
@@ -14,6 +18,8 @@ class TSubmissionReview(t.TypedDict, total=False):
 
 
 class TLineItem(t.TypedDict, total=False):
+    """Raw line item payload returned by, or sent to, the platform."""
+
     id: str
     scoreMaximum: int
     label: str
@@ -26,6 +32,8 @@ class TLineItem(t.TypedDict, total=False):
 
 
 class LineItem:
+    """Mutable helper for reading and building AGS line item payloads."""
+
     _id: str | None = None
     _score_maximum: float | None = None
     _label: str | None = None

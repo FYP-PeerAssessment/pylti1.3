@@ -1,9 +1,13 @@
+"""Django redirect wrapper that also applies pending cookies."""
+
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import redirect  # type: ignore
 from pylti1p3.redirect import Redirect
 
 
 class DjangoRedirect(Redirect):
+    """Returns Django redirect responses for the login flow."""
+
     _location = None
     _cookie_service = None
 

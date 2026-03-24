@@ -1,3 +1,5 @@
+"""In-memory tool configuration loaded from a Python mapping."""
+
 import typing as t
 import typing_extensions as te
 from collections import abc
@@ -8,7 +10,7 @@ from .abstract import ToolConfAbstract
 
 
 class TIssConf(t.TypedDict, total=False):
-    """Tool Issuer Configuration"""
+    """One issuer/client configuration entry."""
 
     default: bool
     client_id: te.Required[str]
@@ -26,6 +28,8 @@ TJsonData = abc.Mapping[str, list[TIssConf] | TIssConf]
 
 
 class ToolConfDict(ToolConfAbstract):
+    """Resolves registrations and deployments from an in-memory config mapping."""
+
     _config: TJsonData
     _private_key_one_client: dict[str, str]
     _public_key_one_client: dict[str, str]

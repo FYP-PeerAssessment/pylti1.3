@@ -1,3 +1,5 @@
+"""Builds deep-linking responses for the platform."""
+
 import time
 import typing as t
 import typing_extensions as te
@@ -9,6 +11,8 @@ from .registration import Registration
 
 
 class TDeepLinkData(t.TypedDict, total=False):
+    """Deep-link settings provided by the platform during launch."""
+
     # Required data:
     deep_link_return_url: te.Required[str]
     accept_types: te.Required[list[t.Literal["link", "ltiResourceLink"]]]
@@ -22,6 +26,8 @@ class TDeepLinkData(t.TypedDict, total=False):
 
 
 class DeepLink:
+    """Creates the JWT and auto-post form for a deep-link response."""
+
     _registration: Registration
     _deployment_id: str
     _deep_link_settings: TDeepLinkData

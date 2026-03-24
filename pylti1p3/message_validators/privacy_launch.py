@@ -1,3 +1,5 @@
+"""Validator for data privacy launches."""
+
 from ..exception import LtiException
 from .abstract import MessageValidatorAbstract
 

@@ -1,3 +1,5 @@
+"""Flask implementation of the OIDC login redirect builder."""
+
 from flask import make_response  # type: ignore
 from pylti1p3.oidc_login import OIDCLogin
 from .cookie import FlaskCookieService
@@ -6,6 +8,8 @@ from .redirect import FlaskRedirect
 
 
 class FlaskOIDCLogin(OIDCLogin):
+    """Prepares the OIDC login redirect using Flask responses."""
+
     def __init__(
         self,
         request,

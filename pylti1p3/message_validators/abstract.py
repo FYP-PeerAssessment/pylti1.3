@@ -1,8 +1,12 @@
+"""Shared validation rules for the supported LTI message types."""
+
 from abc import ABCMeta, abstractmethod
 from ..exception import LtiException
 
 
 class MessageValidatorAbstract:
+    """Base validator that checks the common LTI launch claims."""
+
     __metaclass__ = ABCMeta
 
     @abstractmethod

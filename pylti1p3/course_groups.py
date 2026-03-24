@@ -1,3 +1,5 @@
+"""Course Groups Service helpers for group and set listings."""
+
 import typing as t
 import typing_extensions as te
 
@@ -6,6 +8,8 @@ from .service_connector import ServiceConnector
 
 
 class TGroupsServiceData(t.TypedDict, total=False):
+    """Course groups endpoint metadata from the launch JWT."""
+
     # Required data
     context_groups_url: te.Required[str]
     scope: te.Required[list[t.Literal["https://purl.imsglobal.org/spec/lti-gs/scope/contextgroup.readonly"]]]
@@ -15,6 +19,8 @@ class TGroupsServiceData(t.TypedDict, total=False):
 
 
 class TGroup(t.TypedDict, total=False):
+    """Single group record returned by the course groups endpoint."""
+
     # Required data
     id: te.Required[str | int]
     name: te.Required[str]
@@ -24,6 +30,8 @@ class TGroup(t.TypedDict, total=False):
 
 
 class TSet(t.TypedDict, total=False):
+    """Single group set record returned by the course groups endpoint."""
+
     # Required data
     id: te.Required[str | int]
     name: te.Required[str]
@@ -32,6 +40,8 @@ class TSet(t.TypedDict, total=False):
 
 
 class CourseGroupsService:
+    """Fetches group and group-set data for the current launch context."""
+
     _service_connector: ServiceConnector
     _service_data: TGroupsServiceData
 

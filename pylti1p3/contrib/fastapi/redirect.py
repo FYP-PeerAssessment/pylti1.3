@@ -1,3 +1,5 @@
+"""FastAPI redirect wrapper that also applies pending cookies."""
+
 from typing import TypeVar
 
 import fastapi
@@ -11,6 +13,8 @@ ResponseT = TypeVar("ResponseT", bound=fastapi.Response)
 
 
 class FastAPIRedirect(Redirect[fastapi.Response]):
+    """Returns FastAPI redirect or HTML responses for the login flow."""
+
     _location: str
     _cookie_service: FastAPICookieService | None
 

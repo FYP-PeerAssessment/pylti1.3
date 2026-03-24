@@ -1,3 +1,5 @@
+"""Session-backed launch storage for request and launch data."""
+
 import typing as t
 
 from .base import LaunchDataStorage
@@ -6,6 +8,8 @@ T = t.TypeVar("T")
 
 
 class SessionDataStorage(LaunchDataStorage[T], t.Generic[T]):
+    """Stores launch data directly on the request session."""
+
     def get_session_cookie_name(self) -> None:
         return None
 
