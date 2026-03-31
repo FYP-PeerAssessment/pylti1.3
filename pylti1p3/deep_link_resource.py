@@ -69,8 +69,11 @@ class DeepLinkResource:
             "type": self._type,
             "title": self._title,
             "url": self._url,
-            "custom": self._custom_params,
         }
+
+        if self._custom_params:
+            res["custom"] = dict(self._custom_params)
+
         if self._lineitem:
             line_item: dict[str, object] = {
                 "scoreMaximum": self._lineitem.get_score_maximum(),
@@ -90,7 +93,10 @@ class DeepLinkResource:
 
             submission_review = self._lineitem.get_submission_review()
             if submission_review:
-                line_item["submissionReview"] = submission_review
+                submission_review_data = dict(submission_review)
+                if not submission_review_data.get("custom"):
+                    submission_review_data.pop("custom", None)
+                line_item["submissionReview"] = submission_review_data
 
             res["lineItem"] = line_item
 
