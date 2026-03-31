@@ -162,3 +162,15 @@ class ServiceConnector:
             "body": r.json() if r.content else None,
             "next_page_url": next_page_url if next_page_url else None,
         }
+
+    def get_paginated_data(
+        self,
+        scopes: t.Sequence[str],
+        url: str | None,
+        *args,
+        **kwargs,
+    ) -> abc.Generator[TServiceConnectorResponse]:
+        while url:
+            response = self.make_service_request(scopes, url, *args, **kwargs)
+            yield response
+            url = response["next_page_url"]

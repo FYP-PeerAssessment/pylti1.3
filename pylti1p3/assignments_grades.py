@@ -1,6 +1,8 @@
 """Assignment and Grades Service helpers for AGS requests."""
 
 import typing as t
+from collections import abc
+
 from .exception import LtiException
 from .lineitem import LineItem
 from .grade import Grade
@@ -169,20 +171,37 @@ class AssignmentsGradesService:
             raise LtiException("Unknown response type received for line items")
         return lineitems["body"], lineitems["next_page_url"]
 
-    def get_lineitems(self) -> list:
+    def get_lineitems(self) -> list[TLineItem]:
         """
         Get list of all available line items.
 
-        :return: list
+        :return: list of line item dicts
         """
-        lineitems_res_lst = []
         lineitems_url: str | None = self._service_data["lineitems"]
+        lineitems: list[TLineItem] = []
 
-        while lineitems_url:
-            lineitems, lineitems_url = self.get_lineitems_page(lineitems_url)
-            lineitems_res_lst.extend(lineitems)
+        if lineitems_url is None:
+            return lineitems
 
-        return lineitems_res_lst
+        lineitem_pages = self._service_connector.get_paginated_data(
+            self._service_data["scope"],
+            lineitems_url,
+            accept="application/vnd.ims.lis.v2.lineitemcontainer+json",
+        )
+        for page in lineitem_pages:
+            if not isinstance(page["body"], list):
+                raise LtiException("Unknown response type received for line items")
+            lineitems.extend([t.cast(TLineItem, item) for item in page["body"]])
+        return lineitems
+
+    def find_lineitem_satisfying(self, condition: abc.Callable[[TLineItem], bool]) -> LineItem | None:
+        """
+        Find a line item using an arbitrary predicate.
+        """
+        for lineitem_dict in self.get_lineitems():
+            if condition(lineitem_dict):
+                return LineItem(lineitem_dict)
+        return None
 
     def find_lineitem(self, prop_name: str, prop_value: t.Any) -> LineItem | None:
         """
@@ -192,15 +211,7 @@ class AssignmentsGradesService:
         :param prop_value: property value
         :return: LineItem instance or None
         """
-        lineitems_url: str | None = self._service_data["lineitems"]
-
-        while lineitems_url:
-            lineitems, lineitems_url = self.get_lineitems_page(lineitems_url)
-            for lineitem in lineitems:
-                lineitem_prop_value = lineitem.get(prop_name)
-                if lineitem_prop_value == prop_value:
-                    return LineItem(lineitem)
-        return None
+        return self.find_lineitem_satisfying(lambda lineitem: lineitem.get(prop_name) == prop_value)
 
     def find_lineitem_by_id(self, ln_id: str) -> LineItem | None:
         """
@@ -238,7 +249,12 @@ class AssignmentsGradesService:
         """
         return self.find_lineitem("resourceId", resource_id)
 
-    def find_or_create_lineitem(self, new_lineitem: LineItem, find_by: str = "tag") -> LineItem:
+    def find_or_create_lineitem(
+        self,
+        new_lineitem: LineItem,
+        find_by: str = "tag",
+        condition: abc.Callable[[TLineItem], bool] | None = None,
+    ) -> LineItem:
         """
         Try to find line item using ID or Tag. New lime item will be created if nothing is found.
 
@@ -246,7 +262,9 @@ class AssignmentsGradesService:
         :param find_by: str ("tag"/"id")
         :return: LineItem instance (based on response from the LTI platform)
         """
-        if find_by == "tag":
+        if condition is not None:
+            lineitem = self.find_lineitem_satisfying(condition)
+        elif find_by == "tag":
             tag = new_lineitem.get_tag()
             if not tag:
                 raise LtiException("Tag value is not specified")
@@ -272,6 +290,12 @@ class AssignmentsGradesService:
         if lineitem:
             return lineitem
 
+        return self.create_lineitem(new_lineitem)
+
+    def create_lineitem(self, new_lineitem: LineItem) -> LineItem:
+        """
+        Create a line item on the platform.
+        """
         if not self.can_create_lineitem():
             raise LtiException("Can't create lineitem: Missing required scope")
 
@@ -287,12 +311,12 @@ class AssignmentsGradesService:
             raise LtiException("Unknown response type received for create line item")
         return LineItem(t.cast(TLineItem, created_lineitem["body"]))
 
-    def get_grades(self, lineitem: LineItem | None = None) -> list:
+    def get_grades(self, lineitem: LineItem | None = None) -> list[object]:
         """
         Return all grades for the passed line item (across all users enrolled in the line item's context).
 
         :param lineitem: LineItem instance
-        :return: list of grades
+        :return: list of grade dicts
         """
         if not self.can_read_grades():
             raise LtiException("Can't read grades: Missing required scope")
@@ -306,14 +330,17 @@ class AssignmentsGradesService:
             return []
 
         results_url = self._add_url_path_ending(lineitem_id, "results")
-        scores = self._service_connector.make_service_request(
+        score_pages = self._service_connector.get_paginated_data(
             self._service_data["scope"],
             results_url,
             accept="application/vnd.ims.lis.v2.resultcontainer+json",
         )
-        if not isinstance(scores["body"], list):
-            raise LtiException("Unknown response type received for results")
-        return scores["body"]
+        scores: list[object] = []
+        for page in score_pages:
+            if not isinstance(page["body"], list):
+                raise LtiException("Unknown response type received for results")
+            scores.extend(page["body"])
+        return scores
 
     @staticmethod
     def _add_url_path_ending(url: str, url_path_ending: str) -> str:
