@@ -1,18 +1,58 @@
-name: tox
-on: [push, pull_request]
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  tox:
+  test:
+    name: Test with Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11']
-    runs-on: ${{ matrix.os }}
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          python-version: ${{ matrix.python }}
-      - run: pip install --upgrade pip
-      - run: pip install "tox<4"
-      - run: tox -e py
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: "0.9.26"
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Run linting
+        run: uv run ruff check .
+
+      - name: Run formatting
+        run: uv run ruff format --check
+
+      - name: Run type checking
+        run: uv run basedpyright --level=warning
+
+      - name: Run tests
+        run: uv run pytest
