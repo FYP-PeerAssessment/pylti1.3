@@ -9,7 +9,7 @@ from collections import abc
 
 import jwt  # type: ignore
 import requests
-from .exception import LtiServiceException
+from .exception import LtiException, LtiServiceException
 from .registration import Registration
 
 
@@ -111,7 +111,7 @@ class ServiceConnector:
         self,
         scopes: t.Sequence[str],
         url: str,
-        is_post: bool = False,
+        method: str = "GET",
         data: str | None = None,
         content_type: str = "application/json",
         accept: str = "application/json",
@@ -120,12 +120,22 @@ class ServiceConnector:
         access_token = self.get_access_token(scopes)
         headers = {"Authorization": "Bearer " + access_token, "Accept": accept}
 
-        if is_post:
-            headers["Content-Type"] = content_type
-            post_data = data or None
-            r = self._requests_session.post(url, data=post_data, headers=headers)
-        else:
+        if method == "GET":
             r = self._requests_session.get(url, headers=headers)
+        elif method == "DELETE":
+            r = self._requests_session.delete(url, headers=headers)
+        else:
+            headers["Content-Type"] = content_type
+            request_data = data or None
+            if method == "PUT":
+                r = self._requests_session.put(url, data=request_data, headers=headers)
+            elif method == "POST":
+                r = self._requests_session.post(url, data=request_data, headers=headers)
+            else:
+                raise LtiException(
+                    f'Unsupported method: {method}. Available methods are: '
+                    '"GET", "PUT", "POST", "DELETE".'
+                )
 
         if not r.ok:
             raise LtiServiceException(r)
