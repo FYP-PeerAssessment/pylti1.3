@@ -18,6 +18,7 @@ license-files = ["LICENSE"]
 readme = "README.rst"
 requires-python = ">=3.10"
 dependencies = [
+    "cryptography",
     "jwcrypto",
     "pyjwt>=1.5",
     "requests",
