@@ -143,3 +143,101 @@ class TestGrades(TestServicesBase):
 
                     resp = ags.put_grade(sc, sc_line_item)
                     self.assertEqual(expected_result, resp["body"])
+
+    def test_delete_lineitem(self):
+        from pylti1p3.contrib.django import DjangoMessageLaunch
+
+        tool_conf = get_test_tool_conf()
+
+        with patch.object(DjangoMessageLaunch, "_get_jwt_body", autospec=True) as get_jwt_body:
+            message_launch = DjangoMessageLaunch(FakeRequest(), tool_conf)
+            line_items_url = "http://canvas.docker/api/lti/courses/1/line_items"
+            get_jwt_body.side_effect = lambda x: self._get_jwt_body()
+            with patch("socket.gethostbyname", return_value="127.0.0.1"):
+                with requests_mock.Mocker() as m:
+                    m.post(
+                        self._get_auth_token_url(),
+                        text=json.dumps(self._get_auth_token_response()),
+                    )
+
+                    line_item_url = "http://canvas.docker/api/lti/courses/1/line_items/1"
+                    line_items_response = [
+                        {
+                            "scoreMaximum": 100.0,
+                            "tag": "test",
+                            "id": line_item_url,
+                            "label": "Test",
+                        },
+                    ]
+                    m.get(line_items_url, text=json.dumps(line_items_response))
+                    m.delete(line_item_url, text="", status_code=204)
+
+                    ags = message_launch.validate_registration().get_ags()
+
+                    test_line_item = LineItem()
+                    test_line_item.set_tag("test").set_score_maximum(100).set_label("Test")
+                    line_item = ags.find_or_create_lineitem(test_line_item)
+                    self.assertIsNotNone(line_item)
+
+                    ags.delete_lineitem(line_item.get_id())
+
+                    # Auth, GET line items, DELETE line item
+                    self.assertEqual(len(m.request_history), 3)
+                    self.assertEqual(m.request_history[2].method, "DELETE")
+                    self.assertEqual(m.request_history[2].url, line_item_url)
+
+    def test_update_lineitem(self):
+        from pylti1p3.contrib.django import DjangoMessageLaunch
+
+        tool_conf = get_test_tool_conf()
+
+        with patch.object(DjangoMessageLaunch, "_get_jwt_body", autospec=True) as get_jwt_body:
+            message_launch = DjangoMessageLaunch(FakeRequest(), tool_conf)
+            line_items_url = "http://canvas.docker/api/lti/courses/1/line_items"
+            get_jwt_body.side_effect = lambda x: self._get_jwt_body()
+            with patch("socket.gethostbyname", return_value="127.0.0.1"):
+                with requests_mock.Mocker() as m:
+                    m.post(
+                        self._get_auth_token_url(),
+                        text=json.dumps(self._get_auth_token_response()),
+                    )
+
+                    line_item_url = "http://canvas.docker/api/lti/courses/1/line_items/1"
+                    line_items_response = [
+                        {
+                            "id": line_item_url,
+                            "scoreMaximum": 100.0,
+                            "tag": "test",
+                            "label": "Test",
+                        },
+                    ]
+                    line_items_update_response = {
+                        "id": line_item_url,
+                        "scoreMaximum": 60.0,
+                        "tag": "test",
+                        "label": "Test",
+                    }
+
+                    m.get(line_items_url, text=json.dumps(line_items_response))
+                    m.put(line_item_url, text=json.dumps(line_items_update_response))
+
+                    ags = message_launch.validate_registration().get_ags()
+
+                    test_line_item = LineItem()
+                    test_line_item.set_tag("test").set_score_maximum(100).set_label("Test")
+
+                    line_item = ags.find_or_create_lineitem(test_line_item)
+                    self.assertIsNotNone(line_item)
+
+                    line_item.set_score_maximum(60)
+                    new_lineitem = ags.update_lineitem(line_item)
+
+                    self.assertEqual(new_lineitem.get_id(), line_item_url)
+                    self.assertEqual(new_lineitem.get_score_maximum(), 60.0)
+                    self.assertEqual(new_lineitem.get_tag(), "test")
+                    self.assertEqual(new_lineitem.get_label(), "Test")
+
+                    # Auth, GET line items, PUT line item
+                    self.assertEqual(len(m.request_history), 3)
+                    self.assertEqual(m.request_history[2].method, "PUT")
+                    self.assertEqual(m.request_history[2].url, line_item_url)
