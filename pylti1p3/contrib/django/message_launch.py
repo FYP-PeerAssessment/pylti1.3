@@ -2,8 +2,10 @@
 
 from pylti1p3.message_launch import MessageLaunch
 from pylti1p3.request import Request
+from pylti1p3.service_connector import ServiceConnector
 from .cookie import DjangoCookieService
 from .request import DjangoRequest
+from .service_connector import DjangoServiceConnector
 from .session import DjangoSessionService
 
 
@@ -33,3 +35,7 @@ class DjangoMessageLaunch(MessageLaunch):
 
     def _get_request_param(self, key):
         return self._request.get_param(key)
+
+    def get_service_connector(self) -> ServiceConnector:
+        assert self._registration is not None, "Registration not yet set"
+        return DjangoServiceConnector(self._registration, self._requests_session)

@@ -7,9 +7,11 @@ from requests import Session
 from pylti1p3.contrib.fastapi.request import FastAPIRequest
 from pylti1p3.message_launch import MessageLaunch
 from pylti1p3.launch_data_storage.base import LaunchDataStorage
+from pylti1p3.service_connector import ServiceConnector
 from pylti1p3.tool_config.abstract import ToolConfAbstract
 
 from .cookie import FastAPICookieService
+from .service_connector import FastAPIServiceConnector
 from .session import FastAPISessionService
 
 ToolConfT = TypeVar("ToolConfT", bound=ToolConfAbstract)
@@ -44,3 +46,8 @@ class FastAPIMessageLaunch(MessageLaunch[FastAPIRequest, ToolConfT, FastAPISessi
         if val is not None:
             return val
         raise ValueError(f"Missing request param: {key}")
+
+    @override
+    def get_service_connector(self) -> ServiceConnector:
+        assert self._registration is not None, "Registration not yet set"
+        return FastAPIServiceConnector(self._registration, self._requests_session)

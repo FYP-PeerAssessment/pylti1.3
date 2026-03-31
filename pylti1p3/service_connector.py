@@ -49,13 +49,21 @@ class ServiceConnector:
         scopes_bytes = scopes_str.encode("utf-8")
         return hashlib.md5(scopes_bytes).hexdigest()
 
+    def _get_cached_access_token(self, scope_key: str) -> str | None:
+        return self._access_tokens.get(scope_key)
+
+    def _cache_access_token(self, scope_key: str, access_token: str, expires_in: float):
+        del expires_in
+        self._access_tokens[scope_key] = access_token
+
     def get_access_token(self, scopes: t.Sequence[str]) -> str:
         # Don't fetch the same key more than once
         scopes = sorted(scopes)
         scope_key = self._scope_key(scopes)
 
-        if scope_key in self._access_tokens:
-            return self._access_tokens[scope_key]
+        cached_token = self._get_cached_access_token(scope_key)
+        if cached_token:
+            return cached_token
 
         # Build up JWT to exchange for an auth token
         client_id = self._registration.get_client_id()
@@ -99,8 +107,12 @@ class ServiceConnector:
         except requests.JSONDecodeError as err:
             raise LtiServiceException("The platform did not return a JSON response for the access token.", r) from err
 
-        self._access_tokens[scope_key] = response["access_token"]
-        return self._access_tokens[scope_key]
+        self._cache_access_token(
+            scope_key,
+            response["access_token"],
+            response.get("expires_in", 0),
+        )
+        return response["access_token"]
 
     def encode_jwt(
         self,

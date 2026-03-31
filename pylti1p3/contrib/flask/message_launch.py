@@ -1,7 +1,9 @@
 """Flask implementation of the launch validator."""
 
 from pylti1p3.message_launch import MessageLaunch
+from pylti1p3.service_connector import ServiceConnector
 from .cookie import FlaskCookieService
+from .service_connector import FlaskServiceConnector
 from .session import FlaskSessionService
 
 
@@ -30,3 +32,7 @@ class FlaskMessageLaunch(MessageLaunch):
 
     def _get_request_param(self, key):
         return self._request.get_param(key)
+
+    def get_service_connector(self) -> ServiceConnector:
+        assert self._registration is not None, "Registration not yet set"
+        return FlaskServiceConnector(self._registration, self._requests_session)
