@@ -24,7 +24,7 @@ class OIDCException(LtiException):
 class LtiServiceException(LtiException):
     """Wraps failed outbound service calls to the platform."""
 
-    def __init__(self, response: requests.Response):
-        msg = f"HTTP response [{response.url}]: {str(response.status_code)} - {response.text}"
+    def __init__(self, message: str, response: requests.Response):
+        msg = f"{message} HTTP response [{response.url}]: {response.status_code}"
         super().__init__(msg)
         self.response = response

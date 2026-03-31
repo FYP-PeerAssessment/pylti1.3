@@ -43,13 +43,16 @@ class ServiceConnector:
             self._requests_session = requests.Session()
             self._requests_session.headers["User-Agent"] = REQUESTS_USER_AGENT
 
+    def _scope_key(self, scopes: t.Iterable[str]) -> str:
+        issuer = self._registration.get_issuer()
+        scopes_str: str = "|".join((([issuer] if issuer is not None else []) + sorted(scopes)))
+        scopes_bytes = scopes_str.encode("utf-8")
+        return hashlib.md5(scopes_bytes).hexdigest()
+
     def get_access_token(self, scopes: t.Sequence[str]) -> str:
         # Don't fetch the same key more than once
         scopes = sorted(scopes)
-        scopes_str: str = "|".join(scopes)
-        scopes_bytes = scopes_str.encode("utf-8")
-
-        scope_key = hashlib.md5(scopes_bytes).hexdigest()
+        scope_key = self._scope_key(scopes)
 
         if scope_key in self._access_tokens:
             return self._access_tokens[scope_key]
@@ -90,8 +93,11 @@ class ServiceConnector:
         # Make request to get auth token
         r = self._requests_session.post(auth_url, data=auth_request)
         if not r.ok:
-            raise LtiServiceException(r)
-        response = r.json()
+            raise LtiServiceException("There was an error while getting an access token from the platform.", r)
+        try:
+            response = r.json()
+        except requests.JSONDecodeError as err:
+            raise LtiServiceException("The platform did not return a JSON response for the access token.", r) from err
 
         self._access_tokens[scope_key] = response["access_token"]
         return self._access_tokens[scope_key]
@@ -138,14 +144,15 @@ class ServiceConnector:
                 )
 
         if not r.ok:
-            raise LtiServiceException(r)
+            raise LtiServiceException("There was an error making a service request.", r)
 
         next_page_url = None
         link_header = r.headers.get("link", "")
         if link_header:
             match = re.search(
                 r'<([^>]*)>;\s*rel="next"',
-                link_header.replace("\n", " ").lower().strip(),
+                link_header.replace("\n", " ").strip(),
+                re.IGNORECASE,
             )
             if match:
                 next_page_url = match.group(1)

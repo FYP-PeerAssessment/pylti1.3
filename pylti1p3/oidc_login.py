@@ -132,7 +132,8 @@ class OIDCLogin(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServiceT, 
             # LTI message hint to identify LTI context within the platform
             auth_params["lti_message_hint"] = lti_message_hint
 
-        auth_login_return_url = auth_login_url + "?" + urlencode(auth_params)
+        separator = "&" if "?" in auth_login_url else "?"
+        auth_login_return_url = auth_login_url + separator + urlencode(auth_params)
         return auth_login_return_url
 
     def _prepare_redirect(self, launch_url: str) -> Redirect[RedirectT]:
