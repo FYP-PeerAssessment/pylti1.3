@@ -5,6 +5,7 @@ import typing_extensions as te
 from collections import abc
 
 from ..deployment import Deployment
+from ..exception import LtiConfigurationException
 from ..registration import Registration, TKeySet
 from .abstract import ToolConfAbstract
 
@@ -83,7 +84,7 @@ class ToolConfDict(ToolConfAbstract):
         """
         super().__init__()
         if not isinstance(json_data, dict):
-            raise Exception("Invalid tool conf format. Must be dict")
+            raise LtiConfigurationException("Invalid tool conf format. Must be dict")
 
         for iss, iss_conf in json_data.items():
             if isinstance(iss_conf, dict):
@@ -94,7 +95,7 @@ class ToolConfDict(ToolConfAbstract):
                 for v in iss_conf:
                     self._validate_iss_config_item(iss, v)
             else:
-                raise Exception("Invalid tool conf format. Allowed types of elements: list or dict")
+                raise LtiConfigurationException("Invalid tool conf format. Allowed types of elements: list or dict")
 
         self._config = json_data
         self._private_key_one_client = {}
@@ -104,7 +105,9 @@ class ToolConfDict(ToolConfAbstract):
 
     def _validate_iss_config_item(self, iss: str, iss_conf: TIssConf):
         if not isinstance(iss_conf, dict):
-            raise ValueError(f"Invalid configuration {iss} for the {str(iss_conf)} issuer. Must be dict")
+            raise LtiConfigurationException(
+                f"Invalid configuration {iss} for the {str(iss_conf)} issuer. Must be dict"
+            )
         required_keys = [
             "auth_login_url",
             "auth_token_url",
@@ -113,9 +116,11 @@ class ToolConfDict(ToolConfAbstract):
         ]
         for key in required_keys:
             if key not in iss_conf:
-                raise ValueError(f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer")
+                raise LtiConfigurationException(
+                    f"Key '{key}' is missing in the {str(iss_conf)} config for the {iss} issuer"
+                )
         if not isinstance(iss_conf["deployment_ids"], list):
-            raise ValueError(
+            raise LtiConfigurationException(
                 f"Invalid deployment_ids value in the {str(iss_conf)} config for the {iss} issuer. Must be a list"
             )
 
@@ -169,7 +174,7 @@ class ToolConfDict(ToolConfAbstract):
     def set_public_key(self, iss: str, key_content: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
-                raise Exception("Can't set public key: missing client_id")
+                raise LtiConfigurationException("Can't set public key: missing client_id")
             if iss not in self._public_key_many_clients:
                 self._public_key_many_clients[iss] = {}
             self._public_key_many_clients[iss][client_id] = key_content
@@ -179,17 +184,17 @@ class ToolConfDict(ToolConfAbstract):
     def get_public_key(self, iss: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
-                raise Exception("Can't get public key: missing client_id")
+                raise LtiConfigurationException("Can't get public key: missing client_id")
             clients_dict = self._public_key_many_clients.get(iss, {})
             if not isinstance(clients_dict, dict):
-                raise Exception("Invalid clients data")
+                raise LtiConfigurationException("Invalid clients data")
             return clients_dict.get(client_id)
         return self._public_key_one_client.get(iss)
 
     def set_private_key(self, iss: str, key_content: str, client_id: str | None = None):
         if self.check_iss_has_many_clients(iss):
             if not client_id:
-                raise Exception("Can't set private key: missing client_id")
+                raise LtiConfigurationException("Can't set private key: missing client_id")
             if iss not in self._private_key_many_clients:
                 self._private_key_many_clients[iss] = {}
             self._private_key_many_clients[iss][client_id] = key_content  # type: ignore
@@ -199,18 +204,18 @@ class ToolConfDict(ToolConfAbstract):
     def get_private_key(self, iss: str, client_id: str | None = None) -> str | None:
         if self.check_iss_has_many_clients(iss):
             if not client_id:
-                raise Exception("Can't get private key: missing client_id")
+                raise LtiConfigurationException("Can't get private key: missing client_id")
             clients_dict = self._private_key_many_clients.get(iss, {})
             if not isinstance(clients_dict, dict):
-                raise Exception("Invalid clients data")
+                raise LtiConfigurationException("Invalid clients data")
             return clients_dict.get(client_id)
         return self._private_key_one_client.get(iss)
 
     def get_iss_config(self, iss: str, client_id: str | None = None):
         if not self._config:
-            raise Exception("Config is not set")
+            raise LtiConfigurationException("Config is not set")
         if iss not in self._config:
-            raise Exception(f"iss {iss} not found in settings")
+            raise LtiConfigurationException(f"iss {iss} not found in settings")
         config_iss = self._config[iss]
 
         if isinstance(config_iss, list):
@@ -223,7 +228,7 @@ class ToolConfDict(ToolConfAbstract):
                     or (not client_id and items_len == 1)  # Only one item
                 ):
                     return subitem
-            raise Exception(f"iss {iss} [client_id={client_id}] not found in settings")
+            raise LtiConfigurationException(f"iss {iss} [client_id={client_id}] not found in settings")
         return config_iss
 
     @te.override

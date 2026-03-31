@@ -4,6 +4,7 @@ import typing as t
 import json
 from pathlib import Path
 
+from ..exception import LtiConfigurationException
 from .dict import ToolConfDict, TIssConf, TJsonData
 
 
@@ -67,7 +68,7 @@ class ToolConfJsonFile(ToolConfDict):
         config_path = Path(config_file)
 
         if not config_path.is_file():
-            raise Exception("LTI tool config file not found: " + str(config_path))
+            raise LtiConfigurationException(f"LTI tool config file not found: {config_path}")
         self._configs_dir = str(config_path.parent)
 
         with config_path.open(encoding="utf-8") as cfg:
@@ -85,7 +86,7 @@ class ToolConfJsonFile(ToolConfDict):
     def _process_iss_conf_item(self, iss_conf: TIssConf, iss: str, client_id: str | None = None):
         private_key_file = iss_conf.get("private_key_file")
         if not private_key_file:
-            raise Exception("iss config error: private_key_file not found")
+            raise LtiConfigurationException("iss config error: private_key_file not found")
 
         if not private_key_file.startswith("/"):
             private_key_file = self._configs_dir + "/" + private_key_file

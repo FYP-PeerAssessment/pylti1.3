@@ -9,7 +9,13 @@ class LtiException(Exception):
     pass
 
 
-class OIDCException(Exception):
+class LtiConfigurationException(LtiException):
+    """Raised when the tool/platform configuration is invalid."""
+
+    pass
+
+
+class OIDCException(LtiException):
     """Raised when the OIDC login request is invalid."""
 
     pass
