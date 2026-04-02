@@ -134,10 +134,6 @@ pythonVersion = "3.10"
 pythonPlatform = "All"
 typeCheckingMode = "standard"
 
-exclude = [
-    "tests/**",
-]
-
 enableExperimentalFeatures = true
 reportUnusedCallResult = false
 reportImportCycles = false
