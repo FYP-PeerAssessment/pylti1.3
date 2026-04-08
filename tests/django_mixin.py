@@ -123,9 +123,11 @@ class DjangoMixin:
                 if secure:
                     self.assertTrue(cookie_dict["secure"])
                     self.assertEqual(cookie_dict["samesite"], "None")
+                    self.assertTrue(cookie_dict["partitioned"])
                 else:
                     self.assertFalse(cookie_dict["secure"])
                     self.assertTrue("samesite" not in cookie_dict)
+                    self.assertTrue("partitioned" not in cookie_dict)
 
         return tool_conf, request, response
 

@@ -8,6 +8,8 @@ from pylti1p3.cookie import CookieService
 # pylint: disable=protected-access
 if "samesite" not in Cookie.Morsel._reserved:  # type: ignore
     Cookie.Morsel._reserved.setdefault("samesite", "SameSite")  # type: ignore
+if "partitioned" not in Cookie.Morsel._reserved:  # type: ignore
+    Cookie.Morsel._reserved.setdefault("partitioned", "Partitioned")  # type: ignore
 
 
 class DjangoCookieService(CookieService):
@@ -56,5 +58,7 @@ class DjangoCookieService(CookieService):
                 else:
                     response.set_cookie(key, **kwargs)
                     response.cookies[key]["samesite"] = "None"
+
+                response.cookies[key]["partitioned"] = True
             else:
                 response.set_cookie(key, **kwargs)
