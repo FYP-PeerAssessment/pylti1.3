@@ -31,7 +31,7 @@ class TestDeepLinkResource(unittest.TestCase):
         lineitem = LineItem(
             {
                 "scoreMaximum": 100,
-                "submissionReview": {"reviewableStatus": ["Pending"], "custom": {}},
+                "submissionReview": {"custom": {}},
             }
         )
         resource = DeepLinkResource().set_title("Test title").set_url("https://tool.example/launch")
@@ -40,4 +40,14 @@ class TestDeepLinkResource(unittest.TestCase):
         resource_dict = resource.to_dict()
         submission_review = resource_dict.get("lineItem", {}).get("submissionReview")
 
-        self.assertEqual(submission_review, {"reviewableStatus": ["Pending"]})
+        self.assertEqual(submission_review, {})
+
+    def test_to_dict_includes_empty_submission_review(self):
+        lineitem = LineItem({"scoreMaximum": 100}).set_submission_review()
+        resource = DeepLinkResource().set_title("Test title").set_url("https://tool.example/launch")
+        resource.set_lineitem(lineitem)
+
+        resource_dict = resource.to_dict()
+        submission_review = resource_dict.get("lineItem", {}).get("submissionReview")
+
+        self.assertEqual(submission_review, {})

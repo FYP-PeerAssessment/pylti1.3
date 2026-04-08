@@ -2,16 +2,12 @@
 
 import json
 import typing as t
-import typing_extensions as te
 from .exception import LtiException
 
 
 class TSubmissionReview(t.TypedDict, total=False):
     """Submission review data attached to a line item."""
 
-    # Required data
-    reviewableStatus: te.Required[list]
-    # Optional data
     label: str
     url: str
     custom: dict[str, str]
@@ -165,15 +161,11 @@ class LineItem:
 
     def set_submission_review(
         self,
-        reviewable_status: list,
         label: str | None = None,
         url: str | None = None,
         custom: dict[str, str] | None = None,
     ) -> "LineItem":
-        if not isinstance(reviewable_status, list):
-            raise ValueError('Invalid "reviewable_status" argument')
-
-        self._submission_review: TSubmissionReview = {"reviewableStatus": reviewable_status}
+        self._submission_review = {}
         if label:
             self._submission_review["label"] = label
         if url:
@@ -195,4 +187,10 @@ class LineItem:
             "endDateTime": self._end_date_time,
             "submissionReview": self._submission_review,
         }
-        return json.dumps({k: v for k, v in data.items() if v})
+        return json.dumps(
+            {
+                k: v
+                for k, v in data.items()
+                if (k == "submissionReview" and v is not None) or (k != "submissionReview" and v)
+            }
+        )

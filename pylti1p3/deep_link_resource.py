@@ -92,7 +92,7 @@ class DeepLinkResource:
                 line_item["tag"] = tag
 
             submission_review = self._lineitem.get_submission_review()
-            if submission_review:
+            if submission_review is not None:
                 submission_review_data = dict(submission_review)
                 if not submission_review_data.get("custom"):
                     submission_review_data.pop("custom", None)
