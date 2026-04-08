@@ -17,7 +17,7 @@ class TLineItem(t.TypedDict, total=False):
     """Raw line item payload returned by, or sent to, the platform."""
 
     id: str
-    scoreMaximum: int
+    scoreMaximum: float
     label: str
     resourceId: str
     tag: str
