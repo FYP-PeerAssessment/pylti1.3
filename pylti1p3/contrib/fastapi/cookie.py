@@ -42,4 +42,5 @@ class FastAPICookieService(CookieService):
             }
             if is_secure:
                 cookie_kwargs["samesite"] = "None"
+                cookie_kwargs["partitioned"] = True
             response.set_cookie(**cookie_kwargs)

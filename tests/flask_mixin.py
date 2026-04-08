@@ -121,9 +121,11 @@ class FlaskMixin:
                 if secure:
                     self.assertTrue("Secure" in set_cookie_header)
                     self.assertTrue("SameSite=None" in set_cookie_header)
+                    self.assertTrue("Partitioned" in set_cookie_header)
                 else:
                     self.assertFalse("Secure" in set_cookie_header)
                     self.assertFalse("SameSite" in set_cookie_header)
+                    self.assertFalse("Partitioned" in set_cookie_header)
 
                 # check session data
                 if cache:
