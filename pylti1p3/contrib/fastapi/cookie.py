@@ -1,5 +1,8 @@
 """FastAPI cookie service used by the launch and login adapters."""
 
+import sys
+import warnings
+
 import fastapi
 
 from pylti1p3.contrib.fastapi.request import FastAPIRequest
@@ -42,5 +45,13 @@ class FastAPICookieService(CookieService):
             }
             if is_secure:
                 cookie_kwargs["samesite"] = "None"
-                cookie_kwargs["partitioned"] = True
+                if sys.version_info >= (3, 14):
+                    cookie_kwargs["partitioned"] = True
+                else:
+                    warnings.warn(
+                        "Partitioned cookies (CHIPS) require Python 3.14+. "
+                        "LTI cookies may not work correctly in third-party iframe contexts "
+                        "on browsers that enforce cookie partitioning.",
+                        stacklevel=2,
+                    )
             response.set_cookie(**cookie_kwargs)
