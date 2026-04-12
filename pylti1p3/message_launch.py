@@ -26,6 +26,7 @@ from .message_validators.privacy_launch import PrivacyLaunchValidator
 from .message_validators.resource_message import ResourceMessageValidator
 from .message_validators.submission_review import SubmissionReviewLaunchValidator
 from .names_roles import NamesRolesProvisioningService, TNamesAndRolesData
+from .platform_notification import PlatformNotificationService, TPlatformNotificationServiceData
 from .roles import (
     StaffRole,
     StudentRole,
@@ -139,6 +140,7 @@ TLaunchData = t.TypedDict(
         "https://purl.imsglobal.org/spec/lti-gs/claim/groupsservice": TGroupsServiceData,
         "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice": TNamesAndRolesData,
         "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint": TAssignmentsGradersData,
+        "https://purl.imsglobal.org/spec/lti/claim/platformnotificationservice": TPlatformNotificationServiceData,
         "https://purl.imsglobal.org/spec/lti/claim/tool_platform": TToolPlatformClaim,
         "https://purl.imsglobal.org/spec/lti/claim/role_scope_mentor": list[str],
         "https://purl.imsglobal.org/spec/lti/claim/lti1p1": TMigrationClaim,
@@ -419,6 +421,35 @@ class MessageLaunch(t.Generic[RequestT, ToolConfT, SessionServiceT, CookieServic
         if not context_groups_url:
             raise LtiException("context_groups_url is not set in groupsservice section")
         return CourseGroupsService(connector, groups_service_data)
+
+    def has_pns(self) -> bool:
+        """
+        Returns whether or not the current launch can use the platform notification service.
+
+        :return: bool
+        """
+        platform_notification_data = self._get_jwt_body().get(
+            "https://purl.imsglobal.org/spec/lti/claim/platformnotificationservice", {}
+        )
+        return platform_notification_data.get("platform_notification_service_url", None) is not None
+
+    def get_pns(self) -> PlatformNotificationService:
+        """
+        Fetches an instance of the platform notification service for the current launch.
+
+        :return: PlatformNotificationService
+        """
+        assert self._registration is not None, "Registration not yet set"
+        connector = self.get_service_connector()
+        platform_notification_data = self._get_jwt_body().get(
+            "https://purl.imsglobal.org/spec/lti/claim/platformnotificationservice"
+        )
+        if not platform_notification_data:
+            raise LtiException("platformnotificationservice is not set in jwt body")
+        service_url = platform_notification_data.get("platform_notification_service_url", None)
+        if not service_url:
+            raise LtiException("platform_notification_service_url is not set in platformnotificationservice section")
+        return PlatformNotificationService(connector, platform_notification_data)
 
     def get_deep_link(self) -> DeepLink:
         """
